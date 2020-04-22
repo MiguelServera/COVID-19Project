@@ -10,12 +10,15 @@ import android.widget.Button;
 public class MainLogin extends AppCompatActivity implements View.OnClickListener {
 
     Button button;
+    Button button2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
         button = findViewById(R.id.registerButton);
         button.setOnClickListener(this);
+        button2 = findViewById(R.id.provaButton);
+        button2.setOnClickListener(this);
     }
 
 
@@ -24,6 +27,11 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
         if(view == button)
         {
             Intent i = new Intent(this, RegisterActivity.class);
+            startActivity(i);
+        }
+        else if (view == button2)
+        {
+            Intent i = new Intent(this, ProvaActivity.class);
             startActivity(i);
         }
     }

@@ -17,6 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".ProvaActivity"></activity>
+
     </application>
 
 </manifest>

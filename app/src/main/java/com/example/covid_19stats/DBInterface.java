@@ -37,11 +37,11 @@ public class DBInterface {
     }
 
     //Insereix un contacte
-    public long insertInformation(String country, String cases, String recu, String deaths) {
+    public long insertInformation(String country, String cases, String recus, String deaths) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_COUNTRY, country);
         initialValues.put(KEY_CASES, cases);
-        initialValues.put(KEY_RECU, recu);
+        initialValues.put(KEY_RECU, recus);
         initialValues.put(KEY_DEATHS, deaths);
         return bd.insert(BD_TABLE ,null, initialValues);
     }
