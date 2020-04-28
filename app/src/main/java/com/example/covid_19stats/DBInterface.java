@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class DBInterface {
     //Declaració de constants
     public static final String KEY_ID = "_id";
@@ -37,13 +40,17 @@ public class DBInterface {
     }
 
     //Insereix un contacte
-    public long insertInformation(String country, String cases, String recus, String deaths) {
+    public long insertInformation(JSONObject stats) {
         ContentValues initialValues = new ContentValues();
-        initialValues.put(KEY_COUNTRY, country);
-        initialValues.put(KEY_CASES, cases);
-        initialValues.put(KEY_RECU, recus);
-        initialValues.put(KEY_DEATHS, deaths);
-        return bd.insert(BD_TABLE ,null, initialValues);
+        try {
+            initialValues.put(KEY_COUNTRY, stats.getString("code"));
+            initialValues.put(KEY_CASES, stats.getJSONObject("dataList").getString("cases"));
+            initialValues.put(KEY_RECU, stats.getJSONObject("dataList").getString("date"));
+            initialValues.put(KEY_DEATHS, stats.getJSONObject("dataList").getString("deaths"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return bd.insert(BD_TABLE, null, initialValues);
     }
 
     //Retorna un contacte
