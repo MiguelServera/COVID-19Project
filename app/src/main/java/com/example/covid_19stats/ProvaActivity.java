@@ -1,14 +1,20 @@
 package com.example.covid_19stats;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +34,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -35,6 +42,7 @@ import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -43,13 +51,13 @@ import javax.net.ssl.TrustManagerFactory;
 
 public class ProvaActivity extends AppCompatActivity implements View.OnClickListener {
     Button button;
-    DBInterface bd;
     EditText country;
     EditText cases;
     EditText recus;
     EditText deaths;
     DBInterface db;
     Context appContext;
+    ListView lv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +65,7 @@ public class ProvaActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.prova_activity);
         button = (Button) findViewById(R.id.button2);
         button.setOnClickListener(this);
-        bd = new DBInterface(this);
+        db = new DBInterface(this);
         country = findViewById(R.id.EditText5);
         cases = findViewById(R.id.EditText9);
         recus = findViewById(R.id.EditText10);
@@ -70,6 +78,8 @@ public class ProvaActivity extends AppCompatActivity implements View.OnClickList
         if (view == button) {
             System.out.println("Hola");
             new SendRequest().execute();
+            Intent i = new Intent(this, MenuActivity.class);
+            startActivity(i);
         }
     }
 
@@ -145,29 +155,56 @@ public class ProvaActivity extends AppCompatActivity implements View.OnClickList
             }
         }
 
-
-        public String getPostDataString(JSONObject params) throws Exception {
-
-            StringBuilder result = new StringBuilder();
-            boolean first = true;
-
-            Iterator<String> itr = params.keys();
-
-            while (itr.hasNext()) {
-
-                String key = itr.next();
-                Object value = params.get(key);
-                if (first)
-                    first = false;
-                else
-                    result.append("&");
-
-                result.append(URLEncoder.encode(key, "UTF-8"));
-                result.append("=");
-                result.append(URLEncoder.encode(value.toString(), "UTF-8"));
-
+        public void onPostExecute(String result) {
+            /*try {
+                JSONArray stats = new JSONArray(result);
+                Log.i("Stats", stats.length() + "");
+                for (int i = 0; i <= stats.length(); i++) {
+                    JSONObject prova = stats.getJSONObject(i);
+                    Log.i("Prova", prova.toString());
+                    try {
+                        db.insertInformation(stats.getJSONObject(i));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                inflateCountryCases();
+                inflateCountryCode();
+                inflateCountryDeaths();
+                inflateCountryName();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (SQLiteConstraintException c) {
+                c.printStackTrace();
+            }*/
+            try {
+                String object = "";
+                JSONObject insertjsonObject;
+                JSONObject datalist;
+                JSONObject datalistObject = null;
+                JSONArray datalistArray;
+                JSONArray stats = new JSONArray(result);
+                for (int i = 0; i < 1; i++)
+                {
+                    datalist = stats.getJSONObject(i);
+                    datalistArray = datalist.getJSONArray("dataList");
+                    for ( int a = 0; a < datalistArray.length(); a++)
+                    {
+                        datalistObject = datalistArray.getJSONObject(a);
+                    }
+                    object = "{\"code\":" + datalist.getString("code") + ",\"name\":" +
+                    datalist.getString("name") + ",\"cases\":" + datalistObject.getString("cases") +
+                    ",\"deaths\":" + datalistObject.getString("deaths") + "}";
+                    System.out.println(object);
+                    insertjsonObject = new JSONObject(object);
+                    db.obre();
+                    if (db.insertInformation(insertjsonObject) != 1) System.out.println("All good!");
+                    db.tanca();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            return result.toString();
+            Log.i("Retrieve", result);
         }
     }
 }

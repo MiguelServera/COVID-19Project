@@ -11,8 +11,8 @@ import org.json.JSONObject;
 
 public class DBInterface {
     //Declaració de constants
-    public static final String KEY_ID = "_id";
     public static final String KEY_COUNTRY = "country";
+    public static final String KEY_COUNTRY_NAME = "country_name";
     public static final String KEY_CASES = "cases";
     public static final String KEY_RECU = "recu";
     public static final String KEY_DEATHS = "deaths";
@@ -20,7 +20,12 @@ public class DBInterface {
     public static final String BD_NAME = "COVIDBD";
     public static final String BD_TABLE = "CountryStats";
     public static final int VERSION = 1;
-    public static final String BD_CREATE ="create table " + BD_TABLE + "( " + KEY_ID + " integer primary key autoincrement, " + KEY_COUNTRY +" text not null, " + KEY_CASES + " text not null, " + KEY_RECU + " text not null, " + KEY_DEATHS + " text not null);";
+    public static final String BD_CREATE ="create table " + BD_TABLE + "( " +
+            KEY_COUNTRY +" text not null, " +
+            KEY_COUNTRY_NAME +" text not null, " +
+            KEY_CASES + " text not null, " +
+            //KEY_RECU + " text not null, " +
+            KEY_DEATHS + " text not null);";
     private final Context context;
     private DBStats ajuda;
     private SQLiteDatabase bd;
@@ -44,9 +49,10 @@ public class DBInterface {
         ContentValues initialValues = new ContentValues();
         try {
             initialValues.put(KEY_COUNTRY, stats.getString("code"));
-            initialValues.put(KEY_CASES, stats.getJSONObject("dataList").getString("cases"));
-            initialValues.put(KEY_RECU, stats.getJSONObject("dataList").getString("date"));
-            initialValues.put(KEY_DEATHS, stats.getJSONObject("dataList").getString("deaths"));
+            initialValues.put(KEY_COUNTRY_NAME, stats.getString("name"));
+            initialValues.put(KEY_CASES, stats.getString("cases"));
+            //initialValues.put(KEY_RECU, stats.getJSONObject("dataList").getString("date"));
+            initialValues.put(KEY_DEATHS, stats.getString("deaths"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -54,7 +60,7 @@ public class DBInterface {
     }
 
     //Retorna un contacte
-    public Cursor obtainCountryInformation(long IDFila) throws SQLException {
+    /*public Cursor obtainCountryInformation(long IDFila) throws SQLException {
         Cursor mCursor = bd.query(true, BD_TABLE, new String[] {KEY_ID,
                         KEY_COUNTRY,KEY_CASES},KEY_ID + " = " + IDFila, null, null, null, null,
                 null);
@@ -64,10 +70,11 @@ public class DBInterface {
         return mCursor;
     }
 
-    public Cursor obtainAllInformation() {
-        return bd.query(BD_TABLE, new String[] {KEY_ID, KEY_COUNTRY, KEY_CASES},
+    */public Cursor obtainAllInformation() {
+        return bd.query(BD_TABLE, new String[] {KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_CASES, KEY_DEATHS},
                 null,null, null, null, null);
     }
+    /*
 
     //Modifica un contacte
     public boolean updateCases(long IDFila, String country, String cases) {
@@ -75,5 +82,5 @@ public class DBInterface {
         args.put(KEY_COUNTRY, country);
         args.put(KEY_CASES, cases);
         return bd.update(BD_TABLE, args, KEY_ID + " = " + IDFila, null) > 0;
-    }
+    }*/
 }

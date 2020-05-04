@@ -2,6 +2,7 @@ package com.example.covid_19stats;
 
 public class Country {
     String name;
+    String code;
     String population;
 
     public Country(){
