@@ -1,13 +1,9 @@
 package com.example.covid_19stats;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,66 +18,27 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.main_menu);
         db = new DBInterface(this);
         db.obre();
-        inflateCountryName();
-        inflateCountryDeaths();
-        inflateCountryCode();
-        inflateCountryCases();
+        inflate();
         db.tanca();
     }
 
-    public void inflateCountryCode() {
+    public void inflate() {
         Cursor c = db.obtainAllInformation();
         ArrayList<String> info = new ArrayList<String>();
         c.moveToFirst();
 
         while(!c.isAfterLast()) {
             info.add(c.getString(c.getColumnIndex(db.KEY_COUNTRY)));
-            c.moveToNext();
-        }
-        ArrayAdapter inflate = new ArrayAdapter(getApplicationContext(), R.layout.inflateinfo, R.id.textView, info);
-        lv = (ListView) findViewById(R.id.listviewCountryCode);
-        lv.setAdapter(inflate);
-    }
-
-    public void inflateCountryName() {
-        Cursor c = db.obtainAllInformation();
-        ArrayList<String> info = new ArrayList<String>();
-        c.moveToFirst();
-
-        while(!c.isAfterLast()) {
             info.add(c.getString(c.getColumnIndex(db.KEY_COUNTRY_NAME)));
-            c.moveToNext();
-        }
-        ArrayAdapter inflate = new ArrayAdapter(getApplicationContext(), R.layout.inflateinfo, R.id.textView, info);
-        lv = (ListView) findViewById(R.id.listviewCountryName);
-        lv.setAdapter(inflate);
-    }
-
-    public void inflateCountryCases() {
-        Cursor c = db.obtainAllInformation();
-        ArrayList<String> info = new ArrayList<String>();
-        c.moveToFirst();
-
-        while(!c.isAfterLast()) {
             info.add(c.getString(c.getColumnIndex(db.KEY_CASES)));
-            c.moveToNext();
-        }
-        ArrayAdapter inflate = new ArrayAdapter(getApplicationContext(), R.layout.inflateinfo, R.id.textView, info);
-        lv = (ListView) findViewById(R.id.listviewCases);
-        lv.setAdapter(inflate);
-    }
-
-    public void inflateCountryDeaths() {
-        Cursor c = db.obtainAllInformation();
-        ArrayList<String> info = new ArrayList<String>();
-        c.moveToFirst();
-
-        while(!c.isAfterLast()) {
             info.add(c.getString(c.getColumnIndex(db.KEY_DEATHS)));
             c.moveToNext();
         }
         ArrayAdapter inflate = new ArrayAdapter(getApplicationContext(), R.layout.inflateinfo, R.id.textView, info);
-        lv = (ListView) findViewById(R.id.listviewDeaths);
+        lv = (ListView) findViewById(R.id.listview);
         lv.setAdapter(inflate);
+
+        //Meter cada campo en una variable y despues crear un objeto tipo Stat con dichas variables.
+        //Si no tiene codigo, utilizar geoID
     }
 }

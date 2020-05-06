@@ -1,32 +1,34 @@
 package com.example.covid_19stats;
 
 public class Stat {
-    Country country;
-    String date;
+    String code;
+    String name;
     String cases;
     String deaths;
 
-    public Stat(Country country, String date, String cases, String deaths) {
-        this.country = country;
-        this.date = date;
+    public Stat(){}
+
+    public Stat(String codeC, String nameC, String cases, String deaths) {
+        this.code = codeC;
+        this.name = nameC;
         this.cases = cases;
         this.deaths = deaths;
     }
 
-    public Country getCountry() {
-        return country;
+    public String getCodeC() {
+        return code;
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
+    public void setCodeC(String codeC) {
+        this.code = codeC;
     }
 
-    public String getDate() {
-        return date;
+    public String getNameC() {
+        return name;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setNameC(String nameC) {
+        this.name = nameC;
     }
 
     public String getCases() {
@@ -48,8 +50,8 @@ public class Stat {
     @Override
     public String toString() {
         return "Stat{" +
-                "country=" + country +
-                ", date='" + date + '\'' +
+                "codeC='" + code + '\'' +
+                ", nameC='" + name + '\'' +
                 ", cases='" + cases + '\'' +
                 ", deaths='" + deaths + '\'' +
                 '}';

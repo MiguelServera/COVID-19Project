@@ -3,84 +3,57 @@ package com.example.covid_19stats;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteConstraintException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.gson.Gson;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.DataOutputStream;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
-public class ProvaActivity extends AppCompatActivity implements View.OnClickListener {
-    Button button;
+public class ProvaActivity extends AppCompatActivity{
     EditText country;
     EditText cases;
     EditText recus;
     EditText deaths;
     DBInterface db;
     Context appContext;
+    ArrayList<Stat> arrayStats = new ArrayList<Stat>();
     ListView lv;
+    MenuActivity ma;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.prova_activity);
-        button = (Button) findViewById(R.id.button2);
-        button.setOnClickListener(this);
+        setContentView(R.layout.main_menu);
         db = new DBInterface(this);
         country = findViewById(R.id.EditText5);
         cases = findViewById(R.id.EditText9);
         recus = findViewById(R.id.EditText10);
         deaths = findViewById(R.id.EditText11);
         appContext = this;
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view == button) {
-            System.out.println("Hola");
-            new SendRequest().execute();
-            Intent i = new Intent(this, MenuActivity.class);
-            startActivity(i);
-        }
+        new SendRequest().execute();
     }
 
     public class SendRequest extends AsyncTask<String, Void, String> {
@@ -156,47 +129,58 @@ public class ProvaActivity extends AppCompatActivity implements View.OnClickList
         }
 
         public void onPostExecute(String result) {
-            /*try {
-                JSONArray stats = new JSONArray(result);
-                Log.i("Stats", stats.length() + "");
-                for (int i = 0; i <= stats.length(); i++) {
-                    JSONObject prova = stats.getJSONObject(i);
-                    Log.i("Prova", prova.toString());
-                    try {
-                        db.insertInformation(stats.getJSONObject(i));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                inflateCountryCases();
-                inflateCountryCode();
-                inflateCountryDeaths();
-                inflateCountryName();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (SQLiteConstraintException c) {
-                c.printStackTrace();
-            }*/
             try {
                 String object = "";
                 JSONObject insertjsonObject;
                 JSONObject datalist;
                 JSONObject datalistObject = null;
                 JSONArray datalistArray;
+
                 JSONArray stats = new JSONArray(result);
-                for (int i = 0; i < 1; i++)
+                Log.i("statsArray", stats.length() + "");
+                for (int i = 0; i < stats.length(); i++)
                 {
                     datalist = stats.getJSONObject(i);
                     datalistArray = datalist.getJSONArray("dataList");
+                    Log.i("DataList", "" + datalistArray.length());
                     for ( int a = 0; a < datalistArray.length(); a++)
                     {
                         datalistObject = datalistArray.getJSONObject(a);
                     }
-                    object = "{\"code\":" + datalist.getString("code") + ",\"name\":" +
-                    datalist.getString("name") + ",\"cases\":" + datalistObject.getString("cases") +
-                    ",\"deaths\":" + datalistObject.getString("deaths") + "}";
-                    System.out.println(object);
+
+                    if (datalist.getString("name").equals("Bonaire, Saint Eustatius and Saba")
+                            && datalist.getString("code").equals("")){
+                    object = "{\"code\":\"NoCode\"" + datalist.getString("code") + ",\"name\":\""
+                            + datalist.getString("name") + "\",\"cases\":" +
+                            datalistObject.getString("cases") +
+                            ",\"deaths\":" + datalistObject.getString("deaths") + "}";
+                    }
+
+                    else if (datalist.getString("code").equals("") ||
+                            datalist.getString("code").equals("N/A")){
+                        object = "{\"code\":\"NoCode\"" + ",\"name\":" +
+                                datalist.getString("name") + ",\"cases\":" +
+                                datalistObject.getString("cases") +
+                                ",\"deaths\":" + datalistObject.getString("deaths") + "}";
+                    }
+
+                    else if (datalist.getString("name").equals("Cases_on_an_international_conveyance_Japan")){
+                        object = "{\"code\":\"NoCode\"" + ",\"name\":\"" + datalist.getString("name") + "\",\"cases\":" +
+                                datalistObject.getString("cases") +
+                                ",\"deaths\":" + datalistObject.getString("deaths") + "}";
+                    }
+
+                    else
+                    {
+                        object = "{\"code\":" + datalist.getString("code") + ",\"name\":" +
+                                datalist.getString("name") + ",\"cases\":" +
+                                datalistObject.getString("cases") +
+                                ",\"deaths\":" + datalistObject.getString("deaths") + "}";
+                    }
+
                     insertjsonObject = new JSONObject(object);
+                    Stat statsPo = new Gson().fromJson(insertjsonObject.toString(), Stat.class);
+                    arrayStats.add(statsPo);
                     db.obre();
                     if (db.insertInformation(insertjsonObject) != 1) System.out.println("All good!");
                     db.tanca();
@@ -204,7 +188,14 @@ public class ProvaActivity extends AppCompatActivity implements View.OnClickList
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            inflate(arrayStats);
             Log.i("Retrieve", result);
+        }
+
+        public void inflate(ArrayList<Stat> arrayStat) {
+            StatsAdapter inflate = new StatsAdapter(getApplicationContext(), R.layout.inflateinfo, arrayStat);
+            lv = (ListView) findViewById(R.id.listview);
+            lv.setAdapter(inflate);
         }
     }
 }

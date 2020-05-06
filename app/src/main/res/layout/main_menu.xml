@@ -7,39 +7,25 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="344dp"
-        android:layout_height="388dp"
+        android:layout_width="410dp"
+        android:layout_height="385dp"
         android:layout_marginTop="339dp"
         android:layout_marginEnd="1dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="325dp"
             android:orientation="horizontal">
 
             <ListView
-                android:id="@+id/listviewCountryCode"
-                android:layout_width="86dp"
+                android:id="@+id/listview"
+                android:layout_width="400dp"
                 android:layout_height="match_parent" />
 
-            <ListView
-                android:id="@+id/listviewCountryName"
-                android:layout_width="87dp"
-                android:layout_height="match_parent" />
-
-            <ListView
-                android:id="@+id/listviewCases"
-                android:layout_width="81dp"
-                android:layout_height="match_parent" />
-
-            <ListView
-                android:id="@+id/listviewDeaths"
-                android:layout_width="83dp"
-                android:layout_height="match_parent" />
         </LinearLayout>
     </LinearLayout>
 
