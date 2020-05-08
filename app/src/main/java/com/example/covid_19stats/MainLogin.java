@@ -17,7 +17,7 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
         setContentView(R.layout.login_activity);
         button = findViewById(R.id.registerButton);
         button.setOnClickListener(this);
-        button2 = findViewById(R.id.provaButton);
+        button2 = findViewById(R.id.loginButton);
         button2.setOnClickListener(this);
     }
 

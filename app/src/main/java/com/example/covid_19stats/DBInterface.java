@@ -10,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class DBInterface {
-    //Declaració de constants
     public static final String KEY_COUNTRY = "country";
     public static final String KEY_COUNTRY_NAME = "country_name";
     public static final String KEY_CASES = "cases";
@@ -19,6 +18,7 @@ public class DBInterface {
     public static final String TAG = "DBInterface";
     public static final String BD_NAME = "COVIDBD";
     public static final String BD_TABLE = "CountryStats";
+    public static final String BD_TABLE1 = "GlobalStats";
     public static final int VERSION = 1;
     public static final String BD_CREATE ="create table " + BD_TABLE + "( " +
             KEY_COUNTRY +" text not null, " +
@@ -26,6 +26,13 @@ public class DBInterface {
             KEY_CASES + " text not null, " +
             //KEY_RECU + " text not null, " +
             KEY_DEATHS + " text not null);";
+
+    public static final String BD_CREATE1 ="create table " + BD_TABLE1 + "( " +
+            KEY_COUNTRY +" text not null, " +
+            KEY_CASES + " text not null, " +
+            //KEY_RECU + " text not null, " +
+            KEY_DEATHS + " text not null);";
+
     private final Context context;
     private DBStats ajuda;
     private SQLiteDatabase bd;
@@ -39,12 +46,10 @@ public class DBInterface {
         bd = ajuda.getWritableDatabase();
         return this;
     }
-    //Tanca la Base de dades
     public void tanca() {
         ajuda.close();
     }
 
-    //Insereix un contacte
     public long insertInformation(JSONObject stats) {
         ContentValues initialValues = new ContentValues();
         try {
@@ -58,29 +63,31 @@ public class DBInterface {
         }
         return bd.insert(BD_TABLE, null, initialValues);
     }
-
-    //Retorna un contacte
-    /*public Cursor obtainCountryInformation(long IDFila) throws SQLException {
-        Cursor mCursor = bd.query(true, BD_TABLE, new String[] {KEY_ID,
-                        KEY_COUNTRY,KEY_CASES},KEY_ID + " = " + IDFila, null, null, null, null,
-                null);
-        if(mCursor != null) {
-            mCursor.moveToFirst();
-        }
-        return mCursor;
-    }
-
-    */public Cursor obtainAllInformation() {
+    public Cursor obtainAllInformation() {
         return bd.query(BD_TABLE, new String[] {KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_CASES, KEY_DEATHS},
                 null,null, null, null, null);
     }
-    /*
 
-    //Modifica un contacte
-    public boolean updateCases(long IDFila, String country, String cases) {
-        ContentValues args = new ContentValues();
-        args.put(KEY_COUNTRY, country);
-        args.put(KEY_CASES, cases);
-        return bd.update(BD_TABLE, args, KEY_ID + " = " + IDFila, null) > 0;
-    }*/
+    public void deleteDatabaseStats()
+    {
+        context.deleteDatabase("COVIDBD");
+    }
+
+    public long insertGlobalInformation(JSONObject stats) {
+        ContentValues initialValues = new ContentValues();
+        try {
+            initialValues.put(KEY_COUNTRY, stats.getString("code"));
+            initialValues.put(KEY_CASES, stats.getString("cases"));
+            //initialValues.put(KEY_RECU, stats.getJSONObject("dataList").getString("date"));
+            initialValues.put(KEY_DEATHS, stats.getString("deaths"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return bd.insert(BD_TABLE1, null, initialValues);
+    }
+
+    public Cursor obtainAllGlobalInformation() {
+        return bd.query(BD_TABLE1, new String[] {KEY_COUNTRY, KEY_CASES, KEY_DEATHS},
+                null,null, null, null, null);
+    }
 }

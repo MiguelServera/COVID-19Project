@@ -37,8 +37,5 @@ public class MenuActivity extends AppCompatActivity {
         ArrayAdapter inflate = new ArrayAdapter(getApplicationContext(), R.layout.inflateinfo, R.id.textView, info);
         lv = (ListView) findViewById(R.id.listview);
         lv.setAdapter(inflate);
-
-        //Meter cada campo en una variable y despues crear un objeto tipo Stat con dichas variables.
-        //Si no tiene codigo, utilizar geoID
     }
 }
