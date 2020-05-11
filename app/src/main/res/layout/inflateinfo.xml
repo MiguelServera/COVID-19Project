@@ -11,23 +11,27 @@
         <TextView
             android:id="@+id/textView"
             android:layout_width="100dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="100dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="100dp"
-            android:layout_height="50dp"/>
+            android:layout_height="50dp"
+            android:textColor="#DD9146" />
 
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="100dp"
-            android:layout_height="50dp"/>
+            android:layout_height="50dp"
+            android:textColor="#6D0303" />
 
 
     </LinearLayout>

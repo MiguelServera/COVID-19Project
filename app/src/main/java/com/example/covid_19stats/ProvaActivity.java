@@ -7,8 +7,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -39,6 +41,8 @@ public class ProvaActivity extends AppCompatActivity {
     Context appContext;
     ArrayList<Stat> arrayStats = new ArrayList<Stat>();
     ListView lv;
+    LastResults ls;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +82,7 @@ public class ProvaActivity extends AppCompatActivity {
                 SSLContext context = SSLContext.getInstance("TLS");
                 context.init(null, tmf.getTrustManagers(), null);
 
-                URL url = new URL("https://25.18.216.213:45455/api/covidTest");
+                URL url = new URL("https://192.168.1.70:45455/api/covidTest");
                 JSONObject postDataParams = new JSONObject();
                 postDataParams.put("pass", "Secret");
                 HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
@@ -115,129 +119,145 @@ public class ProvaActivity extends AppCompatActivity {
         }
 
         public void onPostExecute(String result) {
-            System.out.println(result);
             try {
-                findViewById(R.id.progressBar).setVisibility(View.GONE);
+                db.deleteDatabaseStats();
+                db.obre();
+                JSONObject datalist;
+                JSONArray stats = new JSONArray(result);
+
+                for (int i = 0; i < stats.length(); i++) {
+                    datalist = stats.getJSONObject(i);
+                    ls = new LastResults(datalist);
+                    ls.start();
+                    globalResults(datalist);
+                }
+                inflate(arrayStats);
+                selectedCountry();
+                System.out.println("retrieved the whole info");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } finally {
+                retrieveGlobalInfo();
+                db.tanca();
+            }
+        }
+    }
+
+    class LastResults extends Thread{
+        JSONObject datalist;
+        public LastResults(JSONObject datalist)
+        {
+            this.datalist = datalist;
+        }
+
+        @Override
+        public void run() {
+            try {
                 String object;
                 JSONObject insertjsonObject;
-                JSONObject datalist;
                 JSONObject datalistObject;
-                makeGlobalResult(result);
-                JSONArray stats = new JSONArray(result);
+                datalistObject = datalist.getJSONArray("dataList").getJSONObject(datalist.getJSONArray("dataList").length() - 1);
 
-                for (int i = 0; i < stats.length(); i++) {
-                    datalist = stats.getJSONObject(i);
-                    datalistObject = datalist.getJSONArray("dataList").getJSONObject(datalist.getJSONArray("dataList").length() - 1);
+                if (datalist.getString("name").equals("Bonaire, Saint Eustatius and Saba")
+                        && datalist.getString("code").equals("")) {
+                    object = "{\"code\":\"NoCode\"" + datalist.getString("code") + ",\"name\":\""
+                            + datalist.getString("name") + "\",\"cases\":" +
+                            datalistObject.getString("cases") +
+                            ",\"deaths\":" + datalistObject.getString("deaths") + "}";
 
-                    if (datalist.getString("name").equals("Bonaire, Saint Eustatius and Saba")
-                            && datalist.getString("code").equals("")) {
-                        object = "{\"code\":\"NoCode\"" + datalist.getString("code") + ",\"name\":\""
-                                + datalist.getString("name") + "\",\"cases\":" +
-                                datalistObject.getString("cases") +
-                                ",\"deaths\":" + datalistObject.getString("deaths") + "}";
-                    } else if (datalist.getString("code").equals("") ||
-                            datalist.getString("code").equals("N/A")) {
-                        object = "{\"code\":\"NoCode\"" + ",\"name\":" +
-                                datalist.getString("name") + ",\"cases\":" +
-                                datalistObject.getString("cases") +
-                                ",\"deaths\":" + datalistObject.getString("deaths") + "}";
-                    } else if (datalist.getString("name").equals("Cases_on_an_international_conveyance_Japan")) {
-                        object = "{\"code\":\"NoCode\"" + ",\"name\":\"" + datalist.getString("name") + "\",\"cases\":" +
-                                datalistObject.getString("cases") +
-                                ",\"deaths\":" + datalistObject.getString("deaths") + "}";
-                    } else {
-                        object = "{\"code\":" + datalist.getString("code") + ",\"name\":" +
-                                datalist.getString("name") + ",\"cases\":" +
-                                datalistObject.getString("cases") +
-                                ",\"deaths\":" + datalistObject.getString("deaths") + "}";
-                    }
-                    insertjsonObject = new JSONObject(object);
-                    Stat statsPo = new Gson().fromJson(insertjsonObject.toString(), Stat.class);
-                    arrayStats.add(statsPo);
-                    db.obre();
-                    //db.deleteDatabaseStats();
-                    if (db.insertInformation(insertjsonObject) != 1) ;
-                    db.tanca();
+                } else if (datalist.getString("code").equals("") ||
+                        datalist.getString("code").equals("N/A")) {
+                    object = "{\"code\":\"NoCode\"" + ",\"name\":" +
+                            datalist.getString("name") + ",\"cases\":" +
+                            datalistObject.getString("cases") +
+                            ",\"deaths\":" + datalistObject.getString("deaths") + "}";
+
+                } else if (datalist.getString("name").equals("Cases_on_an_international_conveyance_Japan")) {
+                    object = "{\"code\":\"NoCode\"" + ",\"name\":\"" + datalist.getString("name") + "\",\"cases\":" +
+                            datalistObject.getString("cases") +
+                            ",\"deaths\":" + datalistObject.getString("deaths") + "}";
+
+                } else {
+                    object = "{\"code\":" + datalist.getString("code") + ",\"name\":" +
+                            datalist.getString("name") + ",\"cases\":" +
+                            datalistObject.getString("cases") +
+                            ",\"deaths\":" + datalistObject.getString("deaths") + "}";
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            inflate(arrayStats);
-        }
 
-        public void inflate(final ArrayList<Stat> arrayStat) {
-            StatsAdapter inflate = new StatsAdapter(getApplicationContext(), R.layout.inflateinfo, arrayStat);
-            lv = (ListView) findViewById(R.id.listview);
-            lv.setAdapter(inflate);
-        }
-
-
-        private void makeGlobalResult(final String result) {
-            try {
-                String object;
-                JSONObject insertjsonObject, datalist;
-                JSONObject datalistObject = null;
-                JSONArray datalistArray;
-                JSONArray stats = new JSONArray(result);
-                int valueSumCases = 0;
-                int valueDeathsCases = 0;
-
-                for (int i = 0; i < stats.length(); i++) {
-                    datalist = stats.getJSONObject(i);
-                    datalistArray = datalist.getJSONArray("dataList");
-                    for (int a = 0; a < datalistArray.length(); a++) {
-                        datalistObject = datalistArray.getJSONObject(a);
-                        valueSumCases = Integer.parseInt(datalistObject.getString("cases").trim());
-                        valueSumCases += valueSumCases;
-                        valueDeathsCases = Integer.parseInt(datalistObject.getString("deaths").trim());
-                        valueDeathsCases += valueDeathsCases;
-                    }
-
-                    if (datalist.getString("code").equals("") ||
-                            datalist.getString("code").equals("N/A")) {
-                        object = "{\"code\":\"NoCode\"" + ",\"cases\":" +
-                                datalistObject.getString("cases") +
-                                ",\"deaths\":" + datalistObject.getString("deaths") + "}";
-                    } else {
-                        object = "{\"code\":" + datalist.getString("code") + ",\"cases\":" +
-                                valueSumCases + ",\"deaths\":" + valueDeathsCases + "}";
-                    }
-
-                    insertjsonObject = new JSONObject(object);
-                    Stat statsPo = new Gson().fromJson(insertjsonObject.toString(), Stat.class);
-                    arrayStats.add(statsPo);
-                    db.obre();
-                    if (db.insertGlobalInformation(insertjsonObject) != 1) ;
-                    db.tanca();
-
-
-                    valueSumCases = 0;
-                    valueDeathsCases = 0;
-                }
-                retrieveGlobalInfo();
+                insertjsonObject = new JSONObject(object);
+                Stat statsPo = new Gson().fromJson(insertjsonObject.toString(), Stat.class);
+                arrayStats.add(statsPo);
+                if (db.insertInformation(insertjsonObject) != 1) ;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+    }
 
-        private void retrieveGlobalInfo() {
-            try {
-                Cursor c = db.obtainAllGlobalInformation();
-                c.moveToFirst();
-                int cases;
-                int totalSum = 0;
+    private void inflate(ArrayList<Stat> arrayStat) {
+        StatsAdapter inflate = new StatsAdapter(getApplicationContext(), R.layout.inflateinfo, arrayStat);
+        lv = (ListView) findViewById(R.id.listview);
+        lv.setAdapter(inflate);
+    }
 
-                while (!c.isAfterLast()) {
-                    cases = Integer.parseInt(c.getString(c.getColumnIndex("cases")));
-                    totalSum = cases + totalSum;
-                    c.moveToNext();
-                }
-                totalCases.setText("Global cases: " + totalSum);
-
-            } catch (final Exception ex) {
-                Log.i("---", "Exception in thread");
+    private void globalResults(JSONObject datalist) {
+        try {
+            String object;
+            JSONObject insertjsonObject;
+            JSONObject datalistObject = null;
+            JSONArray datalistArray;
+            int valueSumCases = 0;
+            int valueDeathsCases = 0;
+            datalistArray = datalist.getJSONArray("dataList");
+            for (int a = 0; a < datalistArray.length(); a++) {
+                datalistObject = datalistArray.getJSONObject(a);
+                valueSumCases = Integer.parseInt(datalistObject.getString("cases").trim());
+                valueSumCases += valueSumCases;
+                valueDeathsCases = Integer.parseInt(datalistObject.getString("deaths").trim());
+                valueDeathsCases += valueDeathsCases;
             }
+
+            if (datalist.getString("code").equals("") ||
+                    datalist.getString("code").equals("N/A")) {
+                object = "{\"code\":\"NoCode\"" + ",\"cases\":" +
+                        datalistObject.getString("cases") +
+                        ",\"deaths\":" + datalistObject.getString("deaths") + "}";
+            } else {
+                object = "{\"code\":" + datalist.getString("code") + ",\"cases\":" +
+                        valueSumCases + ",\"deaths\":" + valueDeathsCases + "}";
+            }
+
+            insertjsonObject = new JSONObject(object);
+            if (db.insertGlobalInformation(insertjsonObject) != 1) ;
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+    }
+
+    private void retrieveGlobalInfo() {
+        Cursor c = db.obtainAllGlobalInformation();
+        c.moveToFirst();
+        int cases;
+        int totalSum = 0;
+        while (!c.isAfterLast()) {
+            cases = Integer.parseInt(c.getString(c.getColumnIndex("cases")));
+            totalSum = cases + totalSum;
+            c.moveToNext();
+        }
+        totalCases.setText("Global cases: " + totalSum);
+    }
+
+    private void selectedCountry() {
+        lv.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+            String codeText;
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+                TextView textCode = view.findViewById(R.id.textView);
+                codeText = textCode.getText().toString();
+                //Toast.makeText(getApplicationContext(),"You selected : " + item,Toast.LENGTH_SHORT).show();
+                System.out.println(codeText);
+            }
+        });
     }
 }
 

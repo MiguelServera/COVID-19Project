@@ -24,9 +24,6 @@ public class StatsAdapter extends ArrayAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         final View view = inflater.inflate(R.layout.inflateinfo, null);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
                 Stat stat = statsList.get(position);
                 TextView code = (TextView) view.findViewById(R.id.textView);
                 TextView name = (TextView) view.findViewById(R.id.textView2);
@@ -34,12 +31,9 @@ public class StatsAdapter extends ArrayAdapter {
                 TextView deaths = (TextView) view.findViewById(R.id.textView4);
 
                 code.setText(stat.getCodeC());
-                System.out.println(stat.getNameC());
                 name.setText(stat.getNameC());
                 cases.setText(stat.getCases());
                 deaths.setText(stat.getDeaths());
-            }
-        });
         return view;
     }
 }
