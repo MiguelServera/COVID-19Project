@@ -1,6 +1,7 @@
 package com.example.covid_19stats;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +32,8 @@ import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -42,7 +46,8 @@ public class ProvaActivity extends AppCompatActivity {
     ArrayList<Stat> arrayStats = new ArrayList<Stat>();
     ListView lv;
     LastResults ls;
-
+    InsertEachCountryData countryData;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,69 +56,71 @@ public class ProvaActivity extends AppCompatActivity {
         db = new DBInterface(this);
         appContext = this;
         totalCases = findViewById(R.id.textView5);
+        //progressBar = findViewById(R.id.progressBar);
         new SendRequest().execute();
     }
 
     public class SendRequest extends AsyncTask<String, Void, String> {
 
-        @Override
-        protected String doInBackground(String... strings) {
-            try {
-                CertificateFactory cf = CertificateFactory.getInstance("X.509");
-                Resources resources = appContext.getResources();
-                InputStream rawResource = resources.openRawResource(R.raw.certificate);
-                InputStream caInput = new BufferedInputStream(rawResource);
-                Certificate ca;
-                try {
-                    ca = cf.generateCertificate(caInput);
-                } finally {
-                    caInput.close();
-                }
+                @Override
+                protected String doInBackground(String... strings) {
+                    try {
+                        CertificateFactory cf = CertificateFactory.getInstance("X.509");
+                        Resources resources = appContext.getResources();
+                        InputStream rawResource = resources.openRawResource(R.raw.certificate);
+                        InputStream caInput = new BufferedInputStream(rawResource);
+                        Certificate ca;
+                        try {
+                            ca = cf.generateCertificate(caInput);
+                        } finally {
+                            caInput.close();
+                        }
 
-                String keyStoreType = KeyStore.getDefaultType();
-                KeyStore keyStore = KeyStore.getInstance(keyStoreType);
-                keyStore.load(null, null);
-                keyStore.setCertificateEntry("ca", ca);
+                        String keyStoreType = KeyStore.getDefaultType();
+                        KeyStore keyStore = KeyStore.getInstance(keyStoreType);
+                        keyStore.load(null, null);
+                        keyStore.setCertificateEntry("ca", ca);
 
-                String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-                TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
-                tmf.init(keyStore);
+                        String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+                        TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+                        tmf.init(keyStore);
 
-                SSLContext context = SSLContext.getInstance("TLS");
-                context.init(null, tmf.getTrustManagers(), null);
+                        SSLContext context = SSLContext.getInstance("TLS");
+                        context.init(null, tmf.getTrustManagers(), null);
 
-                URL url = new URL("https://192.168.1.70:45455/api/covidTest");
-                JSONObject postDataParams = new JSONObject();
-                postDataParams.put("pass", "Secret");
-                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-                conn.setSSLSocketFactory(context.getSocketFactory());
-                conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-                conn.setRequestProperty("Accept", "application/json");
-                conn.setRequestMethod("POST");
+                        URL url = new URL("https://192.168.1.70:45455/api/covidTest");
+                        JSONObject postDataParams = new JSONObject();
+                        postDataParams.put("pass", "Secret");
+                        HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+                        conn.setSSLSocketFactory(context.getSocketFactory());
+                        conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                        conn.setRequestProperty("Accept", "application/json");
+                        conn.setRequestMethod("POST");
 
-                DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-                os.writeBytes(postDataParams.toString());
+                        DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+                        os.writeBytes(postDataParams.toString());
 
-                os.flush();
-                os.close();
+                        os.flush();
+                        os.close();
 
-                int responseCode = conn.getResponseCode();
+                        int responseCode = conn.getResponseCode();
 
-                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                        if (responseCode == HttpsURLConnection.HTTP_OK) {
 
-                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    StringBuffer sb = new StringBuffer("");
-                    String line = "";
-                    while ((line = in.readLine()) != null) {
-                        sb.append(line);
-                        break;
-                    }
-                    return sb.toString();
+                            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                            StringBuffer sb = new StringBuffer("");
+                            String line = "";
+                            while ((line = in.readLine()) != null) {
+                                sb.append(line);
+                                break;
+                            }
 
-                } else {
-                    return new String("false : " + responseCode);
-                }
-            } catch (Exception e) {
+                            return sb.toString();
+
+                        } else {
+                            return new String("false : " + responseCode);
+                        }
+                    } catch (Exception e) {
                 return new String("Exception: " + e.getMessage());
             }
         }
@@ -124,16 +131,18 @@ public class ProvaActivity extends AppCompatActivity {
                 db.obre();
                 JSONObject datalist;
                 JSONArray stats = new JSONArray(result);
+                ProvaActivity pa = new ProvaActivity();
 
                 for (int i = 0; i < stats.length(); i++) {
                     datalist = stats.getJSONObject(i);
+                    countryData = new InsertEachCountryData(datalist);
+                    countryData.start();
                     ls = new LastResults(datalist);
                     ls.start();
                     globalResults(datalist);
                 }
                 inflate(arrayStats);
                 selectedCountry();
-                System.out.println("retrieved the whole info");
             } catch (JSONException e) {
                 e.printStackTrace();
             } finally {
@@ -143,7 +152,23 @@ public class ProvaActivity extends AppCompatActivity {
         }
     }
 
-    class LastResults extends Thread{
+    class InsertEachCountryData extends Thread {
+        JSONObject datalist;
+
+        public InsertEachCountryData(JSONObject datalist) {
+            this.datalist = datalist;
+        }
+
+        public void run() {
+            try {
+                db.insertCountryCodeAndPopulation(datalist);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    class LastResults extends Thread {
         JSONObject datalist;
         public LastResults(JSONObject datalist)
         {
@@ -195,9 +220,15 @@ public class ProvaActivity extends AppCompatActivity {
     }
 
     private void inflate(ArrayList<Stat> arrayStat) {
-        StatsAdapter inflate = new StatsAdapter(getApplicationContext(), R.layout.inflateinfo, arrayStat);
+        StatsAdapter inflate = new StatsAdapter(getApplicationContext(), R.layout.inflate_all_info, arrayStat);
         lv = (ListView) findViewById(R.id.listview);
         lv.setAdapter(inflate);
+        Collections.sort(arrayStat, new Comparator<Stat>() {
+            @Override
+            public int compare(Stat stat, Stat t1) {
+                return stat.getNameC().compareTo(t1.getNameC());
+            }
+        });
     }
 
     private void globalResults(JSONObject datalist) {
@@ -206,25 +237,31 @@ public class ProvaActivity extends AppCompatActivity {
             JSONObject insertjsonObject;
             JSONObject datalistObject = null;
             JSONArray datalistArray;
-            int valueSumCases = 0;
-            int valueDeathsCases = 0;
+            int totalSumCases = 0;
+            int totalDeathsCases = 0;
+            int valueSumCases;
+            int valueDeathsCases;
             datalistArray = datalist.getJSONArray("dataList");
             for (int a = 0; a < datalistArray.length(); a++) {
                 datalistObject = datalistArray.getJSONObject(a);
+
                 valueSumCases = Integer.parseInt(datalistObject.getString("cases").trim());
-                valueSumCases += valueSumCases;
+
+                totalSumCases = valueSumCases + totalSumCases;
+
                 valueDeathsCases = Integer.parseInt(datalistObject.getString("deaths").trim());
-                valueDeathsCases += valueDeathsCases;
+
+                totalDeathsCases = valueDeathsCases + totalDeathsCases;
+
             }
 
             if (datalist.getString("code").equals("") ||
                     datalist.getString("code").equals("N/A")) {
                 object = "{\"code\":\"NoCode\"" + ",\"cases\":" +
-                        datalistObject.getString("cases") +
-                        ",\"deaths\":" + datalistObject.getString("deaths") + "}";
+                        totalSumCases + ",\"deaths\":" + totalDeathsCases + "}";
             } else {
                 object = "{\"code\":" + datalist.getString("code") + ",\"cases\":" +
-                        valueSumCases + ",\"deaths\":" + valueDeathsCases + "}";
+                        totalSumCases+ ",\"deaths\":" + totalDeathsCases + "}";
             }
 
             insertjsonObject = new JSONObject(object);
@@ -249,13 +286,20 @@ public class ProvaActivity extends AppCompatActivity {
 
     private void selectedCountry() {
         lv.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
-            String codeText;
+            String codeName;
             @Override
             public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-                TextView textCode = view.findViewById(R.id.textView);
-                codeText = textCode.getText().toString();
-                //Toast.makeText(getApplicationContext(),"You selected : " + item,Toast.LENGTH_SHORT).show();
-                System.out.println(codeText);
+                db.obre();
+                TextView textName = view.findViewById(R.id.textView2);
+                codeName = textName.getText().toString();
+                Toast.makeText(getApplicationContext(),"You selected : " + codeName,Toast.LENGTH_SHORT).show();
+                Cursor c = db.obtainDataFromOneCountry(codeName);
+                c.moveToFirst();
+                Log.i("geoid", c.getString(0));
+                Intent i = new Intent(getApplicationContext(), ShowCountryInfo.class);
+                i.putExtra("codename", c.getString(0));
+                startActivity(i);
+                db.tanca();
             }
         });
     }

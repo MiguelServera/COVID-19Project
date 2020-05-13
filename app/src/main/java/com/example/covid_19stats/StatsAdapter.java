@@ -23,7 +23,7 @@ public class StatsAdapter extends ArrayAdapter {
 
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        final View view = inflater.inflate(R.layout.inflateinfo, null);
+        final View view = inflater.inflate(R.layout.inflate_all_info, null);
                 Stat stat = statsList.get(position);
                 TextView code = (TextView) view.findViewById(R.id.textView);
                 TextView name = (TextView) view.findViewById(R.id.textView2);

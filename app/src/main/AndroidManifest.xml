@@ -22,6 +22,7 @@
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".ProvaActivity"></activity>
         <activity android:name=".MenuActivity"></activity>
+        <activity android:name=".ShowCountryInfo"></activity>
 
     </application>
 
