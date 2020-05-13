@@ -28,8 +28,8 @@ public class DBInterface {
             KEY_COUNTRY +" text not null, " +
             KEY_COUNTRY_NAME +" text not null, " +
             KEY_CASES + " text not null, " +
-            //KEY_RECU + " text not null, " +
-            KEY_DEATHS + " text not null);";
+            KEY_DEATHS + " text not null, " +
+            KEY_RECU + " text not null);";
 
     public static final String BD_CREATE1 ="create table " + BD_TABLE1 + "( " +
             KEY_COUNTRY +" text not null, " +
@@ -65,15 +65,15 @@ public class DBInterface {
             initialValues.put(KEY_COUNTRY, stats.getString("code"));
             initialValues.put(KEY_COUNTRY_NAME, stats.getString("name"));
             initialValues.put(KEY_CASES, stats.getString("cases"));
-            //initialValues.put(KEY_RECU, stats.getJSONObject("dataList").getString("date"));
             initialValues.put(KEY_DEATHS, stats.getString("deaths"));
+            initialValues.put(KEY_RECU, stats.getString("cured"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return bd.insert(BD_TABLE, null, initialValues);
     }
     public Cursor obtainAllInformation() {
-        return bd.query(BD_TABLE, new String[] {KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_CASES, KEY_DEATHS},
+        return bd.query(BD_TABLE, new String[] {KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_CASES, KEY_DEATHS, KEY_RECU},
                 null,null, null, null, null);
     }
 

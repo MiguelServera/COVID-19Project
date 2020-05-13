@@ -34,8 +34,8 @@ public class MenuActivity extends AppCompatActivity {
             info.add(c.getString(c.getColumnIndex(db.KEY_DEATHS)));
             c.moveToNext();
         }
-        ArrayAdapter inflate = new ArrayAdapter(getApplicationContext(), R.layout.inflate_all_info, R.id.textView, info);
+        //ArrayAdapter inflate = new ArrayAdapter(getApplicationContext(), R.layout.inflate_all_info, R.id.textView, info);
         lv = (ListView) findViewById(R.id.listview);
-        lv.setAdapter(inflate);
+        //lv.setAdapter(inflate);
     }
 }

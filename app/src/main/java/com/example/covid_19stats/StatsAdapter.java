@@ -25,15 +25,19 @@ public class StatsAdapter extends ArrayAdapter {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         final View view = inflater.inflate(R.layout.inflate_all_info, null);
                 Stat stat = statsList.get(position);
-                TextView code = (TextView) view.findViewById(R.id.textView);
-                TextView name = (TextView) view.findViewById(R.id.textView2);
-                TextView cases = (TextView) view.findViewById(R.id.textView3);
-                TextView deaths = (TextView) view.findViewById(R.id.textView4);
+                TextView code = (TextView) view.findViewById(R.id.idCountry);
+                TextView name = (TextView) view.findViewById(R.id.nameCountry);
+                TextView cases = (TextView) view.findViewById(R.id.casesCountry);
+                TextView deaths = (TextView) view.findViewById(R.id.deathsCountry);
+                TextView cured = (TextView) view.findViewById(R.id.curedCountry);
 
-                code.setText(stat.getCodeC());
+
+        code.setText(stat.getCodeC());
                 name.setText(stat.getNameC());
                 cases.setText(stat.getCases());
                 deaths.setText(stat.getDeaths());
+                cured.setText(stat.getCured());
+
         return view;
     }
 }

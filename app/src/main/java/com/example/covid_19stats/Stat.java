@@ -5,14 +5,16 @@ public class Stat {
     String name;
     String cases;
     String deaths;
+    String cured;
 
     public Stat(){}
 
-    public Stat(String codeC, String nameC, String cases, String deaths) {
+    public Stat(String codeC, String nameC, String cases, String deaths, String cured) {
         this.code = codeC;
         this.name = nameC;
         this.cases = cases;
         this.deaths = deaths;
+        this.cured = cured;
     }
 
     public String getCodeC() {
@@ -47,13 +49,22 @@ public class Stat {
         this.deaths = deaths;
     }
 
+    public String getCured() {
+        return cured;
+    }
+
+    public void setCured(String cured) {
+        this.cured = cured;
+    }
+
     @Override
     public String toString() {
         return "Stat{" +
-                "codeC='" + code + '\'' +
-                ", nameC='" + name + '\'' +
+                "code='" + code + '\'' +
+                ", name='" + name + '\'' +
                 ", cases='" + cases + '\'' +
                 ", deaths='" + deaths + '\'' +
+                ", cured='" + cured + '\'' +
                 '}';
     }
 }

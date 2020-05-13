@@ -131,7 +131,6 @@ public class ProvaActivity extends AppCompatActivity {
                 db.obre();
                 JSONObject datalist;
                 JSONArray stats = new JSONArray(result);
-                ProvaActivity pa = new ProvaActivity();
 
                 for (int i = 0; i < stats.length(); i++) {
                     datalist = stats.getJSONObject(i);
@@ -140,6 +139,17 @@ public class ProvaActivity extends AppCompatActivity {
                     ls = new LastResults(datalist);
                     ls.start();
                     globalResults(datalist);
+                }
+                Cursor c = db.obtainAllInformation();
+                c.moveToFirst();
+                while (!c.isAfterLast())
+                {
+                    System.out.println(c.getString(0) + c.getString(1) + c.getString(2) +
+                            c.getString(3) + c.getString(4));
+                    Stat indiStat = new Stat(c.getString(0), c.getString(1), c.getString(2),
+                            c.getString(3), c.getString(4));
+                    arrayStats.add(indiStat);
+                    c.moveToNext();
                 }
                 inflate(arrayStats);
                 selectedCountry();
@@ -185,33 +195,35 @@ public class ProvaActivity extends AppCompatActivity {
 
                 if (datalist.getString("name").equals("Bonaire, Saint Eustatius and Saba")
                         && datalist.getString("code").equals("")) {
-                    object = "{\"code\":\"NoCode\"" + datalist.getString("code") + ",\"name\":\""
-                            + datalist.getString("name") + "\",\"cases\":" +
-                            datalistObject.getString("cases") +
-                            ",\"deaths\":" + datalistObject.getString("deaths") + "}";
+
+                    object = "{\"code\":\"NoCode\"" + datalist.getString("code")
+                            + ",\"name\":\"" + datalist.getString("name")
+                            + "\",\"cases\":" + datalistObject.getString("cases") +
+                            ",\"deaths\":" + datalistObject.getString("deaths") +
+                            ",\"cured\":" + datalistObject.getString("cured") + "}";
 
                 } else if (datalist.getString("code").equals("") ||
                         datalist.getString("code").equals("N/A")) {
-                    object = "{\"code\":\"NoCode\"" + ",\"name\":" +
-                            datalist.getString("name") + ",\"cases\":" +
-                            datalistObject.getString("cases") +
-                            ",\"deaths\":" + datalistObject.getString("deaths") + "}";
+                    object = "{\"code\":\"NoCode\"" + ",\"name\":" + datalist.getString("name")
+                            + ",\"cases\":" + datalistObject.getString("cases") +
+                            ",\"deaths\":" + datalistObject.getString("deaths") +
+                            ",\"cured\":" + datalistObject.getString("cured") + "}";
 
                 } else if (datalist.getString("name").equals("Cases_on_an_international_conveyance_Japan")) {
-                    object = "{\"code\":\"NoCode\"" + ",\"name\":\"" + datalist.getString("name") + "\",\"cases\":" +
-                            datalistObject.getString("cases") +
-                            ",\"deaths\":" + datalistObject.getString("deaths") + "}";
+                    object = "{\"code\":\"NoCode\"" + ",\"name\":\"" + datalist.getString("name")
+                            + "\",\"cases\":" + datalistObject.getString("cases") +
+                            ",\"deaths\":" + datalistObject.getString("deaths") +
+                            ",\"cured\":" + datalistObject.getString("cured") + "}";
 
                 } else {
-                    object = "{\"code\":" + datalist.getString("code") + ",\"name\":" +
-                            datalist.getString("name") + ",\"cases\":" +
-                            datalistObject.getString("cases") +
-                            ",\"deaths\":" + datalistObject.getString("deaths") + "}";
+                    object = "{\"code\":" + datalist.getString("code")
+                            + ",\"name\":" + datalist.getString("name")
+                            + ",\"cases\":" + datalistObject.getString("cases") +
+                            ",\"deaths\":" + datalistObject.getString("deaths") +
+                            ",\"cured\":" + datalistObject.getString("cured") + "}";
                 }
 
                 insertjsonObject = new JSONObject(object);
-                Stat statsPo = new Gson().fromJson(insertjsonObject.toString(), Stat.class);
-                arrayStats.add(statsPo);
                 if (db.insertInformation(insertjsonObject) != 1) ;
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -290,7 +302,7 @@ public class ProvaActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
                 db.obre();
-                TextView textName = view.findViewById(R.id.textView2);
+                TextView textName = view.findViewById(R.id.deathsCountry);
                 codeName = textName.getText().toString();
                 Toast.makeText(getApplicationContext(),"You selected : " + codeName,Toast.LENGTH_SHORT).show();
                 Cursor c = db.obtainDataFromOneCountry(codeName);
