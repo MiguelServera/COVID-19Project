@@ -20,6 +20,7 @@ public class DBInterface {
     public static final String BD_TABLE = "CountryStats";
     public static final String BD_TABLE1 = "GlobalStats";
     public static final String BD_TABLE2 = "OneCountryStats";
+    public static final String BD_TABLE3 = "ActualDate";
     public static final String KEY_GEO_ID = "geoid";
     public static final String KEY_DATE = "date";
     public static final String KEY_POPULATION = "population";
@@ -41,6 +42,9 @@ public class DBInterface {
             KEY_GEO_ID +" text not null, " +
             KEY_COUNTRY_NAME +" text not null, " +
             KEY_POPULATION +" text not null);";
+
+    public static final String BD_CREATE3 ="create table " + BD_TABLE3 + "( " +
+            KEY_POPULATION +" INTEGER DEFAULT 0);";
 
     private final Context context;
     private DBStats ajuda;
@@ -106,7 +110,18 @@ public class DBInterface {
         return bd.insert(BD_TABLE2, null, initialValues);
     }
 
+    public long insertActualDate(int date)
+    {
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_DATE, date);
+        return bd.insert(BD_TABLE3, null, initialValues);
+    }
 
+    public Cursor obtainDate()
+    {
+        return bd.query(BD_TABLE3, new String[] {KEY_DATE},
+                null,null, null, null, null);
+    }
     public Cursor obtainDataFromOneCountry(String name) {
         return bd.query(BD_TABLE2, new String[] {KEY_GEO_ID, KEY_COUNTRY_NAME, KEY_POPULATION},
                 KEY_COUNTRY_NAME + " = " + "'"+name+"'",null, null, null, null);

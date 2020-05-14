@@ -10,6 +10,7 @@ import android.util.Log;
 import static com.example.covid_19stats.DBInterface.BD_CREATE;
 import static com.example.covid_19stats.DBInterface.BD_CREATE1;
 import static com.example.covid_19stats.DBInterface.BD_CREATE2;
+import static com.example.covid_19stats.DBInterface.BD_CREATE3;
 import static com.example.covid_19stats.DBInterface.BD_NAME;
 import static com.example.covid_19stats.DBInterface.BD_TABLE;
 import static com.example.covid_19stats.DBInterface.TAG;
@@ -25,6 +26,7 @@ public class DBStats extends SQLiteOpenHelper {
             db.execSQL(BD_CREATE);
             db.execSQL(BD_CREATE1);
             db.execSQL(BD_CREATE2);
+            db.execSQL(BD_CREATE3);
         } catch (SQLException e) {
             e.printStackTrace();
         }

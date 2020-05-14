@@ -31,32 +31,24 @@ import java.net.URL;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
-public class ProvaActivity extends AppCompatActivity {
-    TextView totalCases;
+public class RetrieveStatsFromAPI extends AppCompatActivity {
     DBInterface db;
     Context appContext;
-    ArrayList<Stat> arrayStats = new ArrayList<Stat>();
-    ListView lv;
     LastResults ls;
     InsertEachCountryData countryData;
-    ProgressBar progressBar;
-
+    Intent i;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_menu);
         db = new DBInterface(this);
         appContext = this;
-        totalCases = findViewById(R.id.textView5);
-        //progressBar = findViewById(R.id.progressBar);
+        i = new Intent(getApplicationContext(), RetrieveStatsFromBD.class);
         new SendRequest().execute();
     }
 
@@ -140,24 +132,12 @@ public class ProvaActivity extends AppCompatActivity {
                     ls.start();
                     globalResults(datalist);
                 }
-                Cursor c = db.obtainAllInformation();
-                c.moveToFirst();
-                while (!c.isAfterLast())
-                {
-                    System.out.println(c.getString(0) + c.getString(1) + c.getString(2) +
-                            c.getString(3) + c.getString(4));
-                    Stat indiStat = new Stat(c.getString(0), c.getString(1), c.getString(2),
-                            c.getString(3), c.getString(4));
-                    arrayStats.add(indiStat);
-                    c.moveToNext();
-                }
-                inflate(arrayStats);
-                selectedCountry();
             } catch (JSONException e) {
                 e.printStackTrace();
             } finally {
-                retrieveGlobalInfo();
                 db.tanca();
+                startActivity(i);
+                finish();
             }
         }
     }
@@ -231,18 +211,6 @@ public class ProvaActivity extends AppCompatActivity {
         }
     }
 
-    private void inflate(ArrayList<Stat> arrayStat) {
-        StatsAdapter inflate = new StatsAdapter(getApplicationContext(), R.layout.inflate_all_info, arrayStat);
-        lv = (ListView) findViewById(R.id.listview);
-        lv.setAdapter(inflate);
-        Collections.sort(arrayStat, new Comparator<Stat>() {
-            @Override
-            public int compare(Stat stat, Stat t1) {
-                return stat.getNameC().compareTo(t1.getNameC());
-            }
-        });
-    }
-
     private void globalResults(JSONObject datalist) {
         try {
             String object;
@@ -283,37 +251,5 @@ public class ProvaActivity extends AppCompatActivity {
         }
     }
 
-    private void retrieveGlobalInfo() {
-        Cursor c = db.obtainAllGlobalInformation();
-        c.moveToFirst();
-        int cases;
-        int totalSum = 0;
-        while (!c.isAfterLast()) {
-            cases = Integer.parseInt(c.getString(c.getColumnIndex("cases")));
-            totalSum = cases + totalSum;
-            c.moveToNext();
-        }
-        totalCases.setText("Global cases: " + totalSum);
-    }
-
-    private void selectedCountry() {
-        lv.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
-            String codeName;
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-                db.obre();
-                TextView textName = view.findViewById(R.id.deathsCountry);
-                codeName = textName.getText().toString();
-                Toast.makeText(getApplicationContext(),"You selected : " + codeName,Toast.LENGTH_SHORT).show();
-                Cursor c = db.obtainDataFromOneCountry(codeName);
-                c.moveToFirst();
-                Log.i("geoid", c.getString(0));
-                Intent i = new Intent(getApplicationContext(), ShowCountryInfo.class);
-                i.putExtra("codename", c.getString(0));
-                startActivity(i);
-                db.tanca();
-            }
-        });
-    }
 }
 
