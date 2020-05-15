@@ -7,12 +7,12 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import static com.example.covid_19stats.DBInterface.BD_CREATE;
-import static com.example.covid_19stats.DBInterface.BD_CREATE1;
-import static com.example.covid_19stats.DBInterface.BD_CREATE2;
-import static com.example.covid_19stats.DBInterface.BD_CREATE3;
 import static com.example.covid_19stats.DBInterface.BD_NAME;
-import static com.example.covid_19stats.DBInterface.BD_TABLE;
+import static com.example.covid_19stats.DBInterface.CREATE_ACTUAL_DATE_TABLE;
+import static com.example.covid_19stats.DBInterface.CREATE_COUNTRY_TABLE;
+import static com.example.covid_19stats.DBInterface.CREATE_GLOBAL_TABLE;
+import static com.example.covid_19stats.DBInterface.CREATE_ONE_COUNTRY_TABLE;
+import static com.example.covid_19stats.DBInterface.GLOBAL_TABLE;
 import static com.example.covid_19stats.DBInterface.TAG;
 import static com.example.covid_19stats.DBInterface.VERSION;
 
@@ -23,10 +23,10 @@ public class DBStats extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         try {
-            db.execSQL(BD_CREATE);
-            db.execSQL(BD_CREATE1);
-            db.execSQL(BD_CREATE2);
-            db.execSQL(BD_CREATE3);
+            db.execSQL(CREATE_COUNTRY_TABLE);
+            db.execSQL(CREATE_GLOBAL_TABLE);
+            db.execSQL(CREATE_ONE_COUNTRY_TABLE);
+            db.execSQL(CREATE_ACTUAL_DATE_TABLE);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -34,6 +34,6 @@ public class DBStats extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int VersioAntiga, int
             VersioNova) {
-        db.execSQL("DROP TABLE IF EXISTS " + BD_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + GLOBAL_TABLE);
         onCreate(db); }
 }

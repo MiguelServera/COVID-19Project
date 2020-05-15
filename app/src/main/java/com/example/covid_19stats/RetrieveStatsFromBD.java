@@ -110,11 +110,11 @@ public class RetrieveStatsFromBD extends AppCompatActivity {
         c.moveToFirst();
         int cases;
         int totalSum = 0;
-        while (!c.isAfterLast()) {
+        while (c.moveToNext()) {
             cases = Integer.parseInt(c.getString(c.getColumnIndex("cases")));
             totalSum = cases + totalSum;
-            c.moveToNext();
         }
+        c.close();
         totalCases.setText("Global cases: " + totalSum);
     }
 

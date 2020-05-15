@@ -2,6 +2,7 @@ package com.example.covid_19stats;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -31,11 +32,17 @@ import java.net.URL;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
+
+import static com.example.covid_19stats.MainLogin.editor;
+import static com.example.covid_19stats.MainLogin.firstStart;
 
 public class RetrieveStatsFromAPI extends AppCompatActivity {
     DBInterface db;
@@ -43,6 +50,7 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
     LastResults ls;
     InsertEachCountryData countryData;
     Intent i;
+    SharedPreferences prefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +95,7 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                         conn.setSSLSocketFactory(context.getSocketFactory());
                         conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
                         conn.setRequestProperty("Accept", "application/json");
+                        conn.setConnectTimeout(15 * 10);
                         conn.setRequestMethod("POST");
 
                         DataOutputStream os = new DataOutputStream(conn.getOutputStream());
@@ -113,14 +122,18 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                             return new String("false : " + responseCode);
                         }
                     } catch (Exception e) {
+                        editor.putBoolean("firstStart", true);
+                        editor.apply();
                 return new String("Exception: " + e.getMessage());
             }
         }
 
         public void onPostExecute(String result) {
             try {
+                System.out.println(result);
                 db.deleteDatabaseStats();
                 db.obre();
+                db.insertActualDate(MainLogin.getDateTime());
                 JSONObject datalist;
                 JSONArray stats = new JSONArray(result);
 

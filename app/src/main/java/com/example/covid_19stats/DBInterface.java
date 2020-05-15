@@ -17,34 +17,36 @@ public class DBInterface {
     public static final String KEY_DEATHS = "deaths";
     public static final String TAG = "DBInterface";
     public static final String BD_NAME = "COVIDBD";
-    public static final String BD_TABLE = "CountryStats";
-    public static final String BD_TABLE1 = "GlobalStats";
-    public static final String BD_TABLE2 = "OneCountryStats";
-    public static final String BD_TABLE3 = "ActualDate";
+    public static final String COUNTRYTABLE = "CountryStats";
+    public static final String GLOBAL_TABLE = "GlobalStats";
+    public static final String ONE_COUNTRY_TABLE = "OneCountryStats";
+    public static final String ACTUAL_DATE_TABLE = "ActualDate";
     public static final String KEY_GEO_ID = "geoid";
+    public static final String KEY_ID = "id";
     public static final String KEY_DATE = "date";
     public static final String KEY_POPULATION = "population";
     public static final int VERSION = 1;
-    public static final String BD_CREATE ="create table " + BD_TABLE + "( " +
+    public static final String CREATE_COUNTRY_TABLE ="create table " + COUNTRYTABLE + "( " +
             KEY_COUNTRY +" text not null, " +
             KEY_COUNTRY_NAME +" text not null, " +
             KEY_CASES + " text not null, " +
             KEY_DEATHS + " text not null, " +
             KEY_RECU + " text not null);";
 
-    public static final String BD_CREATE1 ="create table " + BD_TABLE1 + "( " +
+    public static final String CREATE_GLOBAL_TABLE ="create table " + GLOBAL_TABLE + "( " +
             KEY_COUNTRY +" text not null, " +
             KEY_CASES + " text not null, " +
             //KEY_RECU + " text not null, " +
             KEY_DEATHS + " text not null);";
 
-    public static final String BD_CREATE2 ="create table " + BD_TABLE2 + "( " +
+    public static final String CREATE_ONE_COUNTRY_TABLE ="create table " + ONE_COUNTRY_TABLE + "( " +
             KEY_GEO_ID +" text not null, " +
             KEY_COUNTRY_NAME +" text not null, " +
             KEY_POPULATION +" text not null);";
 
-    public static final String BD_CREATE3 ="create table " + BD_TABLE3 + "( " +
-            KEY_POPULATION +" INTEGER DEFAULT 0);";
+    public static final String CREATE_ACTUAL_DATE_TABLE ="create table " + ACTUAL_DATE_TABLE + "( " +
+            KEY_ID + " integer primary key, " +
+            KEY_DATE + " text not null);";
 
     private final Context context;
     private DBStats ajuda;
@@ -74,10 +76,10 @@ public class DBInterface {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return bd.insert(BD_TABLE, null, initialValues);
+        return bd.insert(COUNTRYTABLE, null, initialValues);
     }
     public Cursor obtainAllInformation() {
-        return bd.query(BD_TABLE, new String[] {KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_CASES, KEY_DEATHS, KEY_RECU},
+        return bd.query(COUNTRYTABLE, new String[] {KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_CASES, KEY_DEATHS, KEY_RECU},
                 null,null, null, null, null);
     }
 
@@ -96,39 +98,40 @@ public class DBInterface {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return bd.insert(BD_TABLE1, null, initialValues);
+        return bd.insert(GLOBAL_TABLE, null, initialValues);
     }
     public long insertCountryCodeAndPopulation(JSONObject stats) {
         ContentValues initialValues = new ContentValues();
         try {
+
             initialValues.put(KEY_GEO_ID, stats.getString("geoID"));
             initialValues.put(KEY_COUNTRY_NAME, stats.getString("name"));
             initialValues.put(KEY_POPULATION, stats.getString("population"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return bd.insert(BD_TABLE2, null, initialValues);
+        return bd.insert(ONE_COUNTRY_TABLE, null, initialValues);
     }
 
-    public long insertActualDate(int date)
+    public long insertActualDate(String date)
     {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_DATE, date);
-        return bd.insert(BD_TABLE3, null, initialValues);
+        return bd.insert(ACTUAL_DATE_TABLE, null, initialValues);
     }
 
     public Cursor obtainDate()
     {
-        return bd.query(BD_TABLE3, new String[] {KEY_DATE},
+        return bd.query(ACTUAL_DATE_TABLE, new String[] {KEY_ID, KEY_DATE},
                 null,null, null, null, null);
     }
     public Cursor obtainDataFromOneCountry(String name) {
-        return bd.query(BD_TABLE2, new String[] {KEY_GEO_ID, KEY_COUNTRY_NAME, KEY_POPULATION},
+        return bd.query(ONE_COUNTRY_TABLE, new String[] {KEY_GEO_ID, KEY_COUNTRY_NAME, KEY_POPULATION},
                 KEY_COUNTRY_NAME + " = " + "'"+name+"'",null, null, null, null);
     }
 
     public Cursor obtainAllGlobalInformation() {
-        return bd.query(BD_TABLE1, new String[] {KEY_COUNTRY, KEY_CASES, KEY_DEATHS},
+        return bd.query(GLOBAL_TABLE, new String[] {KEY_COUNTRY, KEY_CASES, KEY_DEATHS},
                 null,null, null, null, null);
     }
 }
