@@ -131,9 +131,10 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
         public void onPostExecute(String result) {
             try {
                 System.out.println(result);
-                db.deleteDatabaseStats();
                 db.obre();
-                db.insertActualDate(MainLogin.getDateTime());
+                db.deleteDatabaseStats();
+                db.createTables();
+                db.insertActualDate(MainLogin.getDate());
                 JSONObject datalist;
                 JSONArray stats = new JSONArray(result);
 

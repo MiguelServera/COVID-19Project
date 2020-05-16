@@ -35,6 +35,7 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
     Cursor c;
     String textEmail, textPassword;
     static boolean firstStart;
+    static boolean firstUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,16 +46,14 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
         button.setOnClickListener(this);
         button2.setOnClickListener(this);
         firstStart = prefs.getBoolean("firstStart", true);
+        firstUser = prefs.getBoolean("firstUser", false);
         db = new DBInterface(this);
-        if (firstStart)
-        if (checkUserInfo()) button2.setEnabled(true);
+        if (firstUser) button2.setEnabled(true);
     }
 
     private void giveValues() {
         editEmail = findViewById(R.id.editEmail);
         editPassword = findViewById(R.id.editPassword);
-        textEmail = editEmail.getText().toString();
-        textPassword = editPassword.getText().toString();
         button = findViewById(R.id.registerButton);
         button2 = findViewById(R.id.loginButton);
         prefs = getSharedPreferences("prefs", MODE_PRIVATE);
@@ -99,14 +98,16 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
         if (view == button) {
             startActivity(launchRegisterActivity);
         } else if (view == button2) {
+            textEmail = editEmail.getText().toString();
+            textPassword = editPassword.getText().toString();
             db.obre();
             c = db.obtainUserInfo(textEmail, textPassword);
             if (c.getCount() == 0)
                 Toast.makeText(this, "No hay un usuario así dentro", Toast.LENGTH_SHORT).show();
             else if (c.getCount() == 1)
+            {
                 Toast.makeText(this, "Sí hay un usuario así dentro", Toast.LENGTH_SHORT).show();
-            ;
-                /*if (firstStart) {
+                if (firstStart) {
                     editor.putBoolean("firstStart", false);
                     editor.apply();
                     startActivity(launchApiActivity);
@@ -125,38 +126,32 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
                 }
             }
         }
-        db.tanca();*/
-            }
-        }
+    }
+
 
     private boolean checkDate() {
-        String todayData = "";
+        String todayData = getDateTime();
         String tomorrowDate = "";
         Date concatenedDate = null;
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            Date date = new Date();
-            todayData = dateFormat.format(date);
             Calendar cal = Calendar.getInstance();
             Cursor c = db.obtainDate();
             c.moveToFirst();
             String savedDate = c.getString(1);
             c.close();
-            Log.i("Data from base", savedDate);
             concatenedDate = dateFormat.parse(savedDate);
             cal.setTime(concatenedDate);
             cal.add(Calendar.DATE, 1);
             concatenedDate = cal.getTime();
             tomorrowDate =  dateFormat.format(concatenedDate);
-            Log.i("Data from ", tomorrowDate);
-
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if (todayData.compareTo(tomorrowDate + " 14:00:00") > 0) {
+        if (todayData.compareTo(tomorrowDate + " 12:00:00") > 0) {
             return true;
 
-        } else if (todayData.compareTo(concatenedDate.toString()) < 0) {
+        } else if (todayData.compareTo(tomorrowDate + " 12:00:00") < 0) {
             return false;
 
         } else {
@@ -164,14 +159,19 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
         }
     }
 
-    public static String getDateTime() {
+    public static String getDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Date date = new Date();
         return dateFormat.format(date);
     }
 
-    private boolean checkUserInfo()
-    {
-        if (db.obtainUserTable())
+    public static String getDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
     }
+
+    /*private boolean checkUserInfo()
+    {
+    }*/
 }

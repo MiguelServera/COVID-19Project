@@ -92,7 +92,18 @@ public class DBInterface {
 
     public void deleteDatabaseStats()
     {
-        context.deleteDatabase("COVIDBD");
+        bd.execSQL("DROP TABLE IF EXISTS " + COUNTRYTABLE);
+        bd.execSQL("DROP TABLE IF EXISTS " + GLOBAL_TABLE);
+        bd.execSQL("DROP TABLE IF EXISTS " + ONE_COUNTRY_TABLE);
+        bd.execSQL("DROP TABLE IF EXISTS " + ACTUAL_DATE_TABLE);
+    }
+
+    public void createTables()
+    {
+        bd.execSQL(CREATE_COUNTRY_TABLE);
+        bd.execSQL(CREATE_GLOBAL_TABLE);
+        bd.execSQL(CREATE_ONE_COUNTRY_TABLE);
+        bd.execSQL(CREATE_ACTUAL_DATE_TABLE);
     }
 
     public long insertGlobalInformation(JSONObject stats) {
@@ -132,7 +143,7 @@ public class DBInterface {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_EMAIL, email);
         initialValues.put(KEY_PASSWORD, password);
-        return bd.insert(CREATE_USER_INFO_TABLE, null, initialValues);
+        return bd.insert(USER_INFO_TABLE, null, initialValues);
     }
 
     public Cursor obtainUserInfo(String email, String password)
