@@ -15,16 +15,19 @@ public class DBInterface {
     public static final String KEY_CASES = "cases";
     public static final String KEY_RECU = "cured";
     public static final String KEY_DEATHS = "deaths";
-    public static final String TAG = "DBInterface";
+    public static final String KEY_EMAIL = "email";
+    public static final String KEY_PASSWORD = "password";
+    public static final String KEY_GEO_ID = "geoid";
+    public static final String KEY_ID = "id";
+    public static final String KEY_DATE = "date";
+    public static final String KEY_POPULATION = "population";
     public static final String BD_NAME = "COVIDBD";
     public static final String COUNTRYTABLE = "CountryStats";
     public static final String GLOBAL_TABLE = "GlobalStats";
     public static final String ONE_COUNTRY_TABLE = "OneCountryStats";
     public static final String ACTUAL_DATE_TABLE = "ActualDate";
-    public static final String KEY_GEO_ID = "geoid";
-    public static final String KEY_ID = "id";
-    public static final String KEY_DATE = "date";
-    public static final String KEY_POPULATION = "population";
+    public static final String USER_INFO_TABLE = "UserInfo";
+
     public static final int VERSION = 1;
     public static final String CREATE_COUNTRY_TABLE ="create table " + COUNTRYTABLE + "( " +
             KEY_COUNTRY +" text not null, " +
@@ -47,6 +50,10 @@ public class DBInterface {
     public static final String CREATE_ACTUAL_DATE_TABLE ="create table " + ACTUAL_DATE_TABLE + "( " +
             KEY_ID + " integer primary key, " +
             KEY_DATE + " text not null);";
+
+    public static final String CREATE_USER_INFO_TABLE ="create table " + USER_INFO_TABLE + "( " +
+            KEY_EMAIL + " text not null, " +
+            KEY_PASSWORD + " text not null);";
 
     private final Context context;
     private DBStats ajuda;
@@ -118,6 +125,27 @@ public class DBInterface {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_DATE, date);
         return bd.insert(ACTUAL_DATE_TABLE, null, initialValues);
+    }
+
+    public long insertUserInfo(String email, String password)
+    {
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_EMAIL, email);
+        initialValues.put(KEY_PASSWORD, password);
+        return bd.insert(CREATE_USER_INFO_TABLE, null, initialValues);
+    }
+
+    public Cursor obtainUserInfo(String email, String password)
+    {
+        return bd.query(USER_INFO_TABLE, new String[] {KEY_EMAIL, KEY_PASSWORD},
+                KEY_EMAIL + " = " + "'" + email + "'" + " AND " + KEY_PASSWORD + " = " + "'" + password + "'",
+                null, null, null, null);
+    }
+
+    public Cursor obtainUserTable()
+    {
+        return bd.query(USER_INFO_TABLE, new String[] {KEY_EMAIL, KEY_PASSWORD},
+                null, null, null, null, null);
     }
 
     public Cursor obtainDate()

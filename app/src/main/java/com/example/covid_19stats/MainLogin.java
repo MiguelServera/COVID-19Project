@@ -31,33 +31,37 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
     DBInterface db;
     SharedPreferences prefs;
     static SharedPreferences.Editor editor;
-    Intent launchApiActivity;
-    Intent launchBdActivity;
+    Intent launchApiActivity, launchBdActivity, launchRegisterActivity;
+    Cursor c;
+    String textEmail, textPassword;
     static boolean firstStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+        giveValues();
+        comprovaConnectivitat();
+        button.setOnClickListener(this);
+        button2.setOnClickListener(this);
+        firstStart = prefs.getBoolean("firstStart", true);
+        db = new DBInterface(this);
+        if (firstStart)
+        if (checkUserInfo()) button2.setEnabled(true);
+    }
+
+    private void giveValues() {
         editEmail = findViewById(R.id.editEmail);
         editPassword = findViewById(R.id.editPassword);
+        textEmail = editEmail.getText().toString();
+        textPassword = editPassword.getText().toString();
         button = findViewById(R.id.registerButton);
-        button.setOnClickListener(this);
         button2 = findViewById(R.id.loginButton);
-        button2.setOnClickListener(this);
-        comprovaConnectivitat();
         prefs = getSharedPreferences("prefs", MODE_PRIVATE);
         editor = prefs.edit();
-        firstStart = prefs.getBoolean("firstStart", true);
-
-        if (firstStart) { button2.setEnabled(false); }
-
-        else {button2.setEnabled(true);}
-
         launchApiActivity = new Intent(this, RetrieveStatsFromAPI.class);
         launchBdActivity = new Intent(this, RetrieveStatsFromBD.class);
-        System.out.println(firstStart);
-        db = new DBInterface(this);
+        launchRegisterActivity = new Intent(this, RegisterActivity.class);
     }
 
     private ReceptorXarxa receptor;
@@ -66,10 +70,10 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE); //Obtenim l’estat de laxarxa
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            Toast.makeText(this, "Internet on", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Internet on", Toast.LENGTH_SHORT).show();
             return true;
         } else {
-            Toast.makeText(this, "Offline mode", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Offline mode", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
@@ -93,27 +97,37 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onClick(View view) {
         if (view == button) {
+            startActivity(launchRegisterActivity);
         } else if (view == button2) {
-            if (firstStart) {
-                editor.putBoolean("firstStart", false);
-                editor.apply();
-                startActivity(launchApiActivity);
+            db.obre();
+            c = db.obtainUserInfo(textEmail, textPassword);
+            if (c.getCount() == 0)
+                Toast.makeText(this, "No hay un usuario así dentro", Toast.LENGTH_SHORT).show();
+            else if (c.getCount() == 1)
+                Toast.makeText(this, "Sí hay un usuario así dentro", Toast.LENGTH_SHORT).show();
+            ;
+                /*if (firstStart) {
+                    editor.putBoolean("firstStart", false);
+                    editor.apply();
+                    startActivity(launchApiActivity);
 
-            } else {
-                db.obre();
-                if (comprovaConnectivitat()) {
-                    if (checkDate()) {
-                        startActivity(launchApiActivity);
+                } else {
+                    db.obre();
+                    if (comprovaConnectivitat()) {
+                        if (checkDate()) {
+                            startActivity(launchApiActivity);
+                        } else {
+                            startActivity(launchBdActivity);
+                        }
                     } else {
                         startActivity(launchBdActivity);
                     }
-                } else {
-                    startActivity(launchBdActivity);
                 }
             }
         }
-        db.tanca();
-    }
+        db.tanca();*/
+            }
+        }
 
     private boolean checkDate() {
         String todayData = "";
@@ -154,5 +168,10 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Date date = new Date();
         return dateFormat.format(date);
+    }
+
+    private boolean checkUserInfo()
+    {
+        if (db.obtainUserTable())
     }
 }
