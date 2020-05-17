@@ -95,7 +95,7 @@ public class ShowCountryInfo extends AppCompatActivity {
         }
 
         public void onPostExecute(String result) {
-            System.out.println(result);
+
         }
     }
 }

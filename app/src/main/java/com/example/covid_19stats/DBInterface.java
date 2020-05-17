@@ -153,12 +153,6 @@ public class DBInterface {
                 null, null, null, null);
     }
 
-    public Cursor obtainUserTable()
-    {
-        return bd.query(USER_INFO_TABLE, new String[] {KEY_EMAIL, KEY_PASSWORD},
-                null, null, null, null, null);
-    }
-
     public Cursor obtainDate()
     {
         return bd.query(ACTUAL_DATE_TABLE, new String[] {KEY_ID, KEY_DATE},
