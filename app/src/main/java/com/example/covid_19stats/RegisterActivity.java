@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
-    EditText editEmail, editPassword;
+    EditText editEmail, editPassword, editUsername;
     Button button;
     DBInterface db;
     Intent i;
@@ -21,6 +21,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.register_activity);
         editEmail = findViewById(R.id.editRegiEmail);
         editPassword = findViewById(R.id.editRegiPassword);
+        editUsername = findViewById(R.id.editRegiName);
         button = findViewById(R.id.registerUserButton);
         button.setOnClickListener(this);
         db = new DBInterface(this);
@@ -31,6 +32,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         if (v == button) {
             db.obre();
+            String textUsername = editUsername.getText().toString();
             String textEmail = editEmail.getText().toString();
             String textPassword = editPassword.getText().toString();
             if (textEmail.isEmpty() || textEmail.equals("") || textPassword.isEmpty() || textPassword.equals(""))
@@ -45,16 +47,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     Toast.makeText(this, "The password can't be null!", Toast.LENGTH_LONG).show();
             }
 
-            else if ((db.insertUserInfo(textEmail, textPassword) != -1) && MainLogin.firstStart == true)
+            else if (MainLogin.firstStart == true && MainLogin.firstUser == false)
             {
+                db.insertUserInfo(textUsername, textEmail, textPassword);
                 MainLogin.editor.putBoolean("firstUser", true);
                 MainLogin.editor.apply();
-                Toast.makeText(this, "User inserted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "First User Inserted", Toast.LENGTH_SHORT).show();
                 startActivity(i);
             }
 
-            else if ((db.insertUserInfo(textEmail, textPassword) != -1) && MainLogin.firstStart == false)
+            else
             {
+                db.insertUserInfo(textUsername, textEmail, textPassword);
                 Toast.makeText(this, "User inserted", Toast.LENGTH_SHORT).show();
                 startActivity(i);
             }

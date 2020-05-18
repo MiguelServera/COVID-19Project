@@ -4,37 +4,33 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/dateOfCases"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:layout_weight="1"
-        android:text="TextView" />
+        android:textAlignment="center" />
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/casesInDate"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:layout_weight="1"
-        android:text="TextView" />
+        android:textAlignment="center"
+        android:textColor="#E68D47" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/deathsInDate"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:layout_weight="1"
-        android:text="TextView" />
+        android:textAlignment="center"
+        android:textColor="#CC0303" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/curedInDate"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:layout_weight="1"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="TextView" />
+        android:textAlignment="center"
+        android:textColor="#4FC91B" />
 </LinearLayout>

@@ -4,20 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,9 +22,6 @@ import java.net.URL;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 
 import javax.net.ssl.HttpsURLConnection;
@@ -42,7 +29,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
 import static com.example.covid_19stats.MainLogin.editor;
-import static com.example.covid_19stats.MainLogin.firstStart;
 
 public class RetrieveStatsFromAPI extends AppCompatActivity {
     DBInterface db;
@@ -56,7 +42,7 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         db = new DBInterface(this);
         appContext = this;
-        i = new Intent(getApplicationContext(), RetrieveStatsFromBD.class);
+        i = new Intent(getApplicationContext(), RetrieveGlobalStatsFromBD.class);
         new SendRequest().execute();
     }
 
@@ -95,7 +81,7 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                         conn.setSSLSocketFactory(context.getSocketFactory());
                         conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
                         conn.setRequestProperty("Accept", "application/json");
-                        conn.setConnectTimeout(15 * 10);
+                        conn.setConnectTimeout(15 * 100);
                         conn.setRequestMethod("POST");
 
                         DataOutputStream os = new DataOutputStream(conn.getOutputStream());
@@ -130,7 +116,6 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
 
         public void onPostExecute(String result) {
             try {
-                System.out.println(result);
                 db.obre();
                 db.deleteDatabaseStats();
                 db.createTables();

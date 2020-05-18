@@ -12,7 +12,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -59,7 +58,7 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
         prefs = getSharedPreferences("prefs", MODE_PRIVATE);
         editor = prefs.edit();
         launchApiActivity = new Intent(this, RetrieveStatsFromAPI.class);
-        launchBdActivity = new Intent(this, RetrieveStatsFromBD.class);
+        launchBdActivity = new Intent(this, RetrieveGlobalStatsFromBD.class);
         launchRegisterActivity = new Intent(this, RegisterActivity.class);
     }
 
@@ -106,7 +105,8 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
                 Toast.makeText(this, "No hay un usuario así dentro", Toast.LENGTH_SHORT).show();
             else if (c.getCount() == 1)
             {
-                Toast.makeText(this, "Sí hay un usuario así dentro", Toast.LENGTH_SHORT).show();
+                c.moveToNext();
+                Toast.makeText(this, "Hello, " + c.getString(0), Toast.LENGTH_SHORT).show();
                 if (firstStart) {
                     editor.putBoolean("firstStart", false);
                     editor.apply();
@@ -125,6 +125,7 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
                     }
                 }
             }
+            c.close();
         }
     }
 
