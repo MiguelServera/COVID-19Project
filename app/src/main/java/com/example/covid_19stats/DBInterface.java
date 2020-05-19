@@ -203,6 +203,7 @@ public class DBInterface {
                 null, null, null, null);
     }
 
+    //Just in case
     public Cursor obtainAllUserInfo()
     {
         return bd.query(USER_INFO_TABLE, new String[] {KEY_USERNAME, KEY_EMAIL, KEY_PASSWORD},
