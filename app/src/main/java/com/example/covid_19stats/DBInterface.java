@@ -63,7 +63,7 @@ public class DBInterface {
 
     public static final String CREATE_USER_INFO_TABLE ="create table " + USER_INFO_TABLE + "( " +
             KEY_USERNAME + " text not null, " +
-            KEY_EMAIL + " text not null, " +
+            KEY_EMAIL + " text unique, " +
             KEY_PASSWORD + " text not null);";
 
     private final Context context;

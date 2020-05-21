@@ -3,11 +3,16 @@ package com.example.covid_19stats;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.nfc.FormatException;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -49,21 +54,47 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             else if (MainLogin.firstStart == true && MainLogin.firstUser == false)
             {
-                db.insertUserInfo(textUsername, textEmail, textPassword);
-                MainLogin.editor.putBoolean("firstUser", true);
-                MainLogin.editor.apply();
-                Toast.makeText(this, "First User Inserted", Toast.LENGTH_SHORT).show();
-                startActivity(i);
+                if(Patterns.EMAIL_ADDRESS.matcher(textEmail).matches() && isValidPassword(textPassword)) {
+                    db.insertUserInfo(textUsername, textEmail, textPassword);
+                    MainLogin.editor.putBoolean("firstUser", true);
+                    MainLogin.editor.apply();
+                    Toast.makeText(this, "First User Inserted", Toast.LENGTH_SHORT).show();
+                    startActivity(i);
+                }
+                else
+                {
+                    Toast.makeText(this, "Email or password not okay!", Toast.LENGTH_SHORT).show();
+                }
             }
 
             else
             {
-                db.insertUserInfo(textUsername, textEmail, textPassword);
-                Toast.makeText(this, "User inserted", Toast.LENGTH_SHORT).show();
-                startActivity(i);
+                if(Patterns.EMAIL_ADDRESS.matcher(textEmail).matches() && isValidPassword(textPassword)) {
+                    if (db.insertUserInfo(textUsername, textEmail, textPassword) != -1) Toast.makeText(this, "User inserted", Toast.LENGTH_SHORT).show();
+
+                    else Toast.makeText(this, "The user is already inserted", Toast.LENGTH_SHORT).show();
+                    startActivity(i);
+                }
+                else
+                {
+                    Toast.makeText(this, "Credencials do not meet the requirements", Toast.LENGTH_LONG).show();
+                }
             }
 
             db.tanca();
         }
+    }
+    public boolean isValidPassword(final String password) {
+
+        Pattern pattern;
+        Matcher matcher;
+
+        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$";
+
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(password);
+
+        return matcher.matches();
+
     }
 }

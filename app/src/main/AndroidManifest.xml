@@ -3,7 +3,7 @@
     package="com.example.covid_19stats">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -19,13 +19,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity"></activity>
-        <activity android:name=".RetrieveStatsFromAPI"></activity>
-        <activity android:name=".MenuActivity"></activity>
-        <activity android:name=".ShowCountryInfo"></activity>
-        <activity android:name=".CheckConnection"></activity>
-        <activity android:name=".RetrieveGlobalStatsFromBD"></activity>
-
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".RetrieveStatsFromAPI" />
+        <activity android:name=".MenuActivity" />
+        <activity android:name=".ShowCountryInfo" />
+        <activity android:name=".CheckConnection" />
+        <activity android:name=".RetrieveGlobalStatsFromBD" />
     </application>
 
 </manifest>
