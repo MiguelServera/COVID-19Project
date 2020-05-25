@@ -8,15 +8,69 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_tools">Tools</string>
-    <string name="menu_share">Share</string>
-    <string name="menu_send">Send</string>
     <string name="info">Info</string>
     <string name="precautions_covid">Precautions COVID</string>
     <string name="help">Help</string>
     <string name="log_out">Log out</string>
+
+    <string-array name="ccaaNames">
+        <item>
+            Andalucía/AN
+        </item>
+        <item>
+            Aragón/AR
+        </item>
+        <item>
+            Principado de Asturias/AS
+        </item>
+        <item>
+            Islas Baleares/IB
+        </item>
+        <item>
+            Canarias/CN
+        </item>
+        <item>
+            Cantabria/CB
+        </item>
+        <item>
+            Castilla y León/CL
+        </item>
+        <item>
+            Castilla-La Mancha/CM
+        </item>
+        <item>
+            Cataluña/CT
+        </item>
+        <item>
+            Comunitat Valenciana/VC
+        </item>
+        <item>
+            Extremadura/EX
+        </item>
+        <item>
+            Galicia/GA
+        </item>
+        <item>
+            Comunidad de Madrid/MD
+        </item>
+        <item>
+            Región de Murcia/MC
+        </item>
+        <item>
+            Comunidad Foral de Navarra/NC
+        </item>
+        <item>
+            País Vasco/PV
+        </item>
+        <item>
+            La Rioja/RI
+        </item>
+        <item>
+            Ciudad Autónoma de Ceuta/CE
+        </item>
+        <item>
+            Ciudad Autónoma de Melilla/ML
+        </item>
+
+    </string-array>
 </resources>

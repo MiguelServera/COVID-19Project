@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:screenOrientation="portrait"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/flagImage"
+            android:layout_width="match_parent"
+            android:layout_height="179dp"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/andalucia" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="11dp"
+            android:background="@color/design_default_color_primary" />
+
+        <Spinner
+            android:id="@+id/spinnerCCAA"
+            android:layout_width="match_parent"
+            android:layout_height="37dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textDateCCAA"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Date"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/textCasesCCAA"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cases"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/textPCRCCAA"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="PCR"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/textTestAC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TestAC"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/textHospitalized"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Hosp."
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/textUciCCAA"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="UCI"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/Deaths"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Deaths"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/listViewShowCCAA"
+            android:layout_width="match_parent"
+            android:layout_height="313dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/design_default_color_primary" />
+
+        <TextView
+            android:id="@+id/notesCCAA"
+            android:layout_width="match_parent"
+            android:layout_height="152dp"
+            android:fadeScrollbars="false"
+            android:scrollbars="vertical" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

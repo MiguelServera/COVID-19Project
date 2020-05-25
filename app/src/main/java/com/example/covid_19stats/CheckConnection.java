@@ -13,27 +13,13 @@ public class CheckConnection extends AppCompatActivity {
 
     private ReceptorXarxa receptor;
 
-    public CheckConnection()
-    {
+    public CheckConnection() {
     }
-    public void comprovaConnectivitat() {
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE); //Obtenim l’estat de laxarxa
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            Toast.makeText(this, "Xarxa ok", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this, "Xarxa no disponible", Toast.LENGTH_LONG).show();
-        }
-        networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        boolean connectat4G = networkInfo.isConnected();
-        networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        boolean connectatWifi = networkInfo.isConnected();
-        if (connectat4G) {
-            Toast.makeText(this, "Connectat per 4G", Toast.LENGTH_LONG).show();
-        }
-        if (connectatWifi) {
-            Toast.makeText(this, "Connectat per Wi-Fi", Toast.LENGTH_LONG).show();
-        }
+
+    public static boolean isNetworkConnected(Context c) {
+        ConnectivityManager conManager = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = conManager.getActiveNetworkInfo();
+        return (netInfo != null && netInfo.isConnected());
     }
 
     @Override
@@ -47,7 +33,7 @@ public class CheckConnection extends AppCompatActivity {
     public class ReceptorXarxa extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            comprovaConnectivitat();
+            isNetworkConnected(getApplicationContext());
         }
     }
 }

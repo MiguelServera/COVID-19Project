@@ -2,15 +2,11 @@ package com.example.covid_19stats;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,8 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import static com.example.covid_19stats.CheckConnection.isNetworkConnected;
 
-public class RetrieveGlobalStatsFromBD extends AppCompatActivity {
+public class ShowGlobalStats extends AppCompatActivity {
     TextView totalCases;
     DBInterface db;
     Context appContext;
@@ -30,19 +27,19 @@ public class RetrieveGlobalStatsFromBD extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_menu);
+        setContentView(R.layout.all_countries_stats);
         db = new DBInterface(this);
         appContext = this;
-        totalCases = findViewById(R.id.textView5);
+        totalCases = findViewById(R.id.totalCases);
         try {
             db.obre();
             Cursor c = db.obtainAllInformation();
             while (c.moveToNext()) {
                 Stat indiStat = new Stat(c.getString(0),
                         c.getString(1),
-                        c.getString(2),
-                        c.getString(3),
-                        c.getString(4));
+                        c.getInt(2),
+                        c.getInt(3),
+                        c.getInt(4));
                 arrayStats.add(indiStat);
             }
             c.close();
@@ -61,7 +58,7 @@ public class RetrieveGlobalStatsFromBD extends AppCompatActivity {
         Collections.sort(arrayStat, new Comparator<Stat>() {
             @Override
             public int compare(Stat stat, Stat t1) {
-                return stat.getNameC().compareTo(t1.getNameC());
+                return stat.getName().compareTo(t1.getName());
             }
         });
     }
@@ -69,14 +66,18 @@ public class RetrieveGlobalStatsFromBD extends AppCompatActivity {
     private void retrieveGlobalInfo() {
         Cursor c = db.obtainAllGlobalInformation();
         c.moveToFirst();
-        int cases;
-        int totalSum = 0;
+        int cases, deaths, cured;
+        int totalSum = 0, totalDeaths = 0, totalCured = 0;
         while (c.moveToNext()) {
-            cases = Integer.parseInt(c.getString(c.getColumnIndex("cases")));
+            cases = c.getInt(c.getColumnIndex("cases"));
             totalSum = cases + totalSum;
+            deaths = c.getInt(c.getColumnIndex("deaths"));
+            totalDeaths = deaths + totalDeaths;
+            cured = c.getInt(c.getColumnIndex("cured"));
+            totalCured= cured + totalCured;
         }
         c.close();
-        totalCases.setText("Global cases: " + totalSum);
+        totalCases.setText("  Global cases: " + totalSum + "\n" + "  Total deaths: " + totalDeaths + "\n" + "  Total cured: " + totalCured);
     }
 
     private void selectedCountry() {
@@ -85,17 +86,26 @@ public class RetrieveGlobalStatsFromBD extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                db.obre();
-                TextView textName = view.findViewById(R.id.nameCountry);
-                codeName = textName.getText().toString();
-                Toast.makeText(getApplicationContext(), "You selected : " + codeName, Toast.LENGTH_SHORT).show();
-                Cursor c = db.obtainPopulationFromOneCountry(codeName);
-                c.moveToFirst();
-                Intent i = new Intent(getApplicationContext(), ShowCountryInfo.class);
-                i.putExtra("name", c.getString(1));
-                i.putExtra("codename", c.getString(0));
-                startActivity(i);
-                db.tanca();
+                if (isNetworkConnected(getApplicationContext()))
+                {
+                    db.obre();
+                    TextView textName = view.findViewById(R.id.nameCountry);
+                    codeName = textName.getText().toString();
+                    Toast.makeText(getApplicationContext(), "You selected : " + codeName, Toast.LENGTH_SHORT).show();
+                    Cursor c = db.obtainPopulationFromOneCountry(codeName);
+                    c.moveToFirst();
+                    Intent i = new Intent(getApplicationContext(), ShowCountryInfo.class);
+                    System.out.println(c.getString(1));
+                    System.out.println(c.getString(0));
+                    i.putExtra("name", c.getString(1));
+                    i.putExtra("codename", c.getString(0));
+                    startActivity(i);
+                    db.tanca();
+                }
+
+                else {
+                    Toast.makeText(appContext, "You need internet(Wifi) to access to every stat of the country!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

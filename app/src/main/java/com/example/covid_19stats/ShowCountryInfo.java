@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -80,7 +81,6 @@ public class ShowCountryInfo extends AppCompatActivity {
                 context.init(null, tmf.getTrustManagers(), null);
 
                 URL url = new URL("https://192.168.1.70:45455/api/covidTest/" + codeCountry);
-                System.out.println(url);
                 HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
                 conn.setSSLSocketFactory(context.getSocketFactory());
                 conn.setRequestMethod("GET");
@@ -108,6 +108,7 @@ public class ShowCountryInfo extends AppCompatActivity {
 
         public void onPostExecute(String result) {
             try {
+                System.out.println(result);
                 db.obre();
                 db.deleteOneCountryStat();
                 db.createTableOneCountry();
@@ -121,22 +122,24 @@ public class ShowCountryInfo extends AppCompatActivity {
                                 && dataObject.getString("code").equals("")) {
 
                             object = "{\"code\":\"NoCode\"" + dataObject.getString("code")
-                                    + ",\"name\":" + dataObject.getString("name")
-                                    + ",\"date\":" + "\"" + dataList.getJSONObject(a).getJSONObject("date").getString("date")+ "\""
+                                    + ",\"name\": \"" + dataObject.getString("name")
+                                    + "\",\"date\":" + "\"" + dataList.getJSONObject(a).getJSONObject("date").getString("date")+ "\""
                                     + ",\"cases\":" + dataList.getJSONObject(a).getString("cases")
                                     + ",\"deaths\":" + dataList.getJSONObject(a).getString("deaths")
                                     + ",\"cured\":" + dataList.getJSONObject(a).getString("cured") + "}";
 
                         } else if (dataObject.getString("code").equals("") ||
                                 dataObject.getString("code").equals("N/A")) {
-                            object = "{\"code\":\"NoCode\"" + ",\"name\":" + dataObject.getString("name")
+                            object = "{\"code\":\"NoCode\""
+                                    + ",\"name\":" + dataObject.getString("name")
                                     + ",\"date\":" + "\"" + dataList.getJSONObject(a).getJSONObject("date").getString("date")+ "\""
                                     + ",\"cases\":" + dataList.getJSONObject(a).getString("cases")
                                     + ",\"deaths\":" + dataList.getJSONObject(a).getString("deaths")
                                     + ",\"cured\":" + dataList.getJSONObject(a).getString("cured") + "}";
 
                         } else if (dataObject.getString("name").equals("Cases_on_an_international_conveyance_Japan")) {
-                            object = "{\"code\":\"NoCode\"" + ",\"name\":\"" + dataObject.getString("name")
+                            object = "{\"code\":\"NoCode\""
+                                    + ",\"name\":\"" + dataObject.getString("name")
                                     + ",\"date\":" + "\"" + dataList.getJSONObject(a).getJSONObject("date").getString("date")+ "\""
                                     + ",\"cases\":" + dataList.getJSONObject(a).getString("cases")
                                     + ",\"deaths\":" + dataList.getJSONObject(a).getString("deaths")
@@ -150,17 +153,19 @@ public class ShowCountryInfo extends AppCompatActivity {
                                     + ",\"deaths\":" + dataList.getJSONObject(a).getString("deaths")
                                     + ",\"cured\":" + dataList.getJSONObject(a).getString("cured") + "}";
                         }
-
                         JSONObject insertJSONObject = new JSONObject(object);
+                        System.out.println(insertJSONObject.toString());
                         db.insertStatsFromOneCountry(insertJSONObject);
                     }
-
-                Cursor c = db.obtainOneCountryStat(dataObject.getString("code"));
+                    System.out.println(dataObject.getString("name"));
+                Cursor c = db.obtainOneCountryStat(dataObject.getString("name"));
+                    System.out.println(c.getCount());
                 while (c.moveToNext()) {
+                    System.out.println(c.getString(2));
                     StatFromOneCountry indiStat = new StatFromOneCountry(c.getString(2),
-                            c.getString(3),
-                            c.getString(4),
-                            c.getString(5));
+                            c.getInt(3),
+                            c.getInt(4),
+                            c.getInt(5));
                     arrayStats.add(indiStat);
                 }
                 c.close();

@@ -32,11 +32,11 @@ public class StatsAdapter extends ArrayAdapter {
                 TextView cured = (TextView) view.findViewById(R.id.curedCountry);
 
 
-        code.setText(stat.getCodeC());
-                name.setText(stat.getNameC());
-                cases.setText(stat.getCases());
-                deaths.setText(stat.getDeaths());
-                cured.setText(stat.getCured());
+                code.setText(stat.getCode());
+                name.setText(stat.getName());
+                cases.setText(String.valueOf(stat.getCases()));
+                deaths.setText(String.valueOf(stat.getDeaths()));
+                cured.setText(String.valueOf(stat.getCured()));
 
         return view;
     }

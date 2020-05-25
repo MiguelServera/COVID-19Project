@@ -3,57 +3,57 @@ package com.example.covid_19stats;
 public class Stat {
     String code;
     String name;
-    String cases;
-    String deaths;
-    String cured;
+    int cases;
+    int deaths;
+    int cured;
 
     public Stat(){}
 
-    public Stat(String codeC, String nameC, String cases, String deaths, String cured) {
-        this.code = codeC;
-        this.name = nameC;
+    public Stat(String code, String name, int cases, int deaths, int cured) {
+        this.code = code;
+        this.name = name;
         this.cases = cases;
         this.deaths = deaths;
         this.cured = cured;
     }
 
-    public String getCodeC() {
+    public String getCode() {
         return code;
     }
 
-    public void setCodeC(String codeC) {
-        this.code = codeC;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getNameC() {
+    public String getName() {
         return name;
     }
 
-    public void setNameC(String nameC) {
-        this.name = nameC;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getCases() {
+    public int getCases() {
         return cases;
     }
 
-    public void setCases(String cases) {
+    public void setCases(int cases) {
         this.cases = cases;
     }
 
-    public String getDeaths() {
+    public int getDeaths() {
         return deaths;
     }
 
-    public void setDeaths(String deaths) {
+    public void setDeaths(int deaths) {
         this.deaths = deaths;
     }
 
-    public String getCured() {
+    public int getCured() {
         return cured;
     }
 
-    public void setCured(String cured) {
+    public void setCured(int cured) {
         this.cured = cured;
     }
 
@@ -62,9 +62,9 @@ public class Stat {
         return "Stat{" +
                 "code='" + code + '\'' +
                 ", name='" + name + '\'' +
-                ", cases='" + cases + '\'' +
-                ", deaths='" + deaths + '\'' +
-                ", cured='" + cured + '\'' +
+                ", cases=" + cases +
+                ", deaths=" + deaths +
+                ", cured=" + cured +
                 '}';
     }
 }

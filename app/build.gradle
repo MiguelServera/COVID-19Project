@@ -19,6 +19,10 @@ android {
     }
 }
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -32,4 +36,5 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     compile group: 'com.google.code.gson', name: 'gson', version: '2.8.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

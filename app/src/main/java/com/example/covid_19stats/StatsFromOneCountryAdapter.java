@@ -24,15 +24,16 @@ public class StatsFromOneCountryAdapter extends ArrayAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         final View view = inflater.inflate(R.layout.inflate_one_country, null);
-                StatFromOneCountry stat = statsList.get(position);
-                TextView date = (TextView) view.findViewById(R.id.dateOfCases);
-                TextView cases = (TextView) view.findViewById(R.id.casesInDate);
-                TextView deaths = (TextView) view.findViewById(R.id.deathsInDate);
-                TextView cured = (TextView) view.findViewById(R.id.curedInDate);
-                date.setText(stat.getDate());
-                cases.setText(stat.getCases());
-                deaths.setText(stat.getDeaths());
-                cured.setText(stat.getCured());
+        StatFromOneCountry stat = statsList.get(position);
+        TextView date = (TextView) view.findViewById(R.id.dateOfCases);
+        TextView cases = (TextView) view.findViewById(R.id.casesInDate);
+        TextView deaths = (TextView) view.findViewById(R.id.deathsInDate);
+        TextView cured = (TextView) view.findViewById(R.id.curedInDate);
+
+        date.setText(stat.getDate());
+        cases.setText(String.valueOf(stat.getCases()));
+        deaths.setText(String.valueOf(stat.getDeaths()));
+        cured.setText(String.valueOf(stat.getCured()));
         return view;
     }
 }

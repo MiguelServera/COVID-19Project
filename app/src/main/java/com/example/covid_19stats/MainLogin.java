@@ -1,178 +1,110 @@
 package com.example.covid_19stats;
 
-import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
+
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 public class MainLogin extends AppCompatActivity implements View.OnClickListener {
 
-    Button button, button2;
-    EditText editEmail, editPassword;
-    DBInterface db;
     SharedPreferences prefs;
+    EditText editEmail, editPassword;
+    Button button, button2;
+    Intent launchRegisterActivity, launchMainMenu;
+    DBInterface db;
     static SharedPreferences.Editor editor;
-    Intent launchApiActivity, launchBdActivity, launchRegisterActivity;
-    Cursor c;
-    String textEmail, textPassword;
     static boolean firstStart;
     static boolean firstUser;
+    private DrawerLayout drawer;
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
-        giveValues();
-        comprovaConnectivitat();
-        button.setOnClickListener(this);
-        button2.setOnClickListener(this);
-        firstStart = prefs.getBoolean("firstStart", true);
-        firstUser = prefs.getBoolean("firstUser", false);
-        db = new DBInterface(this);
-        if (firstUser) button2.setEnabled(true);
-    }
-
-    private void giveValues() {
-        editEmail = findViewById(R.id.editEmail);
-        editPassword = findViewById(R.id.editPassword);
         button = findViewById(R.id.registerButton);
         button2 = findViewById(R.id.loginButton);
+        button.setOnClickListener(this);
+        button2.setOnClickListener(this);
+        launchRegisterActivity = new Intent(this, RegisterActivity.class);
+        launchMainMenu = new Intent(this, MenuActivity.class);
+        editEmail = findViewById(R.id.editEmail);
+        editPassword = findViewById(R.id.editPassword);
         prefs = getSharedPreferences("prefs", MODE_PRIVATE);
         editor = prefs.edit();
-        launchApiActivity = new Intent(this, RetrieveStatsFromAPI.class);
-        launchBdActivity = new Intent(this, RetrieveGlobalStatsFromBD.class);
-        launchRegisterActivity = new Intent(this, RegisterActivity.class);
+        firstStart = prefs.getBoolean("firstStart", true);
+        firstUser = prefs.getBoolean("firstUser", false);
+        verifyStoragePermissions(this);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        if (firstUser) button2.setEnabled(true);
+        db = new DBInterface(this);
     }
 
-    private ReceptorXarxa receptor;
-
-    public boolean comprovaConnectivitat() {
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE); //Obtenim l’estat de laxarxa
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            Toast.makeText(this, "Internet on", Toast.LENGTH_SHORT).show();
-            return true;
-        } else {
-            Toast.makeText(this, "Offline mode", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (receptor != null) {
-            this.unregisterReceiver(receptor);
-        }
-    }
-
-    public class ReceptorXarxa extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            comprovaConnectivitat();
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View view) {
         if (view == button) {
             startActivity(launchRegisterActivity);
         } else if (view == button2) {
+            Cursor c;
+            String textEmail, textPassword;
             textEmail = editEmail.getText().toString();
             textPassword = editPassword.getText().toString();
             db.obre();
             c = db.obtainUserInfo(textEmail, textPassword);
             if (c.getCount() == 0)
-                Toast.makeText(this, "No hay un usuario así dentro", Toast.LENGTH_SHORT).show();
-            else if (c.getCount() == 1)
-            {
+                Toast.makeText(this, "There is no user like that", Toast.LENGTH_SHORT).show();
+            else if (c.getCount() == 1) {
                 c.moveToNext();
                 Toast.makeText(this, "Hello, " + c.getString(0), Toast.LENGTH_SHORT).show();
-                if (firstStart) {
-                    editor.putBoolean("firstStart", false);
-                    editor.apply();
-                    startActivity(launchApiActivity);
-
-                } else {
-                    db.obre();
-                    if (comprovaConnectivitat()) {
-                        if (checkDate()) {
-                            startActivity(launchApiActivity);
-                        } else {
-                            startActivity(launchBdActivity);
-                        }
-                    } else {
-                        startActivity(launchBdActivity);
-                    }
-                }
+                startActivity(launchMainMenu);
             }
-            c.close();
+            db.tanca();
         }
     }
 
+    public static boolean verifyStoragePermissions(Activity activity) {
+        boolean checkPermissions;
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-    private boolean checkDate() {
-        String todayData = getDateTime();
-        String tomorrowDate = "";
-        Date concatenedDate = null;
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            Calendar cal = Calendar.getInstance();
-            Cursor c = db.obtainDate();
-            c.moveToFirst();
-            String savedDate = c.getString(1);
-            c.close();
-            concatenedDate = dateFormat.parse(savedDate);
-            cal.setTime(concatenedDate);
-            cal.add(Calendar.DATE, 1);
-            concatenedDate = cal.getTime();
-            tomorrowDate =  dateFormat.format(concatenedDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            //Check if you have permissions to install aplicattions from unknown sources too
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+            checkPermissions = false;
+        } else{
+            checkPermissions = true;
         }
-        if (todayData.compareTo(tomorrowDate + " 12:00:00") > 0) {
-            return true;
-
-        } else if (todayData.compareTo(tomorrowDate + " 12:00:00") < 0) {
-            return false;
-
-        } else {
-            return false;
-        }
+        return checkPermissions;
     }
-
-    public static String getDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        Date date = new Date();
-        return dateFormat.format(date);
-    }
-
-    public static String getDateTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss", Locale.getDefault());
-        Date date = new Date();
-        return dateFormat.format(date);
-    }
-
-    /*private boolean checkUserInfo()
-    {
-    }*/
 }

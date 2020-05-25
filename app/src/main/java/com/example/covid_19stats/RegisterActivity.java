@@ -52,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     Toast.makeText(this, "The password can't be null!", Toast.LENGTH_LONG).show();
             }
 
-            else if (MainLogin.firstStart == true && MainLogin.firstUser == false)
+            else if (/*MainLogin.firstStart == true && */MainLogin.firstUser == false)
             {
                 if(Patterns.EMAIL_ADDRESS.matcher(textEmail).matches() && isValidPassword(textPassword)) {
                     db.insertUserInfo(textUsername, textEmail, textPassword);

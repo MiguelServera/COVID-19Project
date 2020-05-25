@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="@string/info" android:icon="@drawable/ic_covid"/>
-    <item android:title="@string/precautions_covid" />
+    <item android:title="@string/precautions_covid" android:icon="@drawable/ic_precautions"/>
     <item android:title="@string/help" android:icon="@drawable/ic_help"/>
     <item android:title="@string/log_out" android:icon="@drawable/ic_logout"/>
 </menu>
