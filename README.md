@@ -3,6 +3,8 @@
 Para testear se necesita:
 - API en local de mi compañero Álvaro Maleno.
 - Cambiar la url de conexión a la que proporciona Conveyor en local y poner /covidTest.
+- Dar permisos totales a la aplicación.
+- Tener wifi la primera vez que hagamos login.
 
 Manual de instalación:
 Tener Android Studio y Microsoft Visual Studio instalados.
