@@ -6,6 +6,7 @@ Para testear se necesita:
 - Dar permisos totales a la aplicación.
 - Tener wifi la primera vez que hagamos login.
 - La barra lateral aún no está implementada
+- Para asegurar un funcionamiento estable, tener conexión a WiFi (No datos móviles al no ser que solo queramos la informacion de las comunidades autónomas actualizadas).
 
 Manual de instalación:
 Tener Android Studio y Microsoft Visual Studio instalados.
