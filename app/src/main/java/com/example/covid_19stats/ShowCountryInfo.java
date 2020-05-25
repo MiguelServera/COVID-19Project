@@ -8,7 +8,10 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,11 +35,13 @@ public class ShowCountryInfo extends AppCompatActivity {
 
     Context appContext;
     Bundle extras;
-    String codeCountry;
+    String codeCountry, nameCountry;
     DBInterface db;
     ListView lv;
     ArrayList<StatFromOneCountry> arrayStats = new ArrayList<>();
-    TextView textNameCountry;
+    TextView textNameCountry, totalCases;
+    private DrawerLayout drawer;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,8 +50,17 @@ public class ShowCountryInfo extends AppCompatActivity {
         appContext = this;
         extras = getIntent().getExtras();
         codeCountry = extras.getString("codename");
+        nameCountry = extras.getString("name");
         textNameCountry = findViewById(R.id.nameCountry);
         textNameCountry.setText(extras.getString("name"));
+        totalCases = findViewById(R.id.textView);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
         db = new DBInterface(this);
         new SendRequest().execute();
     }
@@ -116,7 +130,7 @@ public class ShowCountryInfo extends AppCompatActivity {
                 JSONObject dataObject = new JSONObject(result);
                 dataList = dataObject.getJSONArray("dataList");
 
-                for (int a = dataList.length() - 1; a > dataList.length() - 15; a--) {
+                for (int a = dataList.length() - 1; a > dataList.length() - 31; a--) {
                     if (dataObject.getString("name").equals("Bonaire, Saint Eustatius and Saba")
                             && dataObject.getString("code").equals("")) {
 
@@ -172,6 +186,7 @@ public class ShowCountryInfo extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             } finally {
+                totalCasesCountry();
                 db.tanca();
             }
         }
@@ -180,6 +195,13 @@ public class ShowCountryInfo extends AppCompatActivity {
             StatsFromOneCountryAdapter inflate = new StatsFromOneCountryAdapter(getApplicationContext(), R.layout.inflate_one_country, arrayStat);
             lv = (ListView) findViewById(R.id.listViewShowCountry);
             lv.setAdapter(inflate);
+        }
+
+        public void totalCasesCountry()
+        {
+            Cursor c = db.obtainCountryInformation(nameCountry);
+            c.moveToFirst();
+            totalCases.setText("  Global cases: " + c.getInt(2) + "\n" + "  Total deaths: " + c.getInt(3) + "\n" + "  Total cured: " + c.getInt(4));
 
         }
     }

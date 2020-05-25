@@ -22,6 +22,17 @@ public class CheckConnection extends AppCompatActivity {
         return (netInfo != null && netInfo.isConnected());
     }
 
+    public static boolean isNetworkWifi(Context c) {
+        ConnectivityManager conManager = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = conManager.getActiveNetworkInfo();
+        netInfo = conManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        boolean connected4G = netInfo.isConnected();
+        netInfo = conManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (connected4G) {
+            return false;
+        }
+        else return true;
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();

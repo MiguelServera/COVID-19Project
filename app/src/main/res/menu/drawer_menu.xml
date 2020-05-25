@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="@string/info" android:icon="@drawable/ic_covid"/>
-    <item android:title="@string/precautions_covid" android:icon="@drawable/ic_precautions"/>
-    <item android:title="@string/help" android:icon="@drawable/ic_help"/>
-    <item android:title="@string/log_out" android:icon="@drawable/ic_logout"/>
+    <group android:checkableBehavior="single">
+    <item android:title="@string/info" android:icon="@drawable/ic_covid" android:id="@+id/nav_info"/>
+    <item android:title="@string/precautions_covid" android:icon="@drawable/ic_precautions" android:id="@+id/nav_precautions"/>
+    <item android:title="@string/log_out" android:icon="@drawable/ic_logout" android:id="@+id/nav_logout"/>
+    </group>
+
+    <item android:title="Help/Share">
+        <menu>
+            <item android:title="@string/help" android:icon="@drawable/ic_help" android:id="@+id/nav_help"/>
+            <item android:title="@string/share" android:icon="@drawable/ic_share" android:id="@+id/nav_share"/>
+        </menu>
+    </item>
 </menu>

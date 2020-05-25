@@ -10,13 +10,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import static com.example.covid_19stats.CheckConnection.isNetworkConnected;
+import static com.example.covid_19stats.CheckConnection.isNetworkWifi;
 
 public class ShowGlobalStats extends AppCompatActivity {
     TextView totalCases;
@@ -24,7 +27,7 @@ public class ShowGlobalStats extends AppCompatActivity {
     Context appContext;
     ArrayList<Stat> arrayStats = new ArrayList<Stat>();
     ListView lv;
-
+    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,13 @@ public class ShowGlobalStats extends AppCompatActivity {
         db = new DBInterface(this);
         appContext = this;
         totalCases = findViewById(R.id.totalCases);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
         try {
             db.obre();
             Cursor c = db.obtainAllInformation();
@@ -88,7 +98,7 @@ public class ShowGlobalStats extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (isNetworkConnected(getApplicationContext())) {
+                if (isNetworkWifi(getApplicationContext())) {
                     db.obre();
                     TextView textName = view.findViewById(R.id.nameCountry);
                     codeName = textName.getText().toString();
@@ -103,7 +113,7 @@ public class ShowGlobalStats extends AppCompatActivity {
                     startActivity(i);
                     db.tanca();
                 } else {
-                    Toast.makeText(appContext, "You need internet(Wifi) to access to every stat of the country!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(appContext, "You need internet (Wifi) to access to every stat of the country!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

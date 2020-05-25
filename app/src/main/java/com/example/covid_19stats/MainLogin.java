@@ -85,6 +85,7 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
                 else if (c.getCount() == 1) {
                     c.moveToNext();
                     Toast.makeText(this, "Hello, " + c.getString(0), Toast.LENGTH_SHORT).show();
+                    finish();
                     startActivity(launchMainMenu);
                 }
                 db.tanca();

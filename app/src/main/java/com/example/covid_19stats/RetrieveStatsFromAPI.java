@@ -28,6 +28,8 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
+import static com.example.covid_19stats.MainLogin.editor;
+
 public class RetrieveStatsFromAPI extends AppCompatActivity {
     DBInterface db;
     Context appContext;
@@ -38,6 +40,7 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.progress_bar_activity);
         db = new DBInterface(this);
         appContext = this;
         i = new Intent(getApplicationContext(), ShowGlobalStats.class);
@@ -79,7 +82,7 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                 conn.setSSLSocketFactory(context.getSocketFactory());
                 conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
                 conn.setRequestProperty("Accept", "application/json");
-                conn.setConnectTimeout(15 * 500);
+                conn.setConnectTimeout(15 * 200);
                 conn.setRequestMethod("POST");
 
                 DataOutputStream os = new DataOutputStream(conn.getOutputStream());
@@ -106,8 +109,9 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                     return new String("false : " + responseCode);
                 }
             } catch (Exception e) {
-                MainLogin.editor.putBoolean("firstStart", true);
-                MainLogin.editor.apply();
+                editor.putBoolean("firstStart", true);
+                editor.apply();
+                editor.commit();
                 return new String("Exception: " + e.getMessage());
             }
         }

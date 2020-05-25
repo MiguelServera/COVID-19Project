@@ -259,9 +259,14 @@ public class DBInterface {
                 null, null, null, null, null);
     }
 
-    public Cursor obtainTopTenInformation() {
+    public Cursor obtainTopSevenInformation() {
         return bd.query(GLOBAL_TABLE, new String[]{KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_CASES, KEY_DEATHS, KEY_RECU},
                 null, null, KEY_COUNTRY_NAME, null, KEY_CASES + " DESC limit 7");
+    }
+
+    public Cursor obtainCountryInformation(String name) {
+        return bd.query(GLOBAL_TABLE, new String[]{KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_CASES, KEY_DEATHS, KEY_RECU},
+                KEY_COUNTRY_NAME + " = " + "\"" + name + "\"", null, null, null, null);
     }
 
     public Cursor obtainAllCCAAInformation() {

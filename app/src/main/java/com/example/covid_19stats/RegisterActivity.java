@@ -71,6 +71,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                     else
                         Toast.makeText(this, "The user is already inserted", Toast.LENGTH_SHORT).show();
+                    finish();
                     startActivity(i);
                 } else {
                     Toast.makeText(this, "Credencials do not meet the requirements", Toast.LENGTH_LONG).show();

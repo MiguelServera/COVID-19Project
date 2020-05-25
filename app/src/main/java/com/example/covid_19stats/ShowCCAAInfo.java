@@ -13,7 +13,10 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,6 +36,7 @@ public class ShowCCAAInfo extends AppCompatActivity implements AdapterView.OnIte
     ImageView flagCCAA;
     int[] flagsArray;
     boolean firstInfo = true;
+    private DrawerLayout drawer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,9 +50,16 @@ public class ShowCCAAInfo extends AppCompatActivity implements AdapterView.OnIte
         spinner.setOnItemSelectedListener(this);
         descriptionText = findViewById(R.id.notesCCAA);
         descriptionText.setMovementMethod(new ScrollingMovementMethod());
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
         flagsArray = new int[]{R.drawable.andalucia, R.drawable.aragon, R.drawable.asturias,
-                R.drawable.balears, R.drawable.canarias, R.drawable.cantabria,
-                R.drawable.castillaleon, R.drawable.catalonia, R.drawable.valencia,
+                R.drawable.balears, R.drawable.canarias, R.drawable.cantabria, R.drawable.castillaleon,
+                R.drawable.castilla, R.drawable.catalonia, R.drawable.valencia,
                 R.drawable.extremadura, R.drawable.galicia, R.drawable.madrid, R.drawable.murcia,
                 R.drawable.navarra, R.drawable.vasco, R.drawable.rioja, R.drawable.ceuta, R.drawable.melilla};
         db = new DBInterface(this);
