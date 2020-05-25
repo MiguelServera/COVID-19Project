@@ -5,6 +5,7 @@ Para testear se necesita:
 - Cambiar la url de conexión a la que proporciona Conveyor en local y poner /covidTest.
 - Dar permisos totales a la aplicación.
 - Tener wifi la primera vez que hagamos login.
+- La barra lateral aún no está implementada
 
 Manual de instalación:
 Tener Android Studio y Microsoft Visual Studio instalados.
@@ -18,5 +19,7 @@ Abrir el proyecto clonado de la API con Visual Studio e iniciar la solución de 
 Abrir el proyecto clonado de Android y cambiar la url de conexión en la clase "RetrieveStatsFromAPI" a la url que proporciona Conveyor antes de iniciar la app.
 
 Inciar la app.
+
+(Puede haber errores!) 
 
 (Postearé imágenes en un futuro)
