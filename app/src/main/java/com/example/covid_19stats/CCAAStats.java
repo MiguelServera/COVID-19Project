@@ -10,7 +10,8 @@ public class CCAAStats {
     int uci;
     int deaths;
 
-    public CCAAStats(){}
+    public CCAAStats() {
+    }
 
     public CCAAStats(String code, String date, int cases, int pcr, int testAC, int hospitalized, int uci, int deaths) {
         this.code = code;

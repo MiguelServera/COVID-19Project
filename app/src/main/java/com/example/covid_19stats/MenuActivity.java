@@ -47,6 +47,8 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 button3.setEnabled(false);
                 button4.setEnabled(false);
+                button5.setEnabled(false);
+                button6.setEnabled(false);
                 Toast.makeText(this, "If this is your first time opening the app, please make sure you have connection to download data", Toast.LENGTH_LONG).show();
             }
         } else {
@@ -82,14 +84,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         else if (view == button3) startActivity(launchACActivity);
 
-        else if (view == button5)
-        {
+        else if (view == button5) {
             launchGraphsActivity.putExtra("graphType", "global");
             startActivity(launchGraphsActivity);
-        }
-
-        else if (view == button6)
-        {
+        } else if (view == button6) {
             launchGraphsActivity.putExtra("graphType", "topten");
             startActivity(launchGraphsActivity);
         }

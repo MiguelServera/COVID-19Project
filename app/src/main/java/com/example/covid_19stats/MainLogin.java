@@ -75,16 +75,20 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
             String textEmail, textPassword;
             textEmail = editEmail.getText().toString();
             textPassword = editPassword.getText().toString();
-            db.obre();
-            c = db.obtainUserInfo(textEmail, textPassword);
-            if (c.getCount() == 0)
-                Toast.makeText(this, "There is no user like that", Toast.LENGTH_SHORT).show();
-            else if (c.getCount() == 1) {
-                c.moveToNext();
-                Toast.makeText(this, "Hello, " + c.getString(0), Toast.LENGTH_SHORT).show();
-                startActivity(launchMainMenu);
+            if ((textEmail.equals("") && textPassword.equals("")) || (textEmail.equals("") || textPassword.equals(""))) {
+                Toast.makeText(this, "The camps can't be empty", Toast.LENGTH_SHORT).show();
+            } else {
+                db.obre();
+                c = db.obtainUserInfo(textEmail, textPassword);
+                if (c.getCount() == 0)
+                    Toast.makeText(this, "There is no user like that", Toast.LENGTH_SHORT).show();
+                else if (c.getCount() == 1) {
+                    c.moveToNext();
+                    Toast.makeText(this, "Hello, " + c.getString(0), Toast.LENGTH_SHORT).show();
+                    startActivity(launchMainMenu);
+                }
+                db.tanca();
             }
-            db.tanca();
         }
     }
 
@@ -102,7 +106,7 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
                     REQUEST_EXTERNAL_STORAGE
             );
             checkPermissions = false;
-        } else{
+        } else {
             checkPermissions = true;
         }
         return checkPermissions;

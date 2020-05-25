@@ -7,7 +7,8 @@ public class Stat {
     int deaths;
     int cured;
 
-    public Stat(){}
+    public Stat() {
+    }
 
     public Stat(String code, String name, int cases, int deaths, int cured) {
         this.code = code;

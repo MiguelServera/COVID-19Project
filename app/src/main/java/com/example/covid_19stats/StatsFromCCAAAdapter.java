@@ -32,7 +32,7 @@ public class StatsFromCCAAAdapter extends ArrayAdapter {
         TextView testAC = (TextView) view.findViewById(R.id.testAC);
         TextView hospitalized = (TextView) view.findViewById(R.id.hospitalizedCCAA);
         TextView uci = (TextView) view.findViewById(R.id.uci);
-        TextView deaths= (TextView) view.findViewById(R.id.deathsCCAA);
+        TextView deaths = (TextView) view.findViewById(R.id.deathsCCAA);
 
         date.setText(String.valueOf(stat.getDate()));
         cases.setText(String.valueOf(stat.getCases()));

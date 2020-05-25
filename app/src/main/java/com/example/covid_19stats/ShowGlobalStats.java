@@ -11,9 +11,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
 import static com.example.covid_19stats.CheckConnection.isNetworkConnected;
 
 public class ShowGlobalStats extends AppCompatActivity {
@@ -74,7 +76,7 @@ public class ShowGlobalStats extends AppCompatActivity {
             deaths = c.getInt(c.getColumnIndex("deaths"));
             totalDeaths = deaths + totalDeaths;
             cured = c.getInt(c.getColumnIndex("cured"));
-            totalCured= cured + totalCured;
+            totalCured = cured + totalCured;
         }
         c.close();
         totalCases.setText("  Global cases: " + totalSum + "\n" + "  Total deaths: " + totalDeaths + "\n" + "  Total cured: " + totalCured);
@@ -86,8 +88,7 @@ public class ShowGlobalStats extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (isNetworkConnected(getApplicationContext()))
-                {
+                if (isNetworkConnected(getApplicationContext())) {
                     db.obre();
                     TextView textName = view.findViewById(R.id.nameCountry);
                     codeName = textName.getText().toString();
@@ -101,9 +102,7 @@ public class ShowGlobalStats extends AppCompatActivity {
                     i.putExtra("codename", c.getString(0));
                     startActivity(i);
                     db.tanca();
-                }
-
-                else {
+                } else {
                     Toast.makeText(appContext, "You need internet(Wifi) to access to every stat of the country!", Toast.LENGTH_SHORT).show();
                 }
             }

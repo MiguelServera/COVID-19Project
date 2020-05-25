@@ -3,7 +3,6 @@ package com.example.covid_19stats;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.PersistableBundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -157,6 +156,7 @@ public class ShowCCAAInfo extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void SelectFlag() {
+        //Doesn't work if I try to put "-1 or -2" on substring
         if (ccaaText.substring(ccaaText.length() - 2, ccaaText.length()).equals("AN")) flagCCAA.setImageResource(flagsArray[0]);
         else if (ccaaText.substring(ccaaText.length() - 2, ccaaText.length()).equals("AR")) flagCCAA.setImageResource(flagsArray[1]);
         else if (ccaaText.substring(ccaaText.length() - 2, ccaaText.length()).equals("AS")) flagCCAA.setImageResource(flagsArray[2]);

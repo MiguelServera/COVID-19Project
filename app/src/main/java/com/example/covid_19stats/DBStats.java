@@ -1,13 +1,9 @@
 package com.example.covid_19stats;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-import com.example.covid_19stats.DBInterface.*;
 
 import static com.example.covid_19stats.DBInterface.BD_NAME;
 import static com.example.covid_19stats.DBInterface.CREATE_ACTUAL_DATE_TABLE;
@@ -24,6 +20,7 @@ public class DBStats extends SQLiteOpenHelper {
     DBStats(Context con) {
         super(con, BD_NAME, null, VERSION);
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         try {
@@ -37,9 +34,11 @@ public class DBStats extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int VersioAntiga, int
             VersioNova) {
         db.execSQL("DROP TABLE IF EXISTS " + GLOBAL_TABLE);
-        onCreate(db); }
+        onCreate(db);
+    }
 }
