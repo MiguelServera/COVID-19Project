@@ -12,121 +12,130 @@
     android:layout_height="match_parent"
     android:screenOrientation="portrait">
 
-    <LinearLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <ImageView
+        android:id="@+id/flagImage"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerCCAA"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:srcCompat="@drawable/andalucia" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/listViewShowCCAA"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCCAA">
+
+        <TextView
+            android:id="@+id/textDateCCAA"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/date"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/textCasesCCAA"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cases"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/textPCRCCAA"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/pcr"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/textTestAC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/testac"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/textHospitalized"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/hosp"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/textUciCCAA"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/uci"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/Deaths"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/deaths"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/spinnerCCAA"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/flagImage" />
+
+    <ListView
+        android:id="@+id/listViewShowCCAA"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/notesCCAA"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+    <TextView
+        android:id="@+id/notesCCAA"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:fadeScrollbars="false"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-        <ImageView
-            android:id="@+id/flagImage"
-            android:layout_width="match_parent"
-            android:layout_height="182dp"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/andalucia" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="11dp"
-            android:background="@color/design_default_color_primary" />
-
-        <Spinner
-            android:id="@+id/spinnerCCAA"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textDateCCAA"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Date"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/textCasesCCAA"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Cases"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/textPCRCCAA"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="PCR"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/textTestAC"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TestAC"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/textHospitalized"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Hosp."
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/textUciCCAA"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="UCI"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/Deaths"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Deaths"
-                android:textAlignment="center" />
-        </LinearLayout>
-
-        <ListView
-            android:id="@+id/listViewShowCCAA"
-            android:layout_width="match_parent"
-            android:layout_height="313dp" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="@color/design_default_color_primary" />
-
-        <TextView
-            android:id="@+id/notesCCAA"
-            android:layout_width="match_parent"
-            android:layout_height="112dp"
-            android:fadeScrollbars="false"
-            android:scrollbars="vertical" />
-
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/listViewShowCCAA" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

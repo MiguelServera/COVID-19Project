@@ -54,14 +54,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             } else if (MainLogin.firstUser == false) {
                 if (Patterns.EMAIL_ADDRESS.matcher(textEmail).matches() && isValidPassword(textPassword)) {
-                    db.insertUserInfo(textUsername, textEmail, textPassword);
-                    MainLogin.editor.putBoolean("firstUser", true);
-                    MainLogin.editor.apply();
-                    Toast.makeText(this, "First User Inserted", Toast.LENGTH_SHORT).show();
-                    startActivity(i);
+                    if(db.insertUserInfo(textUsername, textEmail, textPassword) != -1) {
+                        Toast.makeText(this, "First User Inserted", Toast.LENGTH_SHORT).show();
+                        MainLogin.editor.putBoolean("firstUser", true);
+                        MainLogin.editor.apply();
+                        startActivity(i);
+                    }
+                    else Toast.makeText(this, "The user is already inserted", Toast.LENGTH_SHORT).show();
 
                 } else {
-                    Toast.makeText(this, "Email or password not okay!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Credencials do not meet the requirements", Toast.LENGTH_SHORT).show();
                 }
 
             } else {

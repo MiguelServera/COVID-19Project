@@ -53,7 +53,7 @@ public class ShowCountryInfo extends AppCompatActivity {
         nameCountry = extras.getString("name");
         textNameCountry = findViewById(R.id.nameCountry);
         textNameCountry.setText(extras.getString("name"));
-        totalCases = findViewById(R.id.textView);
+        totalCases = findViewById(R.id.detailsCountry);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);

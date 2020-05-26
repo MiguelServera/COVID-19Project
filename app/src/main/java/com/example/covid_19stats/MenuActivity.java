@@ -29,7 +29,7 @@ import static com.example.covid_19stats.MainLogin.editor;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button ccaa_table, global_table, global_graph, topTen_graph;
+    Button ccaa_table, global_table, global_graph, topTen_graph, working;
     DBInterface db;
     Intent launchApiActivity, launchBdActivity, launchDownloadACActivity, launchGraphsActivity, launchACActivity;
     private DrawerLayout drawer;
@@ -43,6 +43,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         global_table.setOnClickListener(this);
         global_graph.setOnClickListener(this);
         topTen_graph.setOnClickListener(this);
+        working.setOnClickListener(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
@@ -100,6 +101,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         global_table = findViewById(R.id.global_table_button);
         global_graph = findViewById(R.id.global_button);
         topTen_graph = findViewById(R.id.country_button);
+        working = findViewById(R.id.ccaa_button);
         launchApiActivity = new Intent(this, RetrieveStatsFromAPI.class);
         launchBdActivity = new Intent(this, ShowGlobalStats.class);
         launchGraphsActivity = new Intent(this, ShowGraphs.class);
@@ -121,6 +123,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         } else if (view == topTen_graph) {
             launchGraphsActivity.putExtra("graphType", "topten");
             startActivity(launchGraphsActivity);
+        }
+
+        else if (view == working) {
+            startActivity(new Intent(this, MoreInfoCCAA.class));
         }
 
     }

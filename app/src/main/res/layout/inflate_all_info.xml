@@ -34,7 +34,7 @@
             android:layout_weight="1"
             android:text="NoInfo"
             android:textAlignment="center"
-            android:textColor="#E68D47" />
+            android:textColor="#E07F37" />
 
         <TextView
             android:id="@+id/deathsCountry"
@@ -52,7 +52,7 @@
             android:layout_weight="1"
             android:text="NoInfo"
             android:textAlignment="center"
-            android:textColor="#4FC91B" />
+            android:textColor="#31860E" />
 
     </LinearLayout>
 

@@ -29,9 +29,9 @@
         <activity android:name=".CheckConnection" />
         <activity android:name=".ShowGlobalStats" />
         <activity android:name=".ShowGraphs"/>
-        <activity android:name=".RetrieveStatsAC"/>
         <activity android:name=".ShowCCAAInfo"/>
         <activity android:name=".DownloadFileCCAA"/>
+        <activity android:name=".MoreInfoCCAA"/>
     </application>
 
 </manifest>

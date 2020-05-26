@@ -15,15 +15,16 @@
 
         <ImageView
             android:id="@+id/graphImage"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="211dp"
+            android:layout_height="233dp"
             android:layout_marginTop="16dp"
+            android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.033"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.339"
+            app:layout_constraintVertical_bias="0.348"
             app:srcCompat="@drawable/graph" />
 
         <Button
@@ -54,6 +55,7 @@
             android:id="@+id/ccaa_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:text="Working on it"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -89,13 +91,14 @@
             android:id="@+id/imageView"
             android:layout_width="200dp"
             android:layout_height="200dp"
+            android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.981"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.359"
-            app:srcCompat="@drawable/table" />
+            app:srcCompat="@drawable/tablestats" />
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"

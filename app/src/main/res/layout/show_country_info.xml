@@ -13,53 +13,50 @@
         android:layout_height="match_parent"
         android:screenOrientation="portrait">
 
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        <TextView
+            android:id="@+id/nameCountry"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="@string/textview"
+            android:textAlignment="center"
+            android:textColor="#8719BD"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <ListView
+            android:id="@+id/listViewShowCountry"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/detailsCountry"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameCountry" />
+
+        <TextView
+            android:id="@+id/detailsCountry"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimary"
-                android:elevation="4dp"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="28dp" />
-
-            <TextView
-                android:id="@+id/nameCountry"
-                android:layout_width="match_parent"
-                android:layout_height="62dp"
-                android:text="TextView"
-                android:textAlignment="center"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <ListView
-                android:id="@+id/listViewShowCountry"
-                android:layout_width="match_parent"
-                android:layout_height="486dp" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="13dp" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="84dp"
-                android:text="TextView" />
-
-        </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@+id/listViewShowCountry" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

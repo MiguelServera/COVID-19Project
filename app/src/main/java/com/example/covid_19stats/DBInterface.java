@@ -273,4 +273,9 @@ public class DBInterface {
         return bd.query(CCAA_STATS, new String[]{KEY_CCAACODE, KEY_DATE, KEY_CASES, KEY_PCR, KEY_TESTAC, KEY_HOSPITALIZED, KEY_UCI, KEY_DEATHS},
                 null, null, null, null, null);
     }
+
+    public Cursor obtainCodeCCAAInformation(String code) {
+        return bd.query(CCAA_STATS, new String[]{KEY_CCAACODE, KEY_DATE, KEY_CASES, KEY_PCR, KEY_TESTAC, KEY_HOSPITALIZED, KEY_UCI, KEY_DEATHS},
+                KEY_CCAACODE + "=" + "\"" + code + "\"", null, null, null, null);
+    }
 }

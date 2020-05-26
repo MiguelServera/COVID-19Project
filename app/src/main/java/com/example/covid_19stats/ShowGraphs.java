@@ -38,6 +38,7 @@ public class ShowGraphs extends AppCompatActivity {
         pieChart.setDrawHoleEnabled(false);
         pieChart.getDescription().setEnabled(false);
         pieChart.setTransparentCircleRadius(60f);
+
         db = new DBInterface(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
