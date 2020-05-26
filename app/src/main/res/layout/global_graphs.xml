@@ -34,7 +34,7 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintVertical_bias="0.416" />
 
-    <!--<com.github.mikephil.charting.charts.LineChart
+    <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/linegraph"
         android:layout_width="376dp"
         android:layout_height="522dp"
@@ -43,7 +43,7 @@
         app:layout_constraintHorizontal_bias="0.542"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.416" />-->
+        app:layout_constraintVertical_bias="0.416" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

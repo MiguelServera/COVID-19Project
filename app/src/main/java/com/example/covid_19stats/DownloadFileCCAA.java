@@ -24,6 +24,8 @@ public class DownloadFileCCAA extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.progress_bar_activity);
+        db = new DBInterface(this);
         file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/COVIDStats");
         if (file.exists()) file.delete();
         try {
@@ -38,12 +40,21 @@ public class DownloadFileCCAA extends AppCompatActivity {
             downloadManager.enqueue(request);
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            InsertCCAAInfo();
         }
-        InsertCCAAInfo();
     }
 
     public void InsertCCAAInfo() {
+        db.obre();
+        db.deleteDatabaseCCAA();
+        db.createCCAACountry();
+        while(true)
+        {
+            if (file.exists()) break;
+        }
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/COVIDStats");
+        System.out.println(file.exists());
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
@@ -52,11 +63,8 @@ public class DownloadFileCCAA extends AppCompatActivity {
             while ((line = br.readLine()) != null) {
                 String[] tokens = line.split(",", -1);
                 if (tokens[0].length() > 2) {
-                    description = description + tokens[0] + "\n";
-                }
-                if (tokens[0].equals(ccaaText.substring(ccaaText.length() - 2, ccaaText.length())))
-                //Doesn't work if I try to put "-1 or -2"
-                {
+                } else {
+                    //Doesn't work if I try to put "-1 or -2"
                     CCAAStats acStats = new CCAAStats();
                     acStats.setCode(tokens[0]);
                     acStats.setDate(tokens[1]);
@@ -86,6 +94,7 @@ public class DownloadFileCCAA extends AppCompatActivity {
             Log.i("ThisActivity", "Error readin data file on line");
             e.printStackTrace();
         } finally {
+            finish();
             db.tanca();
         }
     }

@@ -69,9 +69,6 @@ public class ShowCCAAInfo extends AppCompatActivity implements AdapterView.OnIte
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         ccaaText = parent.getItemAtPosition(position).toString();
         arrayCCAA.clear();
-        db.obre();
-        db.deleteDatabaseCCAA();
-        db.createCCAACountry();
         RetrieveStatsAC();
         SelectFlag();
         descriptionText.setText(description);

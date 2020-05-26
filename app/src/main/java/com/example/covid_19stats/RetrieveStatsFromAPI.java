@@ -270,7 +270,6 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                         ",\"cured\":" + totalCuredCases + "}";
             }
             insertjsonObject = new JSONObject(object);
-            System.out.println(insertjsonObject.toString());
             if (db.insertGlobalInformation(insertjsonObject) != 1) ;
 
         } catch (JSONException e) {

@@ -22,16 +22,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".RetrieveStatsFromAPI" />
-        <activity android:name=".MenuActivity" />
-        <activity android:name=".ShowCountryInfo" />
-        <activity android:name=".CheckConnection" />
-        <activity android:name=".ShowGlobalStats" />
-        <activity android:name=".ShowGraphs"/>
-        <activity android:name=".ShowCCAAInfo"/>
-        <activity android:name=".DownloadFileCCAA"/>
-        <activity android:name=".MoreInfoCCAA"/>
+        <activity android:name=".RegisterActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".RetrieveStatsFromAPI" android:screenOrientation="portrait"/>
+        <activity android:name=".MenuActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ShowCountryInfo" android:screenOrientation="portrait"/>
+        <activity android:name=".CheckConnection" android:screenOrientation="portrait"/>
+        <activity android:name=".ShowGlobalStats" android:screenOrientation="portrait"/>
+        <activity android:name=".ShowGraphs" android:screenOrientation="portrait"/>
+        <activity android:name=".ShowCCAAInfo" android:screenOrientation="portrait"/>
+        <activity android:name=".DownloadFileCCAA" android:screenOrientation="portrait"/>
+        <activity android:name=".MoreInfoCCAA" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
