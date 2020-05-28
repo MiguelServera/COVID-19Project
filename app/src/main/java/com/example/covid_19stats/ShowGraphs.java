@@ -3,7 +3,6 @@ package com.example.covid_19stats;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +23,7 @@ import java.util.ArrayList;
 
 public class ShowGraphs extends AppCompatActivity {
     static BarChart barChart;
-    static PieChart pieChart;
+    static PieChart pieTotal, piePercent;
     static DBInterface db;
     private DrawerLayout drawer;
 
@@ -33,11 +32,12 @@ public class ShowGraphs extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.global_graphs);
         barChart = findViewById(R.id.bargraph);
-        pieChart = findViewById(R.id.piegraph);
-        pieChart.setExtraOffsets(5, 10, 5, 5);
-        pieChart.setDrawHoleEnabled(false);
-        pieChart.getDescription().setEnabled(false);
-        pieChart.setTransparentCircleRadius(60f);
+        pieTotal = findViewById(R.id.pieTotal);
+        piePercent = findViewById(R.id.piePercent);
+        pieTotal.setExtraOffsets(5, 10, 5, 5);
+        pieTotal.setDrawHoleEnabled(false);
+        pieTotal.getDescription().setEnabled(false);
+        pieTotal.setTransparentCircleRadius(60f);
 
         db = new DBInterface(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -50,8 +50,8 @@ public class ShowGraphs extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         String graphType = extras.getString("graphType");
         if (graphType.equals("global")) GlobalGraph();
-        if (graphType.equals("topten")) CountryGraph();
-        if (graphType.equals("ccaa")) CCAAGraph();
+        if (graphType.equals("topten"))
+        {CountryGraph(); CCAAGraph();}
     }
 
     public void GlobalGraph() {
@@ -84,7 +84,7 @@ public class ShowGraphs extends AppCompatActivity {
         getData.addDataSet(setDataDeaths);
         getData.setBarWidth(0.5f);
         barChart.setData(getData);
-        pieChart.setAlpha(0);
+        pieTotal.setAlpha(0);
     }
 
     private void CountryGraph() {
@@ -103,12 +103,35 @@ public class ShowGraphs extends AppCompatActivity {
         PieData pieData = new PieData(pieDataSet);
         pieData.setValueTextSize(10f);
         pieData.setValueTextColor(Color.BLACK);
-        pieChart.setData(pieData);
+        pieTotal.setData(pieData);
         barChart.setAlpha(0);
         c.close();
         db.tanca();
     }
 
     private void CCAAGraph() {
+        db.obre();
+        Cursor c = db.obtainTopSevenInformation();
+        ArrayList<PieEntry> valuesCCAA = new ArrayList<>();
+        while (c.moveToNext()) {
+            Cursor c2 = db.obtainPopulationFromOneCountry(c.getString(1));
+            c2.moveToFirst();
+            int cases = Integer.parseInt(c.getString(2));
+            int population = Integer.parseInt(c2.getString(2));
+            float percentOfCases = (float) population / (cases * 100); 
+            valuesCCAA.add(new PieEntry(percentOfCases, c.getString(1)));
+        }
+        PieDataSet pieDataSet = new PieDataSet(valuesCCAA, "Top Cases Worldwide");
+        pieDataSet.setValueTextColor(Color.DKGRAY);
+        pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        pieDataSet.setSliceSpace(1f);
+        pieDataSet.setSelectionShift(6f);
+        PieData pieData = new PieData(pieDataSet);
+        pieData.setValueTextSize(10f);
+        pieData.setValueTextColor(Color.BLACK);
+        piePercent.setData(pieData);
+        barChart.setAlpha(0);
+        c.close();
+        db.tanca();
     }
 }

@@ -120,18 +120,17 @@
         android:id="@+id/listViewShowCCAA"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/notesCCAA"
+        app:layout_constraintBottom_toTopOf="@+id/moreInfoButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
-    <TextView
-        android:id="@+id/notesCCAA"
+    <Button
+        android:id="@+id/moreInfoButton"
         android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:fadeScrollbars="false"
-        android:scrollbars="vertical"
+        android:layout_height="wrap_content"
+        android:text="more information"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

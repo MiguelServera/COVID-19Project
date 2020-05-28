@@ -1,5 +1,6 @@
 package com.example.covid_19stats;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Environment;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -18,14 +20,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 
-public class ShowCCAAInfo extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class ShowCCAAInfo extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     DBInterface db;
     ArrayList<CCAAStats> arrayCCAA = new ArrayList<>();
     ListView lv;
@@ -34,6 +31,7 @@ public class ShowCCAAInfo extends AppCompatActivity implements AdapterView.OnIte
     String description = "";
     TextView descriptionText;
     ImageView flagCCAA;
+    Button moreInfoButton;
     int[] flagsArray;
     boolean firstInfo = true;
     private DrawerLayout drawer;
@@ -44,12 +42,12 @@ public class ShowCCAAInfo extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.show_ccaa_info);
         Spinner spinner = findViewById(R.id.spinnerCCAA);
         flagCCAA = findViewById(R.id.flagImage);
+        moreInfoButton = findViewById(R.id.moreInfoButton);
+        moreInfoButton.setOnClickListener(this);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.ccaaNames, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
-        descriptionText = findViewById(R.id.notesCCAA);
-        descriptionText.setMovementMethod(new ScrollingMovementMethod());
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
@@ -66,12 +64,18 @@ public class ShowCCAAInfo extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
+    public void onClick(View v) {
+        Intent i = new Intent(this, MoreInfoCCAA.class);
+        i.putExtra("code", ccaaText.substring(ccaaText.length() - 2, ccaaText.length()));
+        startActivity(i);
+    }
+
+    @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         ccaaText = parent.getItemAtPosition(position).toString();
         arrayCCAA.clear();
         RetrieveStatsAC();
         SelectFlag();
-        descriptionText.setText(description);
     }
 
     @Override

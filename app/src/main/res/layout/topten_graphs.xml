@@ -13,7 +13,7 @@
     android:screenOrientation="portrait">
 
     <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/piegraph"
+        android:id="@+id/pieTotal"
         android:layout_width="376dp"
         android:layout_height="522dp"
         app:layout_constraintBottom_toBottomOf="parent"

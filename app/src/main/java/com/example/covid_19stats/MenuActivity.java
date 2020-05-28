@@ -8,6 +8,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -25,7 +26,6 @@ import java.util.Locale;
 
 import static com.example.covid_19stats.CheckConnection.isNetworkConnected;
 import static com.example.covid_19stats.CheckConnection.isNetworkWifi;
-import static com.example.covid_19stats.MainLogin.editor;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -51,18 +51,21 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
         if (MainLogin.firstStart) {
             if (isNetworkConnected(getApplicationContext())) {
                 if (isNetworkWifi(getApplicationContext())) {
                     editor.putBoolean("firstStart", false);
                     editor.apply();
                     editor.commit();
-                    startActivity(launchDownloadACActivity);
                     startActivity(launchApiActivity);
-                }
+                    startActivity(launchDownloadACActivity);
 
+                }
                 else
                 {
+                    startActivity(launchDownloadACActivity);
                     global_table.setEnabled(false);
                     global_graph.setEnabled(false);
                     topTen_graph.setEnabled(false);
@@ -80,8 +83,9 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             if (isNetworkConnected(getApplicationContext())) {
                 if (checkDate()) {
                     if (isNetworkWifi(getApplicationContext())) {
-                        startActivity(launchDownloadACActivity);
                         startActivity(launchApiActivity);
+                        startActivity(launchDownloadACActivity);
+
                         Toast.makeText(this, "New data downloaded correctly", Toast.LENGTH_SHORT).show();
                     }
                     else
@@ -108,7 +112,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         launchACActivity = new Intent(this, ShowCCAAInfo.class);
         launchDownloadACActivity = new Intent(this, DownloadFileCCAA.class);
         db = new DBInterface(this);
-
     }
 
     @Override
@@ -176,10 +179,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         return dateFormat.format(date);
     }
 
-    @Override
+    /*@Override
     public void onBackPressed()
     {
         startActivity(new Intent(this, MainLogin.class));
         finish();
-    }
+    }*/
 }
