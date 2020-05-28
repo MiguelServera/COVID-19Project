@@ -1,6 +1,9 @@
 package com.example.covid_19stats;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.nfc.FormatException;
@@ -20,6 +23,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     Button button;
     DBInterface db;
     Intent i;
+    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         button.setOnClickListener(this);
         db = new DBInterface(this);
         i = new Intent(this, MainLogin.class);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
     }
 
     @Override
@@ -54,13 +65,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             } else if (MainLogin.firstUser == false) {
                 if (Patterns.EMAIL_ADDRESS.matcher(textEmail).matches() && isValidPassword(textPassword)) {
-                    if(db.insertUserInfo(textUsername, textEmail, textPassword) != -1) {
+                    if (db.insertUserInfo(textUsername, textEmail, textPassword) != -1) {
                         Toast.makeText(this, "First User Inserted", Toast.LENGTH_SHORT).show();
                         MainLogin.editor.putBoolean("firstUser", true);
                         MainLogin.editor.apply();
                         startActivity(i);
-                    }
-                    else Toast.makeText(this, "The user is already inserted", Toast.LENGTH_SHORT).show();
+                    } else
+                        Toast.makeText(this, "The user is already inserted", Toast.LENGTH_SHORT).show();
 
                 } else {
                     Toast.makeText(this, "Credencials do not meet the requirements", Toast.LENGTH_SHORT).show();

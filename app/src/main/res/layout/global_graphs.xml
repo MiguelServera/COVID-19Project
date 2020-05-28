@@ -87,9 +87,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:itemTextColor="@color/colorPrimaryDark"
         android:background="@drawable/skysun"
         app:headerLayout="@layout/nav_header"
+        app:itemTextColor="@color/colorPrimaryDark"
         app:menu="@menu/drawer_menu"
         tools:layout_editor_absoluteX="213dp"
         tools:layout_editor_absoluteY="80dp">

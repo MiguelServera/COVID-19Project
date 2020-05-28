@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -82,7 +81,7 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                 conn.setSSLSocketFactory(context.getSocketFactory());
                 conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
                 conn.setRequestProperty("Accept", "application/json");
-                conn.setConnectTimeout(15 * 200);
+                conn.setConnectTimeout(15 * 150);
                 conn.setRequestMethod("POST");
 
                 DataOutputStream os = new DataOutputStream(conn.getOutputStream());
@@ -106,19 +105,20 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                     return sb.toString();
 
                 } else {
+                    finish();
                     return new String("false : " + responseCode);
                 }
             } catch (Exception e) {
                 editor.putBoolean("firstStart", true);
                 editor.apply();
                 editor.commit();
+                finish();
                 return new String("Exception: " + e.getMessage());
             }
         }
 
         public void onPostExecute(String result) {
             try {
-                Log.i("Result", result);
                 db.obre();
                 db.deleteDatabaseStats();
                 db.createTables();

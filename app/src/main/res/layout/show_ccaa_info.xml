@@ -7,144 +7,145 @@
     android:layout_height="match_parent"
     android:layout_gravity="start"
     android:screenOrientation="portrait">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:screenOrientation="portrait">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        android:layout_height="match_parent"
+        android:screenOrientation="portrait">
 
-    <ImageView
-        android:id="@+id/flagImage"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:scaleType="centerInside"
-        app:layout_constraintBottom_toTopOf="@+id/spinnerCCAA"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:srcCompat="@drawable/andalucia" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/listViewShowCCAA"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCCAA">
+        <ImageView
+            android:id="@+id/flagImage"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:scaleType="centerInside"
+            app:layout_constraintBottom_toTopOf="@+id/spinnerCCAA"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:srcCompat="@drawable/andalucia" />
 
-        <TextView
-            android:id="@+id/textDateCCAA"
-            android:layout_width="60dp"
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/listViewShowCCAA"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCCAA">
+
+            <TextView
+                android:id="@+id/textDateCCAA"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/date"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/textCasesCCAA"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/cases"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/textPCRCCAA"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/pcr"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/textTestAC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/testac"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/textHospitalized"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/hosp"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/textUciCCAA"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/uci"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/Deaths"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/deaths"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <Spinner
+            android:id="@+id/spinnerCCAA"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/flagImage" />
+
+        <ListView
+            android:id="@+id/listViewShowCCAA"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/moreInfoButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+        <Button
+            android:id="@+id/moreInfoButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/date"
-            android:textAlignment="center" />
+            android:text="more information"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/listViewShowCCAA" />
 
-        <TextView
-            android:id="@+id/textCasesCCAA"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/cases"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/textPCRCCAA"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/pcr"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/textTestAC"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/testac"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/textHospitalized"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/hosp"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/textUciCCAA"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/uci"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/Deaths"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/deaths"
-            android:textAlignment="center" />
-    </LinearLayout>
-
-    <Spinner
-        android:id="@+id/spinnerCCAA"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/flagImage" />
-
-    <ListView
-        android:id="@+id/listViewShowCCAA"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/moreInfoButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
-    <Button
-        android:id="@+id/moreInfoButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="more information"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listViewShowCCAA" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:itemTextColor="@color/colorPrimaryDark"
         android:background="@drawable/skysun"
         app:headerLayout="@layout/nav_header"
+        app:itemTextColor="@color/colorPrimaryDark"
         app:menu="@menu/drawer_menu"
         tools:layout_editor_absoluteX="213dp"
         tools:layout_editor_absoluteY="80dp">

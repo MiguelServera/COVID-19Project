@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -18,13 +21,13 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import java.util.ArrayList;
 
 public class MoreInfoCCAA extends AppCompatActivity {
-    String[][] arrayCode;
     String code;
     String infoCCAA = "";
     DBInterface db;
     LineChart lineChartUci, lineChartHospi, lineChartPcr, lineChartDeaths;
     TextView textView;
     ArrayList<String> xLabel = new ArrayList<>();
+    private DrawerLayout drawer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,13 +35,11 @@ public class MoreInfoCCAA extends AppCompatActivity {
         setContentView(R.layout.ccaa_graph);
         Bundle extras = getIntent().getExtras();
         code = extras.getString("code");
-        System.out.println(code);
         lineChartUci = findViewById(R.id.uciTotal);
         lineChartHospi = findViewById(R.id.hospiTotal);
         lineChartPcr = findViewById(R.id.pcrTotal);
         lineChartDeaths = findViewById(R.id.deathTotal);
         textView = findViewById(R.id.moreInfoCCAA);
-
         db = new DBInterface(this);
         db.obre();
         GetUciTotalCases();
@@ -47,6 +48,13 @@ public class MoreInfoCCAA extends AppCompatActivity {
         GetDeceasesTotalCases();
         textView.setText(infoCCAA + "\"" + "If needed, you can pinch(zoom) out and in to see detailed information. ");
         textView.setMovementMethod(new ScrollingMovementMethod());
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
         db.tanca();
     }
 
@@ -106,7 +114,7 @@ public class MoreInfoCCAA extends AppCompatActivity {
                 manyDates = manyDates + 1.0f;
             }
         }
-        infoCCAA = infoCCAA + "Average augment of people hospitalized per day: " +(AVGHospcases / manyDates + "\n");
+        infoCCAA = infoCCAA + "Average augment of people hospitalized per day: " + (AVGHospcases / manyDates + "\n");
         XAxis xAxis = lineChartHospi.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
@@ -143,7 +151,7 @@ public class MoreInfoCCAA extends AppCompatActivity {
                 manyDates = manyDates + 1.0f;
             }
         }
-        infoCCAA = infoCCAA + "Average augment of people PCR per day: " + (AVGPcrcases / manyDates + "\n");
+        infoCCAA = infoCCAA + "Average augment of PCR tests per day: " + (AVGPcrcases / manyDates + "\n");
         XAxis xAxis = lineChartPcr.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);

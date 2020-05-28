@@ -50,12 +50,13 @@ public class ShowGraphs extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         String graphType = extras.getString("graphType");
         if (graphType.equals("global")) GlobalGraph();
-        if (graphType.equals("topten"))
-        {CountryGraph(); CCAAGraph();}
+        if (graphType.equals("topten")) {
+            CountryGraph();
+            PercentGraph();
+        }
     }
 
     public void GlobalGraph() {
-        System.out.println("Y ahora por squi");
         db.obre();
         Cursor c = db.obtainAllGlobalInformation();
         c.moveToFirst();
@@ -109,7 +110,7 @@ public class ShowGraphs extends AppCompatActivity {
         db.tanca();
     }
 
-    private void CCAAGraph() {
+    private void PercentGraph() {
         db.obre();
         Cursor c = db.obtainTopSevenInformation();
         ArrayList<PieEntry> valuesCCAA = new ArrayList<>();
@@ -118,7 +119,7 @@ public class ShowGraphs extends AppCompatActivity {
             c2.moveToFirst();
             int cases = Integer.parseInt(c.getString(2));
             int population = Integer.parseInt(c2.getString(2));
-            float percentOfCases = (float) population / (cases * 100); 
+            float percentOfCases = (float) population / (cases * 100);
             valuesCCAA.add(new PieEntry(percentOfCases, c.getString(1)));
         }
         PieDataSet pieDataSet = new PieDataSet(valuesCCAA, "Top Cases Worldwide");
@@ -129,6 +130,7 @@ public class ShowGraphs extends AppCompatActivity {
         PieData pieData = new PieData(pieDataSet);
         pieData.setValueTextSize(10f);
         pieData.setValueTextColor(Color.BLACK);
+        piePercent.isUsePercentValuesEnabled();
         piePercent.setData(pieData);
         barChart.setAlpha(0);
         c.close();

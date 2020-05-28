@@ -28,8 +28,7 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
     Intent launchRegisterActivity, launchMainMenu;
     DBInterface db;
     static SharedPreferences.Editor editor;
-    static boolean firstStart;
-    static boolean firstUser;
+    static boolean firstStart, firstUser, loggedIn;
     private DrawerLayout drawer;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -53,6 +52,7 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
         editor = prefs.edit();
         firstStart = prefs.getBoolean("firstStart", true);
         firstUser = prefs.getBoolean("firstUser", false);
+        loggedIn = prefs.getBoolean("loggedIn", false);
         verifyStoragePermissions(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -63,6 +63,12 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
         toggle.syncState();
 
         if (firstUser) button2.setEnabled(true);
+        if (!firstStart) {
+            if (loggedIn) {
+                finish();
+                startActivity(launchMainMenu);
+            }
+        }
         db = new DBInterface(this);
     }
 
@@ -85,7 +91,9 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
                 else if (c.getCount() == 1) {
                     c.moveToNext();
                     Toast.makeText(this, "Hello, " + c.getString(0), Toast.LENGTH_SHORT).show();
-                    //finish();
+                    editor.putBoolean("loggedIn", true);
+                    editor.apply();
+                    editor.commit();
                     startActivity(launchMainMenu);
                 }
                 db.tanca();

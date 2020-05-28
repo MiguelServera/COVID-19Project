@@ -3,9 +3,6 @@ package com.example.covid_19stats;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Environment;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,7 +10,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,8 +24,6 @@ public class ShowCCAAInfo extends AppCompatActivity implements AdapterView.OnIte
     ListView lv;
     String ccaaText;
     StatsFromCCAAAdapter adapterCCAA;
-    String description = "";
-    TextView descriptionText;
     ImageView flagCCAA;
     Button moreInfoButton;
     int[] flagsArray;
@@ -98,7 +92,7 @@ public class ShowCCAAInfo extends AppCompatActivity implements AdapterView.OnIte
 
     private void RetrieveStatsAC() {
         db.obre();
-        Cursor c = db.obtainAllCCAAInformation();
+        Cursor c = db.obtainCodeCCAAInformation(ccaaText.substring(ccaaText.length() - 2, ccaaText.length()));
         c.moveToLast();
         while (c.moveToPrevious()) {
             CCAAStats ccaaStats = new CCAAStats();
@@ -107,7 +101,6 @@ public class ShowCCAAInfo extends AppCompatActivity implements AdapterView.OnIte
             ccaaStats.setCases(c.getInt(2));
             ccaaStats.setPcr(c.getInt(3));
             ccaaStats.setTestAC(c.getInt(4));
-            Log.i("TestAC", String.valueOf(c.getInt(4)));
             ccaaStats.setHospitalized(c.getInt(5));
             ccaaStats.setUci(c.getInt(6));
             ccaaStats.setDeaths(c.getInt(7));

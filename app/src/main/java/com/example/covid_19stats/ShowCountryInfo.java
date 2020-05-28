@@ -121,7 +121,6 @@ public class ShowCountryInfo extends AppCompatActivity {
 
         public void onPostExecute(String result) {
             try {
-                System.out.println(result);
                 db.obre();
                 db.deleteOneCountryStat();
                 db.createTableOneCountry();
@@ -167,14 +166,10 @@ public class ShowCountryInfo extends AppCompatActivity {
                                 + ",\"cured\":" + dataList.getJSONObject(a).getString("cured") + "}";
                     }
                     JSONObject insertJSONObject = new JSONObject(object);
-                    System.out.println(insertJSONObject.toString());
                     db.insertStatsFromOneCountry(insertJSONObject);
                 }
-                System.out.println(dataObject.getString("name"));
                 Cursor c = db.obtainOneCountryStat(dataObject.getString("name"));
-                System.out.println(c.getCount());
                 while (c.moveToNext()) {
-                    System.out.println(c.getString(2));
                     StatFromOneCountry indiStat = new StatFromOneCountry(c.getString(2),
                             c.getInt(3),
                             c.getInt(4),
@@ -197,8 +192,7 @@ public class ShowCountryInfo extends AppCompatActivity {
             lv.setAdapter(inflate);
         }
 
-        public void totalCasesCountry()
-        {
+        public void totalCasesCountry() {
             Cursor c = db.obtainCountryInformation(nameCountry);
             c.moveToFirst();
             totalCases.setText("  Global cases: " + c.getInt(2) + "\n" + "  Total deaths: " + c.getInt(3) + "\n" + "  Total cured: " + c.getInt(4));

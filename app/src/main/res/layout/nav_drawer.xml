@@ -5,9 +5,9 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.navigation.NavigationView
-        app:itemTextColor="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:screenOrientation="portrait"
+        app:itemTextColor="@color/colorPrimary"
         app:menu="@menu/drawer_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>

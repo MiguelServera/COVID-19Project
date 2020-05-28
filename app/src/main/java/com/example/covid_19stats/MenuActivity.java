@@ -29,10 +29,10 @@ import static com.example.covid_19stats.CheckConnection.isNetworkWifi;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button ccaa_table, global_table, global_graph, topTen_graph, working;
+    public static Button ccaa_table, global_table, global_graph, topTen_graph;
+    private DrawerLayout drawer;
     DBInterface db;
     Intent launchApiActivity, launchBdActivity, launchDownloadACActivity, launchGraphsActivity, launchACActivity;
-    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         global_table.setOnClickListener(this);
         global_graph.setOnClickListener(this);
         topTen_graph.setOnClickListener(this);
-        working.setOnClickListener(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
@@ -61,10 +60,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                     editor.commit();
                     startActivity(launchApiActivity);
                     startActivity(launchDownloadACActivity);
-
-                }
-                else
-                {
+                } else {
                     startActivity(launchDownloadACActivity);
                     global_table.setEnabled(false);
                     global_graph.setEnabled(false);
@@ -87,9 +83,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                         startActivity(launchDownloadACActivity);
 
                         Toast.makeText(this, "New data downloaded correctly", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
+                    } else {
                         startActivity(launchDownloadACActivity);
                         Toast.makeText(this, "Only new CCAA data downloaded, countries data requires WIFI", Toast.LENGTH_SHORT).show();
                     }
@@ -105,7 +99,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         global_table = findViewById(R.id.global_table_button);
         global_graph = findViewById(R.id.global_button);
         topTen_graph = findViewById(R.id.country_button);
-        working = findViewById(R.id.ccaa_button);
         launchApiActivity = new Intent(this, RetrieveStatsFromAPI.class);
         launchBdActivity = new Intent(this, ShowGlobalStats.class);
         launchGraphsActivity = new Intent(this, ShowGraphs.class);
@@ -127,19 +120,13 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             launchGraphsActivity.putExtra("graphType", "topten");
             startActivity(launchGraphsActivity);
         }
-
-        else if (view == working) {
-            startActivity(new Intent(this, MoreInfoCCAA.class));
-        }
-
     }
-
 
     private boolean checkDate() {
         db.obre();
         String todayData = getDateTime();
         String tomorrowDate = "";
-        Date concatenedDate = null;
+        Date concatenedDate;
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             Calendar cal = Calendar.getInstance();
@@ -178,11 +165,4 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         Date date = new Date();
         return dateFormat.format(date);
     }
-
-    /*@Override
-    public void onBackPressed()
-    {
-        startActivity(new Intent(this, MainLogin.class));
-        finish();
-    }*/
 }

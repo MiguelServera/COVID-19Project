@@ -5,7 +5,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,8 +17,6 @@ import java.io.IOException;
 public class DownloadFileCCAA extends AppCompatActivity {
     File file;
     DBInterface db;
-    String description = "";
-    String ccaaText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +54,6 @@ public class DownloadFileCCAA extends AppCompatActivity {
                 if (file.exists()) break;
             }
             File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/COVIDStats");
-            System.out.println(file.exists());
             try {
                 BufferedReader br = new BufferedReader(new FileReader(file));
                 String line;
@@ -94,7 +90,6 @@ public class DownloadFileCCAA extends AppCompatActivity {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
-                Log.i("ThisActivity", "Error readin data file on line");
                 e.printStackTrace();
             } finally {
                 finish();

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,8 +36,10 @@ public class DBInterface {
     public static final String CCAA_STATS = "StatsPerCCAA";
     public static final String ACTUAL_DATE_TABLE = "ActualDate";
     public static final String USER_INFO_TABLE = "UserInfo";
-
     public static final int VERSION = 1;
+    private final Context context;
+    private DBStats ajuda;
+    private SQLiteDatabase bd;
     public static final String CREATE_COUNTRY_TABLE = "create table " + COUNTRYTABLE + "( " +
             KEY_COUNTRY + " text not null, " +
             KEY_COUNTRY_NAME + " text not null, " +
@@ -85,10 +86,6 @@ public class DBInterface {
             KEY_EMAIL + " text unique, " +
             KEY_PASSWORD + " text not null);";
 
-    private final Context context;
-    private DBStats ajuda;
-    private SQLiteDatabase bd;
-
     public DBInterface(Context con) {
         this.context = con;
         ajuda = new DBStats(context);
@@ -128,42 +125,6 @@ public class DBInterface {
         initialValues.put(KEY_UCI, stats.getUci());
         initialValues.put(KEY_DEATHS, stats.getDeaths());
         return bd.insert(CCAA_STATS, null, initialValues);
-    }
-
-    public Cursor obtainAllInformation() {
-        return bd.query(COUNTRYTABLE, new String[]{KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_CASES, KEY_DEATHS, KEY_RECU},
-                null, null, null, null, null);
-    }
-
-
-    public void deleteDatabaseStats() {
-        bd.execSQL("DROP TABLE IF EXISTS " + COUNTRYTABLE);
-        bd.execSQL("DROP TABLE IF EXISTS " + GLOBAL_TABLE);
-        bd.execSQL("DROP TABLE IF EXISTS " + COUNTRY_POPULATION);
-        bd.execSQL("DROP TABLE IF EXISTS " + ACTUAL_DATE_TABLE);
-    }
-
-    public void deleteDatabaseCCAA() {
-        bd.execSQL("DROP TABLE IF EXISTS " + CCAA_STATS);
-    }
-
-    public void createCCAACountry() {
-        bd.execSQL(CREATE_CCAA_STATS_TABLE);
-    }
-
-    public void createTables() {
-        bd.execSQL(CREATE_COUNTRY_TABLE);
-        bd.execSQL(CREATE_GLOBAL_TABLE);
-        bd.execSQL(CREATE_COUNTRY_POPULATION);
-        bd.execSQL(CREATE_ACTUAL_DATE_TABLE);
-    }
-
-    public void deleteOneCountryStat() {
-        bd.execSQL("DROP TABLE IF EXISTS " + ONE_COUNTRY_STATS);
-    }
-
-    public void createTableOneCountry() {
-        bd.execSQL(CREATE_ONE_COUNTRY_STATS_TABLE);
     }
 
     public long insertGlobalInformation(JSONObject stats) {
@@ -223,15 +184,20 @@ public class DBInterface {
         return bd.insert(USER_INFO_TABLE, null, initialValues);
     }
 
+    public Cursor obtainAllInformation() {
+        return bd.query(COUNTRYTABLE, new String[]{KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_CASES, KEY_DEATHS, KEY_RECU},
+                null, null, null, null, null);
+    }
+
     public Cursor obtainOneCountryStat(String name) {
         return bd.query(ONE_COUNTRY_STATS, new String[]{KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_DATE, KEY_CASES, KEY_DEATHS, KEY_RECU},
                 KEY_COUNTRY_NAME + " = " + "'" + name + "'", null, null, null, null);
     }
 
     public Cursor obtainUserInfo(String email, String password) {
-        System.out.println(bd.query(USER_INFO_TABLE, new String[]{KEY_USERNAME, KEY_EMAIL, KEY_PASSWORD},
+        bd.query(USER_INFO_TABLE, new String[]{KEY_USERNAME, KEY_EMAIL, KEY_PASSWORD},
                 KEY_EMAIL + " = " + "'" + email + "'" + " AND " + KEY_PASSWORD + " = " + "'" + password + "'",
-                null, null, null, null).toString());
+                null, null, null, null).toString();
 
         return bd.query(USER_INFO_TABLE, new String[]{KEY_USERNAME, KEY_EMAIL, KEY_PASSWORD},
                 KEY_EMAIL + " = " + "'" + email + "'" + " AND " + KEY_PASSWORD + " = " + "'" + password + "'",
@@ -278,4 +244,35 @@ public class DBInterface {
         return bd.query(CCAA_STATS, new String[]{KEY_CCAACODE, KEY_DATE, KEY_CASES, KEY_PCR, KEY_TESTAC, KEY_HOSPITALIZED, KEY_UCI, KEY_DEATHS},
                 KEY_CCAACODE + "=" + "\"" + code + "\"", null, null, null, null);
     }
+
+    public void deleteDatabaseStats() {
+        bd.execSQL("DROP TABLE IF EXISTS " + COUNTRYTABLE);
+        bd.execSQL("DROP TABLE IF EXISTS " + GLOBAL_TABLE);
+        bd.execSQL("DROP TABLE IF EXISTS " + COUNTRY_POPULATION);
+        bd.execSQL("DROP TABLE IF EXISTS " + ACTUAL_DATE_TABLE);
+    }
+
+    public void deleteDatabaseCCAA() {
+        bd.execSQL("DROP TABLE IF EXISTS " + CCAA_STATS);
+    }
+
+    public void createCCAACountry() {
+        bd.execSQL(CREATE_CCAA_STATS_TABLE);
+    }
+
+    public void createTables() {
+        bd.execSQL(CREATE_COUNTRY_TABLE);
+        bd.execSQL(CREATE_GLOBAL_TABLE);
+        bd.execSQL(CREATE_COUNTRY_POPULATION);
+        bd.execSQL(CREATE_ACTUAL_DATE_TABLE);
+    }
+
+    public void deleteOneCountryStat() {
+        bd.execSQL("DROP TABLE IF EXISTS " + ONE_COUNTRY_STATS);
+    }
+
+    public void createTableOneCountry() {
+        bd.execSQL(CREATE_ONE_COUNTRY_STATS_TABLE);
+    }
+
 }

@@ -106,8 +106,6 @@ public class ShowGlobalStats extends AppCompatActivity {
                     Cursor c = db.obtainPopulationFromOneCountry(codeName);
                     c.moveToFirst();
                     Intent i = new Intent(getApplicationContext(), ShowCountryInfo.class);
-                    System.out.println(c.getString(1));
-                    System.out.println(c.getString(0));
                     i.putExtra("name", c.getString(1));
                     i.putExtra("codename", c.getString(0));
                     startActivity(i);

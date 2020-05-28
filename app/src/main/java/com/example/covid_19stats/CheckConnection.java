@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class CheckConnection extends AppCompatActivity {
 
-    private ReceptorXarxa receptor;
+    private NetworkReciever receptor;
 
     public CheckConnection() {
     }
@@ -30,9 +30,9 @@ public class CheckConnection extends AppCompatActivity {
         netInfo = conManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         if (connected4G) {
             return false;
-        }
-        else return true;
+        } else return true;
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -41,7 +41,7 @@ public class CheckConnection extends AppCompatActivity {
         }
     }
 
-    public class ReceptorXarxa extends BroadcastReceiver {
+    public class NetworkReciever extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             isNetworkConnected(getApplicationContext());
