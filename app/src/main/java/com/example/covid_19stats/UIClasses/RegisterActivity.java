@@ -1,4 +1,4 @@
-package com.example.covid_19stats;
+package com.example.covid_19stats.UIClasses;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,7 +6,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
-import android.nfc.FormatException;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -14,16 +13,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.covid_19stats.R;
+import com.example.covid_19stats.Resources.DBInterface;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//Register class which allows the user to insert his user on the database and login afterwards.
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     EditText editEmail, editPassword, editUsername;
     Button button;
     DBInterface db;
     Intent i;
-    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,18 +36,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         editUsername = findViewById(R.id.editRegiName);
         button = findViewById(R.id.registerUserButton);
         button.setOnClickListener(this);
-        db = new DBInterface(this);
-        i = new Intent(this, MainLogin.class);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        db = new DBInterface(this);
+        i = new Intent(this, MainLogin.class);
     }
 
     @Override
+     //Did a few checks to validate an user so it is a bit more professional.
     public void onClick(View v) {
         if (v == button) {
             db.obre();
@@ -95,6 +93,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    //Method that validates the password with a regex (regular expression). The email regex is the default TextView one.
     public boolean isValidPassword(final String password) {
 
         Pattern pattern;

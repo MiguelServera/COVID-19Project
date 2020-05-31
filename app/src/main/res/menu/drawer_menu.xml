@@ -8,7 +8,10 @@
 
     <item android:title="Help/Share">
         <menu>
-            <item android:title="@string/help" android:icon="@drawable/ic_help" android:id="@+id/nav_help"/>
+            <item
+                android:id="@+id/nav_help"
+                android:icon="@drawable/ic_help"
+                android:title="@string/help_symptoms" />
             <item android:title="@string/share" android:icon="@drawable/ic_share" android:id="@+id/nav_share"/>
         </menu>
     </item>

@@ -1,4 +1,4 @@
-package com.example.covid_19stats;
+package com.example.covid_19stats.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.example.covid_19stats.POJO.StatFromOneCountry;
+import com.example.covid_19stats.R;
 
 import java.util.ArrayList;
 import java.util.List;

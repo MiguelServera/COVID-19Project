@@ -7,7 +7,7 @@
     android:screenOrientation="portrait">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
+        android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -23,6 +23,7 @@
         android:layout_height="54dp"
         android:layout_marginBottom="23dp"
         android:ems="10"
+        android:hint="Password..."
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/registerUserButton"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,10 +34,13 @@
         android:id="@+id/editRegiName"
         android:layout_width="200dp"
         android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="68dp"
+        android:hint="Username..."
         app:layout_constraintBottom_toTopOf="@+id/editRegiPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <TextView
         android:id="@+id/rulesPassword"
@@ -53,7 +57,9 @@
         android:id="@+id/registerUserButton"
         android:layout_width="111dp"
         android:layout_height="56dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="24dp"
+        android:background="#ABE9B86E"
         android:text="Register User"
         app:layout_constraintBottom_toTopOf="@+id/rulesEmail"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,6 +71,7 @@
         android:layout_width="200dp"
         android:layout_height="65dp"
         android:ems="10"
+        android:hint="Email..."
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/editRegiPassword"
         app:layout_constraintEnd_toEndOf="parent"
@@ -82,4 +89,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/registerUserButton" />
 
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/editRegiName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:srcCompat="@drawable/logocovid" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+

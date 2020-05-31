@@ -1,4 +1,4 @@
-package com.example.covid_19stats;
+package com.example.covid_19stats.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,9 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.covid_19stats.POJO.CCAAStats;
+import com.example.covid_19stats.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
+//Class to inflate the ListView, which is on the ShowCCAAInfo.inflateCCAA
 public class StatsFromCCAAAdapter extends ArrayAdapter {
 
     private Context context;

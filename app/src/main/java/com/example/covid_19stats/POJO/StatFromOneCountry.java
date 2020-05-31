@@ -1,37 +1,24 @@
-package com.example.covid_19stats;
+package com.example.covid_19stats.POJO;
 
-public class Stat {
-    String code;
-    String name;
+public class StatFromOneCountry {
+    String date;
     int cases;
     int deaths;
     int cured;
 
-    public Stat() {
-    }
-
-    public Stat(String code, String name, int cases, int deaths, int cured) {
-        this.code = code;
-        this.name = name;
+    public StatFromOneCountry(String date, int cases, int deaths, int cured) {
+        this.date = date;
         this.cases = cases;
         this.deaths = deaths;
         this.cured = cured;
     }
 
-    public String getCode() {
-        return code;
+    public String getDate() {
+        return date;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public int getCases() {
@@ -60,9 +47,8 @@ public class Stat {
 
     @Override
     public String toString() {
-        return "Stat{" +
-                "code='" + code + '\'' +
-                ", name='" + name + '\'' +
+        return "StatFromOneCountry{" +
+                "date='" + date + '\'' +
                 ", cases=" + cases +
                 ", deaths=" + deaths +
                 ", cured=" + cured +

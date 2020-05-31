@@ -15,23 +15,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".MainLogin">
+        <activity android:name=".UIClasses.MainLogin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".RetrieveStatsFromAPI" android:screenOrientation="portrait"/>
-        <activity android:name=".MenuActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ShowCountryInfo" android:screenOrientation="portrait"/>
-        <activity android:name=".CheckConnection" android:screenOrientation="portrait"/>
-        <activity android:name=".ShowGlobalStats" android:screenOrientation="portrait"/>
-        <activity android:name=".ShowGraphs" android:screenOrientation="portrait"/>
-        <activity android:name=".ShowCCAAInfo" android:screenOrientation="portrait"/>
-        <activity android:name=".DownloadFileCCAA" android:screenOrientation="portrait"/>
-        <activity android:name=".MoreInfoCCAA" android:screenOrientation="portrait"/>
+        <activity android:name=".UIClasses.RegisterActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Resources.RetrieveStatsFromAPI" android:screenOrientation="portrait"/>
+        <activity android:name=".UIClasses.MenuActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".UIClasses.ShowCountryInfo" android:screenOrientation="portrait"/>
+        <activity android:name=".Resources.CheckConnection" android:screenOrientation="portrait"/>
+        <activity android:name=".UIClasses.ShowGlobalStats" android:screenOrientation="portrait"/>
+        <activity android:name=".UIClasses.ShowGraphs" android:screenOrientation="portrait"/>
+        <activity android:name=".UIClasses.ShowCCAAInfo" android:screenOrientation="portrait"/>
+        <activity android:name=".Resources.DownloadFileCCAA" android:screenOrientation="portrait"/>
+        <activity android:name=".UIClasses.MoreInfoCCAA" android:screenOrientation="portrait"/>
+        <activity android:name=".UIClasses.Precautions"/>
+        <activity android:name=".UIClasses.SymptomsHelp"/>
     </application>
 
 </manifest>

@@ -29,6 +29,7 @@
             android:id="@+id/nameCountry"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:gravity="center"
             android:text="@string/textview"
             android:textAlignment="center"
             android:textColor="#8719BD"
@@ -38,15 +39,65 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/listViewShowCountry"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameCountry">
+
+            <TextView
+                android:id="@+id/thisIsDate"
+                android:layout_width="25dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/date"
+                android:textAlignment="center"
+                android:textColor="#1B1B1B"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/thisAreCases"
+                android:layout_width="25dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/cases"
+                android:textAlignment="center"
+                android:textColor="#1B1B1B"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/thisAreDeaths"
+                android:layout_width="25dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/deaths"
+                android:textAlignment="center"
+                android:textColor="#1B1B1B"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/thisAreCured"
+                android:layout_width="25dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/cured"
+                android:textAlignment="center"
+                android:textColor="#1B1B1B"
+                android:textStyle="bold" />
+        </LinearLayout>
+
         <ListView
             android:id="@+id/listViewShowCountry"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
             app:layout_constraintBottom_toTopOf="@+id/detailsCountry"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameCountry" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         <TextView
             android:id="@+id/detailsCountry"
@@ -61,6 +112,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"

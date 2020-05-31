@@ -1,18 +1,18 @@
-package com.example.covid_19stats;
+package com.example.covid_19stats.Resources;
 
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static com.example.covid_19stats.DBInterface.BD_NAME;
-import static com.example.covid_19stats.DBInterface.CREATE_ACTUAL_DATE_TABLE;
-import static com.example.covid_19stats.DBInterface.CREATE_CCAA_STATS_TABLE;
-import static com.example.covid_19stats.DBInterface.CREATE_COUNTRY_TABLE;
-import static com.example.covid_19stats.DBInterface.CREATE_GLOBAL_TABLE;
-import static com.example.covid_19stats.DBInterface.CREATE_ONE_COUNTRY_STATS_TABLE;
-import static com.example.covid_19stats.DBInterface.CREATE_USER_INFO_TABLE;
-import static com.example.covid_19stats.DBInterface.VERSION;
+import static com.example.covid_19stats.Resources.DBInterface.BD_NAME;
+import static com.example.covid_19stats.Resources.DBInterface.CREATE_ACTUAL_DATE_TABLE;
+import static com.example.covid_19stats.Resources.DBInterface.CREATE_CCAA_STATS_TABLE;
+import static com.example.covid_19stats.Resources.DBInterface.CREATE_COUNTRY_TABLE;
+import static com.example.covid_19stats.Resources.DBInterface.CREATE_GLOBAL_TABLE;
+import static com.example.covid_19stats.Resources.DBInterface.CREATE_ONE_COUNTRY_STATS_TABLE;
+import static com.example.covid_19stats.Resources.DBInterface.CREATE_USER_INFO_TABLE;
+import static com.example.covid_19stats.Resources.DBInterface.VERSION;
 
 public class DBStats extends SQLiteOpenHelper {
     private static final String GLOBAL_TABLE = "";

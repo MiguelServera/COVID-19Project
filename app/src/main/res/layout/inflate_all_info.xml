@@ -16,15 +16,17 @@
             android:layout_weight="1"
             android:text="NoInfo"
             android:textAlignment="center"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/nameCountry"
-            android:layout_width="30dp"
+            android:layout_width="35dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="NoInfo"
             android:textAlignment="center"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
         <TextView
@@ -34,7 +36,8 @@
             android:layout_weight="1"
             android:text="NoInfo"
             android:textAlignment="center"
-            android:textColor="#E07F37" />
+            android:textColor="#E07F37"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/deathsCountry"
@@ -43,7 +46,8 @@
             android:layout_weight="1"
             android:text="NoInfo"
             android:textAlignment="center"
-            android:textColor="#CC0303" />
+            android:textColor="#CC0303"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/curedCountry"
@@ -52,7 +56,8 @@
             android:layout_weight="1"
             android:text="NoInfo"
             android:textAlignment="center"
-            android:textColor="#31860E" />
+            android:textColor="#31860E"
+            android:textSize="15sp" />
 
     </LinearLayout>
 

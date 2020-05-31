@@ -51,11 +51,12 @@
 
             <TextView
                 android:id="@+id/textDateCCAA"
-                android:layout_width="60dp"
+                android:layout_width="57dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/date"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textColor="#1B1B1B" />
 
             <TextView
                 android:id="@+id/textCasesCCAA"
@@ -63,7 +64,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/cases"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textColor="#1B1B1B" />
 
             <TextView
                 android:id="@+id/textPCRCCAA"
@@ -71,7 +73,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/pcr"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textColor="#1B1B1B" />
 
             <TextView
                 android:id="@+id/textTestAC"
@@ -79,7 +82,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/testac"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textColor="#1B1B1B" />
 
             <TextView
                 android:id="@+id/textHospitalized"
@@ -87,7 +91,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/hosp"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textColor="#1B1B1B" />
 
             <TextView
                 android:id="@+id/textUciCCAA"
@@ -95,7 +100,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/uci"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textColor="#1B1B1B" />
 
             <TextView
                 android:id="@+id/Deaths"
@@ -103,7 +109,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/deaths"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textColor="#1B1B1B" />
         </LinearLayout>
 
         <Spinner
@@ -131,6 +138,7 @@
             android:id="@+id/moreInfoButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="#ABE9B86E"
             android:text="more information"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -140,6 +148,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"

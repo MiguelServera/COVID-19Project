@@ -1,4 +1,4 @@
-package com.example.covid_19stats;
+package com.example.covid_19stats.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,9 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.covid_19stats.POJO.Stat;
+import com.example.covid_19stats.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
+//Class to inflate the ListView, which is on the ShowCountryInfo.inflate
 public class StatsAdapter extends ArrayAdapter {
     private Context context;
     private List<Stat> statsList;

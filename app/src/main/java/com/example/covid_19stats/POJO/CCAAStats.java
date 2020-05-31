@@ -1,4 +1,4 @@
-package com.example.covid_19stats;
+package com.example.covid_19stats.POJO;
 
 public class CCAAStats {
     String code;

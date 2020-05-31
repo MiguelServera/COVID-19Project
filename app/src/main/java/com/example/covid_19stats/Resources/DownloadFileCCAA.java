@@ -1,12 +1,16 @@
-package com.example.covid_19stats;
+package com.example.covid_19stats.Resources;
 
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.covid_19stats.POJO.CCAAStats;
+import com.example.covid_19stats.R;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,6 +18,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+/*Class to download de CSV file to retrieve CCAA information.
+Once downloaded, it inserts the information on the database.
+Couldn't do this on background because it was creating conflicts with the other background method, on the RetrieveStatsFromAPI class.
+Instead, I used a thread to insert it on the database.
+ */
 public class DownloadFileCCAA extends AppCompatActivity {
     File file;
     DBInterface db;
@@ -38,6 +47,7 @@ public class DownloadFileCCAA extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            Toast.makeText(getApplicationContext(), "New CSV data downloading...", Toast.LENGTH_SHORT).show();
             Download download = new Download();
             download.start();
         }

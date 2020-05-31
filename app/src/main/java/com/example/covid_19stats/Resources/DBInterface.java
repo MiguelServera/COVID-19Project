@@ -1,4 +1,4 @@
-package com.example.covid_19stats;
+package com.example.covid_19stats.Resources;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,13 +6,14 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.covid_19stats.POJO.CCAAStats;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class DBInterface {
     public static final String KEY_COUNTRY = "country";
     public static final String KEY_CCAACODE = "code";
-    public static final String KEY_CCAANAME = "name";
     public static final String KEY_COUNTRY_NAME = "country_name";
     public static final String KEY_CASES = "cases";
     public static final String KEY_RECU = "cured";

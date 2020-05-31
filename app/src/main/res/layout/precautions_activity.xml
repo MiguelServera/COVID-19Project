@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:screenOrientation="portrait">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imagePrecautions1"
+                android:layout_width="match_parent"
+                android:layout_height="480dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/precautions_wash" />
+
+            <ImageView
+                android:id="@+id/imagePrecautions2"
+                android:layout_width="match_parent"
+                android:layout_height="480dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/precautions_wash_two" />
+
+            <ImageView
+                android:id="@+id/imagePrecautions3"
+                android:layout_width="match_parent"
+                android:layout_height="480dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/precautions_tissue" />
+
+            <ImageView
+                android:id="@+id/imagePrecautions4"
+                android:layout_width="match_parent"
+                android:layout_height="480dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/precautions_tissue_two" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@drawable/skysun"
+        app:headerLayout="@layout/nav_header"
+        app:itemTextColor="@color/colorPrimaryDark"
+        app:menu="@menu/drawer_menu"
+        tools:layout_editor_absoluteX="213dp"
+        tools:layout_editor_absoluteY="80dp">
+
+    </com.google.android.material.navigation.NavigationView>
+
+</androidx.drawerlayout.widget.DrawerLayout>

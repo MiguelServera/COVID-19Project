@@ -52,15 +52,17 @@
                 android:layout_weight="1"
                 android:text="Code"
                 android:textAlignment="center"
+                android:textColor="#1B1B1B"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/thisIsName"
-                android:layout_width="30dp"
+                android:layout_width="35dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Name"
                 android:textAlignment="center"
+                android:textColor="#1B1B1B"
                 android:textStyle="bold" />
 
             <TextView
@@ -70,6 +72,7 @@
                 android:layout_weight="1"
                 android:text="Cases"
                 android:textAlignment="center"
+                android:textColor="#1B1B1B"
                 android:textStyle="bold" />
 
             <TextView
@@ -79,6 +82,7 @@
                 android:layout_weight="1"
                 android:text="Deaths"
                 android:textAlignment="center"
+                android:textColor="#1B1B1B"
                 android:textStyle="bold" />
 
             <TextView
@@ -88,6 +92,7 @@
                 android:layout_weight="1"
                 android:text="Cured"
                 android:textAlignment="center"
+                android:textColor="#1B1B1B"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -107,6 +112,7 @@
             android:id="@+id/totalCases"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:textColor="#1D1D1D"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -117,6 +123,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"

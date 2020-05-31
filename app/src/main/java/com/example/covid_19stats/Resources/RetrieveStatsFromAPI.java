@@ -1,12 +1,19 @@
-package com.example.covid_19stats;
+package com.example.covid_19stats.Resources;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.covid_19stats.UIClasses.MenuActivity;
+import com.example.covid_19stats.R;
+import com.example.covid_19stats.UIClasses.ShowGlobalStats;
+import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +34,9 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
-import static com.example.covid_19stats.MainLogin.editor;
+/*Class to download the information from the API.
+Once downloaded it inserts all the necessary information on the database.
+ */
 
 public class RetrieveStatsFromAPI extends AppCompatActivity {
     DBInterface db;
@@ -35,17 +44,20 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
     LastResults ls;
     InsertEachCountryData countryData;
     Intent i;
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.progress_bar_activity);
+        prefs = getSharedPreferences("prefs", MODE_PRIVATE);
         db = new DBInterface(this);
         appContext = this;
         i = new Intent(getApplicationContext(), ShowGlobalStats.class);
         new SendRequest().execute();
     }
 
+    //Background asyntask to download the information
     public class SendRequest extends AsyncTask<String, Void, String> {
 
         @Override
@@ -109,16 +121,18 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                     return new String("false : " + responseCode);
                 }
             } catch (Exception e) {
+                SharedPreferences.Editor editor = prefs.edit();
                 editor.putBoolean("firstStart", true);
                 editor.apply();
-                editor.commit();
                 finish();
                 return new String("Exception: " + e.getMessage());
             }
         }
 
+        //I call every thread here so it can all execute in one method.
         public void onPostExecute(String result) {
             try {
+                System.out.println(result);
                 db.obre();
                 db.deleteDatabaseStats();
                 db.createTables();
@@ -137,12 +151,14 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             } finally {
+                Toast.makeText(getApplicationContext(), "New data downloading...", Toast.LENGTH_SHORT).show();
                 db.tanca();
                 finish();
             }
         }
     }
 
+    //Thread extended class which will insert the code and population of each country.
     class InsertEachCountryData extends Thread {
         JSONObject datalist;
 
@@ -159,6 +175,9 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
         }
     }
 
+    /*Thread extended class which will insert only the last information of each country.
+    The API didn't returned correct values so I had to do several checks to ensure the insertion.
+     */
     class LastResults extends Thread {
         JSONObject datalist;
 
@@ -213,6 +232,9 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
         }
     }
 
+    /*Method which will insert the total of cases, cured and deaths.
+    The API didn't returned correct values so I had to do several checks to ensure the insertion.
+     */
     private void globalResults(JSONObject datalist) {
         try {
             String object;

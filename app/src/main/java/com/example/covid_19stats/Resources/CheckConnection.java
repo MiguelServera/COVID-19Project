@@ -1,4 +1,4 @@
-package com.example.covid_19stats;
+package com.example.covid_19stats.Resources;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+//Class that will check if we have internet connection and what type of connection, if Wifi or Mobile data.
 public class CheckConnection extends AppCompatActivity {
 
     private NetworkReciever receptor;
@@ -16,21 +17,22 @@ public class CheckConnection extends AppCompatActivity {
     public CheckConnection() {
     }
 
+    //Checks if we have internet connection
     public static boolean isNetworkConnected(Context c) {
         ConnectivityManager conManager = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = conManager.getActiveNetworkInfo();
         return (netInfo != null && netInfo.isConnected());
     }
 
+    //Check what type of internet connection.
     public static boolean isNetworkWifi(Context c) {
         ConnectivityManager conManager = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = conManager.getActiveNetworkInfo();
+        NetworkInfo netInfo;
         netInfo = conManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         boolean connected4G = netInfo.isConnected();
-        netInfo = conManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         if (connected4G) {
             return false;
-        } else return true;
+        } else return true; //Else return true because only one more type of internet is available and that's Wifi.
     }
 
     @Override
