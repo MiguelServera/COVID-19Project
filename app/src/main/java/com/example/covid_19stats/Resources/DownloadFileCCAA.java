@@ -5,7 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.widget.Toast;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -47,7 +47,6 @@ public class DownloadFileCCAA extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            Toast.makeText(getApplicationContext(), "New CSV data downloading...", Toast.LENGTH_SHORT).show();
             Download download = new Download();
             download.start();
         }
@@ -63,17 +62,22 @@ public class DownloadFileCCAA extends AppCompatActivity {
             {
                 if (file.exists()) break;
             }
-            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/COVIDStats");
+            System.out.println(file.exists());
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)+"/"+"COVIDStats");
+            System.out.println(file);
             try {
                 BufferedReader br = new BufferedReader(new FileReader(file));
                 String line;
+                if (br.readLine() == null)
+                {
+                    System.out.println("Si no hay nah");
+                }
                 //Step over the headers
-                br.readLine();
                 while ((line = br.readLine()) != null) {
+                    Log.i("Una linea", br.readLine());
                     String[] tokens = line.split(",", -1);
                     if (tokens[0].length() > 2) {
                     } else {
-                        //Doesn't work if I try to put "-1 or -2"
                         CCAAStats acStats = new CCAAStats();
                         acStats.setCode(tokens[0]);
                         acStats.setDate(tokens[1]);

@@ -20,17 +20,6 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/casesCCAA"
-            android:layout_width="30dp"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="0"
-            android:textAlignment="center"
-            android:textColor="#E68D47"
-            android:textStyle="bold" />
-
-        <TextView
             android:id="@+id/pcrCCAA"
             android:layout_width="30dp"
             android:layout_height="wrap_content"

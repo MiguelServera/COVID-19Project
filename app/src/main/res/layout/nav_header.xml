@@ -10,6 +10,7 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
+        android:id="@+id/miniLogo"
         android:layout_width="96dp"
         android:layout_height="85dp"
         android:scaleType="centerInside"

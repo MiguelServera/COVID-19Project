@@ -34,13 +34,12 @@
         android:id="@+id/editRegiName"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="68dp"
         android:hint="Username..."
-        app:layout_constraintBottom_toTopOf="@+id/editRegiPassword"
+        app:layout_constraintBottom_toTopOf="@+id/editRegiEmail"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
 
     <TextView
         android:id="@+id/rulesPassword"
@@ -69,7 +68,7 @@
     <EditText
         android:id="@+id/editRegiEmail"
         android:layout_width="200dp"
-        android:layout_height="65dp"
+        android:layout_height="55dp"
         android:ems="10"
         android:hint="Email..."
         android:inputType="textEmailAddress"
@@ -90,7 +89,7 @@
         app:layout_constraintTop_toBottomOf="@+id/registerUserButton" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"

@@ -53,6 +53,7 @@ public class ShowGlobalStats extends AppCompatActivity implements NavigationView
         prefs = getSharedPreferences("prefs", MODE_PRIVATE);
         navigationView = findViewById(R.id.navView);
         navigationView.setNavigationItemSelectedListener(this);
+        Toast.makeText(appContext, "You can click on each country to see detailed info!", Toast.LENGTH_SHORT).show();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
@@ -108,7 +109,7 @@ public class ShowGlobalStats extends AppCompatActivity implements NavigationView
             totalCured = cured + totalCured;
         }
         c.close();
-        totalCases.setText("These are the actual new cases for each country." + "\n" + "Global cases: " + totalSum + "\n" + "  Total deaths: " + totalDeaths + "\n" + "  Total cured: " + totalCured);
+        totalCases.setText("These are the actual new cases for each country." + "\n" + "Global cases: " + totalSum + "\n" + "Total deaths: " + totalDeaths + "\n" + "Total cured: " + totalCured);
     }
 
     private void selectedCountry() {

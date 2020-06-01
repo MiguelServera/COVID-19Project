@@ -121,7 +121,21 @@ public class ShowCCAAInfo extends AppCompatActivity implements AdapterView.OnIte
     private void RetrieveStatsAC() {
         db.obre();
         Cursor c = db.obtainCodeCCAAInformation(ccaaText.substring(ccaaText.length() - 2, ccaaText.length()));
-        c.moveToLast();
+        if (!c.moveToPrevious())
+        {
+            c.moveToLast();
+            CCAAStats ccaaStats = new CCAAStats();
+            ccaaStats.setCode(c.getString(0));
+            ccaaStats.setDate(c.getString(1));
+            ccaaStats.setCases(c.getInt(2));
+            ccaaStats.setPcr(c.getInt(3));
+            ccaaStats.setTestAC(c.getInt(4));
+            ccaaStats.setHospitalized(c.getInt(5));
+            ccaaStats.setUci(c.getInt(6));
+            ccaaStats.setDeaths(c.getInt(7));
+            arrayCCAA.add(ccaaStats);
+        }
+
         while (c.moveToPrevious()) {
             CCAAStats ccaaStats = new CCAAStats();
             ccaaStats.setCode(c.getString(0));

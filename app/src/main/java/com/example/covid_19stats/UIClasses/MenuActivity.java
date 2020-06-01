@@ -90,7 +90,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         if (MainLogin.firstStart) {
                 if (isNetworkConnected(getApplicationContext())) {
                     if (isNetworkWifi(getApplicationContext())) {
-                        editor.putBoolean("firstStart", false);
+                        editor.putBoolean("firstStart", true);
                         editor.apply();
                         startActivity(launchApiActivity);
                         startActivity(launchDownloadACActivity);

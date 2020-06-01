@@ -59,15 +59,6 @@
                 android:textColor="#1B1B1B" />
 
             <TextView
-                android:id="@+id/textCasesCCAA"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/cases"
-                android:textAlignment="center"
-                android:textColor="#1B1B1B" />
-
-            <TextView
                 android:id="@+id/textPCRCCAA"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"

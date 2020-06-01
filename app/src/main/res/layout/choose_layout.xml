@@ -35,7 +35,7 @@
             app:layout_constraintBottom_toTopOf="@+id/ccaa_table_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/global_button"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/tableImage" />
 
         <Button
             android:id="@+id/ccaa_table_button"
@@ -71,7 +71,7 @@
             app:layout_constraintTop_toBottomOf="@+id/graphImage" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/tableImage"
             android:layout_width="194dp"
             android:layout_height="234dp"
             android:layout_marginTop="50dp"

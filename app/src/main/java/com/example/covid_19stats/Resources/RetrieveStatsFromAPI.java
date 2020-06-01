@@ -105,7 +105,6 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                 int responseCode = conn.getResponseCode();
 
                 if (responseCode == HttpsURLConnection.HTTP_OK) {
-
                     BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                     StringBuffer sb = new StringBuffer("");
                     String line = "";
@@ -147,12 +146,10 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                     ls.start();
                     globalResults(datalist);
                 }
-
             } catch (JSONException e) {
                 e.printStackTrace();
             } finally {
-                Toast.makeText(getApplicationContext(), "New data downloading...", Toast.LENGTH_SHORT).show();
-                db.tanca();
+
                 finish();
             }
         }

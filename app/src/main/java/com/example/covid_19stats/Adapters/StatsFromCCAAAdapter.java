@@ -31,7 +31,6 @@ public class StatsFromCCAAAdapter extends ArrayAdapter {
         final View view = inflater.inflate(R.layout.inflate_all_ccaa, null);
         CCAAStats stat = statsList.get(position);
         TextView date = (TextView) view.findViewById(R.id.dateCCAA);
-        TextView cases = (TextView) view.findViewById(R.id.casesCCAA);
         TextView pcr = (TextView) view.findViewById(R.id.pcrCCAA);
         TextView testAC = (TextView) view.findViewById(R.id.testAC);
         TextView hospitalized = (TextView) view.findViewById(R.id.hospitalizedCCAA);
@@ -39,7 +38,6 @@ public class StatsFromCCAAAdapter extends ArrayAdapter {
         TextView deaths = (TextView) view.findViewById(R.id.deathsCCAA);
 
         date.setText(String.valueOf(stat.getDate()));
-        cases.setText(String.valueOf(stat.getCases()));
         pcr.setText(String.valueOf(stat.getPcr()));
         testAC.setText(String.valueOf(stat.getTestAC()));
         hospitalized.setText(String.valueOf(stat.getHospitalized()));
