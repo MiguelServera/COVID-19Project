@@ -62,19 +62,15 @@ public class DownloadFileCCAA extends AppCompatActivity {
             {
                 if (file.exists()) break;
             }
-            System.out.println(file.exists());
             File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)+"/"+"COVIDStats");
             System.out.println(file);
             try {
                 BufferedReader br = new BufferedReader(new FileReader(file));
                 String line;
-                if (br.readLine() == null)
-                {
-                    System.out.println("Si no hay nah");
-                }
                 //Step over the headers
+                Download.sleep(180);
                 while ((line = br.readLine()) != null) {
-                    Log.i("Una linea", br.readLine());
+                    //Log.i("Una linea", br.readLine());
                     String[] tokens = line.split(",", -1);
                     if (tokens[0].length() > 2) {
                     } else {
@@ -104,6 +100,8 @@ public class DownloadFileCCAA extends AppCompatActivity {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
                 finish();

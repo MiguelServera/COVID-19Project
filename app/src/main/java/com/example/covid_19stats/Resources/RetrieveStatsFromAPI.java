@@ -116,6 +116,9 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                     return sb.toString();
 
                 } else {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putBoolean("firstStart", true);
+                    editor.apply();
                     finish();
                     return new String("false : " + responseCode);
                 }

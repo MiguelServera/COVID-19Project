@@ -90,15 +90,13 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         if (MainLogin.firstStart) {
                 if (isNetworkConnected(getApplicationContext())) {
                     if (isNetworkWifi(getApplicationContext())) {
-                        editor.putBoolean("firstStart", true);
+                        editor.putBoolean("firstStart", false);
                         editor.apply();
                         startActivity(launchApiActivity);
                         startActivity(launchDownloadACActivity);
                     } else {
                         startActivity(launchDownloadACActivity);
-                        global_table.setEnabled(false);
-                        global_graph.setEnabled(false);
-                        topTen_graph.setEnabled(false);
+                        ccaa_table.setEnabled(true);
                         Toast.makeText(this, "If this is your first time opening the app, please make sure you have WIFI connection to download countries data", Toast.LENGTH_LONG).show();
                     }
 

@@ -7,10 +7,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.covid_19stats.R;
@@ -26,11 +28,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     Button button;
     DBInterface db;
     Intent i;
+    TextView textEmail, textPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_activity);
+        textEmail = findViewById(R.id.rulesEmail);
+        textPassword = findViewById(R.id.rulesPassword);
+        textEmail.setMovementMethod(new ScrollingMovementMethod());
+        textPassword.setMovementMethod(new ScrollingMovementMethod());
         editEmail = findViewById(R.id.editRegiEmail);
         editPassword = findViewById(R.id.editRegiPassword);
         editUsername = findViewById(R.id.editRegiName);
