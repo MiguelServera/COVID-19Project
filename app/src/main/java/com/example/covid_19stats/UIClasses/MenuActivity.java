@@ -96,7 +96,9 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                         startActivity(launchDownloadACActivity);
                     } else {
                         startActivity(launchDownloadACActivity);
-                        ccaa_table.setEnabled(true);
+                        global_table.setEnabled(false);
+                        global_graph.setEnabled(false);
+                        topTen_graph.setEnabled(false);
                         Toast.makeText(this, "If this is your first time opening the app, please make sure you have WIFI connection to download countries data", Toast.LENGTH_LONG).show();
                     }
 

@@ -44,9 +44,9 @@
     <TextView
         android:id="@+id/rulesPassword"
         android:layout_width="260dp"
-        android:layout_height="115dp"
-        android:scrollbars = "vertical"
+        android:layout_height="wrap_content"
         android:fadeScrollbars="false"
+        android:scrollbars="vertical"
         android:text="Password: A lower case letter must occur at least once. An upper case letter must occur at least once. A special character(@#$%^\&amp;+=) must occur at least once. No whitespace allowed in the entire string. At least six characters"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -81,9 +81,9 @@
     <TextView
         android:id="@+id/rulesEmail"
         android:layout_width="260dp"
-        android:layout_height="51dp"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
         android:text='Email: Has to be like a@b.com. "a" has a max of 256 characters, "b" a max of 64.'
-        android:scrollbars = "vertical"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/rulesPassword"
         app:layout_constraintEnd_toEndOf="parent"

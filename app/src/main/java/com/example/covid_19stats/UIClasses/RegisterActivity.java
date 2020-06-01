@@ -57,7 +57,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             String textUsername = editUsername.getText().toString();
             String textEmail = editEmail.getText().toString();
             String textPassword = editPassword.getText().toString();
-            if (textEmail.isEmpty() || textEmail.equals("") || textPassword.isEmpty() || textPassword.equals("")) {
+            if (textEmail.isEmpty() || textEmail.equals("") || textPassword.isEmpty() || textPassword.equals("") || textUsername.isEmpty() || textUsername.equals("")) {
 
                 if ((textEmail.isEmpty() || textEmail.equals("")) && (textPassword.isEmpty() || textPassword.equals("")))
                     Toast.makeText(this, "The values can't be null!", Toast.LENGTH_LONG).show();
@@ -67,6 +67,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                 if ((textPassword.isEmpty() || textPassword.equals("")) && !textEmail.isEmpty())
                     Toast.makeText(this, "The password can't be null!", Toast.LENGTH_LONG).show();
+
+                if ((textUsername.isEmpty() || textUsername.equals("")) && (!textEmail.isEmpty() && !textPassword.isEmpty()))
+                    Toast.makeText(this, "The username can't be null!", Toast.LENGTH_LONG).show();
 
             } else if (MainLogin.firstUser == false) {
                 if (Patterns.EMAIL_ADDRESS.matcher(textEmail).matches() && isValidPassword(textPassword)) {
