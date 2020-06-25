@@ -88,7 +88,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void CheckWhatToDo() {
         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
-        getSharedPreferences("prefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         if (MainLogin.firstStart) {
                 if (isNetworkConnected(getApplicationContext())) {
@@ -200,6 +199,9 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         getSharedPreferences("prefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         switch (menuItem.getItemId()){
+            case R.id.nav_profile:
+                startActivity(new Intent(this, UserProfile.class));
+                break;
             case R.id.nav_precautions:
                 startActivity(new Intent(this, Precautions.class));
                 break;

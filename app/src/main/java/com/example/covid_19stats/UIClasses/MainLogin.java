@@ -32,6 +32,7 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
     DBInterface db;
     public static SharedPreferences.Editor editor;
     static boolean firstStart, firstUser, loggedIn;
+    static String email;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -49,7 +50,8 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
         editor = prefs.edit();
         firstStart = prefs.getBoolean("firstStart", true);
         firstUser = prefs.getBoolean("firstUser", false);
-        loggedIn = prefs.getBoolean("loggedIn", false);
+        loggedIn = prefs.getBoolean("loggedIn", true);
+        email = prefs.getString("userEmail", "");
         //Checks if we have permission, additionally, checks if we are already logged in or if it's our first time on the APP.
         verifyStoragePermissions(this);
         if (firstUser) loginButton.setEnabled(true);
@@ -95,6 +97,7 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
                 else if (c.getCount() == 1) {
                     c.moveToNext();
                     Toast.makeText(this, "Hello, " + c.getString(0), Toast.LENGTH_SHORT).show();
+                    editor.putString("userEmail", textEmail);
                     editor.putBoolean("loggedIn", true);
                     editor.apply();
                     finishAffinity();

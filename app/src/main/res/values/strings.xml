@@ -10,6 +10,7 @@
     <string name="action_settings">Settings</string>
     <string name="info">Info</string>
     <string name="precautions_covid">Precautions COVID</string>
+    <string name="profile">Profile</string>
     <string name="share">Share</string>
     <string name="log_out">Log out</string>
     <string name="textview">TextView</string>

@@ -93,7 +93,7 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                 conn.setSSLSocketFactory(context.getSocketFactory());
                 conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
                 conn.setRequestProperty("Accept", "application/json");
-                conn.setConnectTimeout(15 * 150);
+                conn.setConnectTimeout(100);
                 conn.setRequestMethod("POST");
 
                 DataOutputStream os = new DataOutputStream(conn.getOutputStream());
