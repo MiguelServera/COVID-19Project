@@ -94,6 +94,21 @@
             app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+        <Button
+            android:id="@+id/comparatorButton"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="200dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="200dp"
+            android:layout_marginBottom="25dp"
+            android:background="#ABE9B86E"
+            android:text="COMPARE"
+            app:layout_constraintBottom_toTopOf="@+id/country_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/global_table_button" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView

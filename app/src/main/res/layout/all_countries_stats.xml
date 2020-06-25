@@ -28,12 +28,20 @@
             android:id="@+id/imageWHO"
             android:layout_width="0dp"
             android:layout_height="155dp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintBottom_toTopOf="@id/spinnerFilter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:srcCompat="@drawable/whologo" />
+
+        <Spinner
+            android:id="@+id/spinnerFilter"
+            android:layout_width="127dp"
+            android:layout_height="29dp"
+            app:layout_constraintBottom_toTopOf="@id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageWHO" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -43,7 +51,7 @@
             app:layout_constraintBottom_toTopOf="@+id/listview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageWHO">
+            app:layout_constraintTop_toBottomOf="@id/spinnerFilter">
 
             <TextView
                 android:id="@+id/thisIsCode"
@@ -119,6 +127,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/listview" />
+
+        <EditText
+            android:id="@+id/searchBar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            android:hint="Search country"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerFilter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageWHO" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

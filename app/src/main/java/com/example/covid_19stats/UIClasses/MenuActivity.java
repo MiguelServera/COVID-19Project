@@ -34,10 +34,10 @@ import static com.example.covid_19stats.Resources.CheckConnection.isNetworkWifi;
 //Class where we will choose what information to see. I implemented a few necessary checks.
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
-    public static Button ccaa_table, global_table, global_graph, topTen_graph;
+    public static Button ccaa_table, global_table, global_graph, topTen_graph, compare_country;
     private DrawerLayout drawer;
     DBInterface db;
-    Intent launchApiActivity, launchBdActivity, launchDownloadACActivity, launchGraphsActivity, launchACActivity;
+    Intent launchApiActivity, launchBdActivity, launchDownloadACActivity, launchGraphsActivity, launchACActivity, launchCompareActivity;
     NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,15 +61,18 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         global_table = findViewById(R.id.global_table_button);
         global_graph = findViewById(R.id.global_button);
         topTen_graph = findViewById(R.id.country_button);
+        compare_country = findViewById(R.id.comparatorButton);
         ccaa_table.setOnClickListener(this);
         global_table.setOnClickListener(this);
         global_graph.setOnClickListener(this);
         topTen_graph.setOnClickListener(this);
+        compare_country.setOnClickListener(this);
         launchApiActivity = new Intent(this, RetrieveStatsFromAPI.class);
         launchBdActivity = new Intent(this, ShowGlobalStats.class);
         launchGraphsActivity = new Intent(this, ShowGraphs.class);
         launchACActivity = new Intent(this, ShowCCAAInfo.class);
         launchDownloadACActivity = new Intent(this, DownloadFileCCAA.class);
+        launchCompareActivity = new Intent(this, CountryComparator.class);
         db = new DBInterface(this);
     }
 
@@ -138,6 +141,8 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         } else if (view == topTen_graph) {
             launchGraphsActivity.putExtra("graphType", "topten");
             startActivity(launchGraphsActivity);
+        } else if (view == compare_country) {
+            startActivity(launchCompareActivity);
         }
     }
 

@@ -23,6 +23,35 @@
     <string name="help_symptoms">Help/Symptoms</string>
     <string name="cured">Cured</string>
 
+    <string-array name="filter">
+        <item>
+        Filter...
+    </item>
+        <item>
+        Name asc.
+    </item>
+        <item>
+        Name desc.
+    </item>
+        <item>
+        Cases asc.
+    </item>
+        <item>
+        Cases desc.
+    </item>
+        <item>
+        Deaths asc.
+    </item>
+        <item>
+        Deaths desc.
+    </item>
+        <item>
+        Cured asc.
+    </item>
+        <item>
+        Cured desc.
+    </item>
+    </string-array>
     <string-array name="ccaaNames">
         <item>
             Andalucía/AN

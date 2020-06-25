@@ -5,10 +5,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +45,7 @@ public class ShowGlobalStats extends AppCompatActivity implements NavigationView
     ListView lv;
     SharedPreferences prefs;
     NavigationView navigationView;
+    StatsAdapter inflate;
 
     private DrawerLayout drawer;
 
@@ -47,12 +53,13 @@ public class ShowGlobalStats extends AppCompatActivity implements NavigationView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_countries_stats);
-        db = new DBInterface(this);
-        appContext = this;
-        totalCases = findViewById(R.id.totalCases);
-        prefs = getSharedPreferences("prefs", MODE_PRIVATE);
-        navigationView = findViewById(R.id.navView);
-        navigationView.setNavigationItemSelectedListener(this);
+        giveValues();
+        Spinner spinner = findViewById(R.id.spinnerFilter);
+        final EditText countryFilter = findViewById(R.id.searchBar);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.filter,
+                android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
         Toast.makeText(appContext, "You can click on each country to see detailed info!", Toast.LENGTH_SHORT).show();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,10 +86,36 @@ public class ShowGlobalStats extends AppCompatActivity implements NavigationView
             retrieveGlobalInfo();
             db.tanca();
         }
+
+        countryFilter.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                inflate.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
+    private void giveValues()
+    {
+        db = new DBInterface(this);
+        appContext = this;
+        totalCases = findViewById(R.id.totalCases);
+        prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        navigationView = findViewById(R.id.navView);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
     private void inflate(ArrayList<Stat> arrayStat) {
-        StatsAdapter inflate = new StatsAdapter(getApplicationContext(), R.layout.inflate_all_info, arrayStat);
+        inflate = new StatsAdapter(getApplicationContext(), R.layout.inflate_all_info, arrayStat);
         lv = (ListView) findViewById(R.id.listview);
         lv.setDivider(null);
         lv.setDividerHeight(0);
