@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +22,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.covid_19stats.POJO.Stat;
 import com.example.covid_19stats.Adapters.StatsAdapter;
@@ -37,15 +38,18 @@ import java.util.Comparator;
 import static com.example.covid_19stats.Resources.CheckConnection.isNetworkConnected;
 import static com.example.covid_19stats.Resources.CheckConnection.isNetworkWifi;
 
-public class ShowGlobalStats extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class ShowGlobalStats extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener {
     TextView totalCases;
     DBInterface db;
     Context appContext;
     ArrayList<Stat> arrayStats = new ArrayList<Stat>();
-    ListView lv;
+    RecyclerView rv;
     SharedPreferences prefs;
     NavigationView navigationView;
     StatsAdapter inflate;
+    Spinner filter;
+    EditText countryFilter;
+    String filterText;
 
     private DrawerLayout drawer;
 
@@ -54,12 +58,10 @@ public class ShowGlobalStats extends AppCompatActivity implements NavigationView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_countries_stats);
         giveValues();
-        Spinner spinner = findViewById(R.id.spinnerFilter);
-        final EditText countryFilter = findViewById(R.id.searchBar);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.filter,
                 android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        filter.setAdapter(adapter);
         Toast.makeText(appContext, "You can click on each country to see detailed info!", Toast.LENGTH_SHORT).show();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -80,8 +82,7 @@ public class ShowGlobalStats extends AppCompatActivity implements NavigationView
                 arrayStats.add(indiStat);
             }
             c.close();
-            inflate(arrayStats);
-            selectedCountry();
+            inflateArray(arrayStats, filterText);
         } finally {
             retrieveGlobalInfo();
             db.tanca();
@@ -89,43 +90,161 @@ public class ShowGlobalStats extends AppCompatActivity implements NavigationView
 
         countryFilter.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                inflate.getFilter().filter(s);
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                filter(s.toString());
             }
         });
     }
 
-    private void giveValues()
-    {
+    private void giveValues() {
         db = new DBInterface(this);
         appContext = this;
+        countryFilter = findViewById(R.id.searchBar);
         totalCases = findViewById(R.id.totalCases);
         prefs = getSharedPreferences("prefs", MODE_PRIVATE);
         navigationView = findViewById(R.id.navView);
         navigationView.setNavigationItemSelectedListener(this);
+        filter = findViewById(R.id.spinnerFilter);
+        filter.setOnItemSelectedListener(this);
+        filterText = "Name asc.";
     }
-    private void inflate(ArrayList<Stat> arrayStat) {
-        inflate = new StatsAdapter(getApplicationContext(), R.layout.inflate_all_info, arrayStat);
-        lv = (ListView) findViewById(R.id.listview);
-        lv.setDivider(null);
-        lv.setDividerHeight(0);
-        lv.setAdapter(inflate);
-        Collections.sort(arrayStat, new Comparator<Stat>() {
+
+    private void filter(String text) {
+        ArrayList<Stat> filteredList = new ArrayList<>();
+        for (Stat stat : arrayStats) {
+            if (stat.getName().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(stat);
+            }
+        }
+        inflate.filterList(filteredList);
+    }
+
+    private void inflateArray(ArrayList<Stat> arrayStat, String selectedText) {
+        inflate = new StatsAdapter(arrayStats);
+        rv = (RecyclerView) findViewById(R.id.recyclerview);
+        rv.setLayoutManager(new GridLayoutManager(this, 1));
+        rv.setAdapter(inflate);
+        if (selectedText.equals("Name asc."))
+        {
+            Collections.sort(arrayStats, new Comparator<Stat>() {
+                @Override
+                public int compare(Stat stat, Stat stat1) {
+                    return stat.getName().compareTo(stat1.getName());
+                }
+            });
+        }
+        else if (selectedText.equals("Name desc."))
+        {
+            Collections.sort(arrayStat, new Comparator<Stat>() {
+                @Override
+                public int compare(Stat stat, Stat stat1) {
+                    return stat1.getName().compareTo(stat.getName());
+                }
+            });
+            inflate.notifyDataSetChanged();
+        }
+        
+        else if(selectedText.equals("Cases asc."))
+        {
+            Collections.sort(arrayStat, new Comparator<Stat>() {
+                @Override
+                public int compare(Stat stat, Stat stat1) {
+                    return Integer.compare(stat.getCases(), stat1.getCases());
+                }
+            });
+        }
+        else if(selectedText.equals("Cases desc."))
+        {
+            Collections.sort(arrayStat, new Comparator<Stat>() {
+                @Override
+                public int compare(Stat stat, Stat stat1) {
+                    return Integer.compare(stat1.getCases(), stat.getCases());
+                }
+            });
+        }
+        else if(selectedText.equals("Deaths asc."))
+        {
+            Collections.sort(arrayStat, new Comparator<Stat>() {
+                @Override
+                public int compare(Stat stat, Stat stat1) {
+                    return Integer.compare(stat.getDeaths(), stat1.getDeaths());
+                }
+            });
+        }
+        else if(selectedText.equals("Deaths desc."))
+        {
+            Collections.sort(arrayStat, new Comparator<Stat>() {
+                @Override
+                public int compare(Stat stat, Stat stat1) {
+                    return Integer.compare(stat1.getDeaths(), stat.getDeaths());
+                }
+            });
+        }
+        else if(selectedText.equals("Cured asc."))
+        {
+            Collections.sort(arrayStat, new Comparator<Stat>() {
+                @Override
+                public int compare(Stat stat, Stat stat1) {
+                    return Integer.compare(stat.getCured(), stat1.getCured());
+                }
+            });
+        }
+
+        else if(selectedText.equals("Cured desc."))
+        {
+            Collections.sort(arrayStat, new Comparator<Stat>() {
+                @Override
+                public int compare(Stat stat, Stat stat1) {
+                    return Integer.compare(stat1.getCases(), stat.getCases());
+                }
+            });
+        }
+
+        inflate.setOnClickListener(new View.OnClickListener() {
+            String codeName;
+
             @Override
-            public int compare(Stat stat, Stat t1) {
-                return stat.getName().compareTo(t1.getName());
+            public void onClick(View v) {
+                if (isNetworkConnected(getApplicationContext())) {
+                    if (isNetworkWifi(getApplicationContext())) {
+                        db.obre();
+                        TextView textName = v.findViewById(R.id.nameCountry);
+                        codeName = textName.getText().toString();
+                        Toast.makeText(getApplicationContext(), "You selected : " + codeName, Toast.LENGTH_SHORT).show();
+                        Cursor c = db.obtainPopulationFromOneCountry(codeName);
+                        c.moveToFirst();
+                        Intent i = new Intent(getApplicationContext(), ShowCountryInfo.class);
+                        i.putExtra("name", c.getString(1));
+                        i.putExtra("codename", c.getString(0));
+                        startActivity(i);
+                        db.tanca();
+                    } else {
+                        Toast.makeText(appContext, "You need internet (Wifi) to access to every stat of the country!", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(appContext, "You need internet (Wifi) to access to every stat of the country!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        filterText = parent.getItemAtPosition(position).toString();
+        System.out.println(filterText);
+        rv.setAdapter(null);
+        inflate.notifyDataSetChanged();
+        inflateArray(arrayStats, filterText);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
     }
 
     private void retrieveGlobalInfo() {
@@ -145,41 +264,11 @@ public class ShowGlobalStats extends AppCompatActivity implements NavigationView
         totalCases.setText("These are the actual new cases for each country." + "\n" + "Global cases: " + totalSum + "\n" + "Total deaths: " + totalDeaths + "\n" + "Total cured: " + totalCured);
     }
 
-    private void selectedCountry() {
-        lv.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
-            String codeName;
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (isNetworkConnected(getApplicationContext())) {
-                    if (isNetworkWifi(getApplicationContext())) {
-                        db.obre();
-                        TextView textName = view.findViewById(R.id.nameCountry);
-                        codeName = textName.getText().toString();
-                        Toast.makeText(getApplicationContext(), "You selected : " + codeName, Toast.LENGTH_SHORT).show();
-                        Cursor c = db.obtainPopulationFromOneCountry(codeName);
-                        c.moveToFirst();
-                        Intent i = new Intent(getApplicationContext(), ShowCountryInfo.class);
-                        i.putExtra("name", c.getString(1));
-                        i.putExtra("codename", c.getString(0));
-                        startActivity(i);
-                        db.tanca();
-                    } else {
-                        Toast.makeText(appContext, "You need internet (Wifi) to access to every stat of the country!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else {
-                    Toast.makeText(appContext, "You need internet (Wifi) to access to every stat of the country!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
     //NavBar funcionality.
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         SharedPreferences.Editor editor = prefs.edit();
-        switch (menuItem.getItemId()){
+        switch (menuItem.getItemId()) {
             case R.id.nav_info:
                 startActivity(new Intent(this, MenuActivity.class));
                 break;

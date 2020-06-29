@@ -91,7 +91,7 @@ public class MainLogin extends AppCompatActivity implements View.OnClickListener
             } else {
                 db.obre();
                 //Check if there is an user like that inside or not.
-                c = db.obtainUserInfo(textEmail, textPassword);
+                c = db.obtainUserInfo(textEmail);
                 if (c.getCount() == 0)
                     Toast.makeText(this, "There is no user like that", Toast.LENGTH_SHORT).show();
                 else if (c.getCount() == 1) {

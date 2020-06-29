@@ -48,7 +48,7 @@
             android:layout_width="0dp"
             android:layout_height="20dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/listview"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/spinnerFilter">
@@ -104,8 +104,8 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/listview"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/totalCases"
@@ -114,7 +114,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-        </ListView>
+        </androidx.recyclerview.widget.RecyclerView>
 
         <TextView
             android:id="@+id/totalCases"
@@ -126,7 +126,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/listview" />
+            app:layout_constraintTop_toBottomOf="@+id/recyclerview" />
 
         <EditText
             android:id="@+id/searchBar"

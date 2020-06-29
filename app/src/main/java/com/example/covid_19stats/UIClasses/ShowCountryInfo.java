@@ -216,7 +216,7 @@ public class ShowCountryInfo extends AppCompatActivity implements NavigationView
         public void totalCasesCountry() {
             Cursor c = db.obtainCountryInformation(nameCountry);
             c.moveToFirst();
-            totalCases.setText("  Global cases: " + c.getInt(2) + "\n" + "  Total deaths: " + c.getInt(3) + "\n" + "  Total cured: " + c.getInt(4));
+            totalCases.setText("Last month showing"+"\n"+"Global cases: " + c.getInt(2) + "\n" + "Total deaths: " + c.getInt(3) + "\n" + "Total cured: " + c.getInt(4));
         }
     }
 

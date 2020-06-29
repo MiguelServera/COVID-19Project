@@ -5,18 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/cancelButton"
-        android:layout_width="96dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="32dp"
-        android:text="Cancel"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saveButton" />
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -29,12 +17,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/avatarImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginStart="140dp"
         android:layout_marginTop="70dp"
         android:layout_marginEnd="140dp"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
@@ -50,12 +39,12 @@
         android:layout_marginBottom="50dp"
         android:text="Username"
         app:layout_constraintBottom_toTopOf="@+id/Password"
-        app:layout_constraintEnd_toStartOf="@+id/editUsername"
+        app:layout_constraintEnd_toStartOf="@+id/updateUsername"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/avatarImage" />
 
     <EditText
-        android:id="@+id/editUsername"
+        android:id="@+id/updateUsername"
         android:layout_width="150dp"
         android:layout_height="40dp"
         android:layout_marginStart="50dp"
@@ -63,13 +52,13 @@
         android:layout_marginEnd="150dp"
         android:layout_marginBottom="40dp"
         android:enabled="false"
-        app:layout_constraintBottom_toTopOf="@id/editPassword"
+        app:layout_constraintBottom_toTopOf="@id/updatePassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textUsername"
-        app:layout_constraintTop_toBottomOf="@id/imageView" />
+        app:layout_constraintTop_toBottomOf="@id/avatarImage" />
 
     <EditText
-        android:id="@+id/editPassword"
+        android:id="@+id/updatePassword"
         android:layout_width="150dp"
         android:layout_height="40dp"
         android:layout_marginStart="50dp"
@@ -80,7 +69,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/Password"
-        app:layout_constraintTop_toBottomOf="@+id/editUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/updateUsername" />
 
     <EditText
         android:id="@+id/editConfirmPassword"
@@ -93,7 +82,7 @@
         app:layout_constraintBottom_toTopOf="@+id/checkBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textConfirmPassword"
-        app:layout_constraintTop_toBottomOf="@+id/editPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/updatePassword" />
 
     <TextView
         android:id="@+id/Password"
@@ -105,7 +94,7 @@
         android:layout_marginBottom="50dp"
         android:text="Password"
         app:layout_constraintBottom_toTopOf="@+id/textConfirmPassword"
-        app:layout_constraintEnd_toStartOf="@id/editPassword"
+        app:layout_constraintEnd_toStartOf="@id/updatePassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textUsername" />
 
@@ -189,16 +178,30 @@
         android:background="#ABE9B86E"
         android:text="Change Image"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/editUsername"
+        app:layout_constraintBottom_toTopOf="@+id/updateUsername"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/avatarImage" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="96dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="32dp"
+        android:background="#ABE9B86E"
+        android:text="Cancel"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/saveButton" />
 
     <Button
         android:id="@+id/saveButton"
         android:layout_width="96dp"
         android:layout_height="59dp"
         android:layout_marginTop="32dp"
+        android:background="#ABE9B86E"
         android:text="Save"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/cancelButton"

@@ -26,9 +26,6 @@
 
     <string-array name="filter">
         <item>
-        Filter...
-    </item>
-        <item>
         Name asc.
     </item>
         <item>

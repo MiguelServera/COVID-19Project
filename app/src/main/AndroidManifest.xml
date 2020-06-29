@@ -28,14 +28,16 @@
         <activity android:name=".UIClasses.MenuActivity" android:screenOrientation="portrait"/>
         <activity android:name=".UIClasses.ShowCountryInfo" android:screenOrientation="portrait"/>
         <activity android:name=".Resources.CheckConnection" android:screenOrientation="portrait"/>
-        <activity android:name=".UIClasses.ShowGlobalStats" android:screenOrientation="portrait"/>
+        <activity android:name=".UIClasses.ShowGlobalStats" android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity android:name=".UIClasses.ShowGraphs" android:screenOrientation="portrait"/>
         <activity android:name=".UIClasses.ShowCCAAInfo" android:screenOrientation="portrait"/>
         <activity android:name=".Resources.DownloadFileCCAA" android:screenOrientation="portrait"/>
         <activity android:name=".UIClasses.MoreInfoCCAA" android:screenOrientation="portrait"/>
         <activity android:name=".UIClasses.Precautions"/>
         <activity android:name=".UIClasses.SymptomsHelp"/>
-        <activity android:name=".UIClasses.UserProfile"/>
+        <activity android:name=".UIClasses.UserProfile"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
     </application>
 
 </manifest>

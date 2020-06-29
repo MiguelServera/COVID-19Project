@@ -6,18 +6,22 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.covid_19stats.R;
 import com.example.covid_19stats.Resources.DBInterface;
 
+import java.io.ByteArrayOutputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,11 +33,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     DBInterface db;
     Intent i;
     TextView textEmail, textPassword;
+    ImageView avatarImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_activity);
+        avatarImage = findViewById(R.id.avatarImage);
         textEmail = findViewById(R.id.rulesEmail);
         textPassword = findViewById(R.id.rulesPassword);
         textEmail.setMovementMethod(new ScrollingMovementMethod());
@@ -73,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             } else if (MainLogin.firstUser == false) {
                 if (Patterns.EMAIL_ADDRESS.matcher(textEmail).matches() && isValidPassword(textPassword)) {
-                    if (db.insertUserInfo(textUsername, textEmail, textPassword) != -1) {
+                    if (db.insertUserInfo(textUsername, textEmail, textPassword, imageToByteArray()) != -1) {
                         Toast.makeText(this, "First User Inserted", Toast.LENGTH_SHORT).show();
                         MainLogin.editor.putBoolean("firstUser", true);
                         MainLogin.editor.apply();
@@ -87,7 +93,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             } else {
                 if (Patterns.EMAIL_ADDRESS.matcher(textEmail).matches() && isValidPassword(textPassword)) {
-                    if (db.insertUserInfo(textUsername, textEmail, textPassword) != -1)
+                    if (db.insertUserInfo(textUsername, textEmail, textPassword, imageToByteArray()) != -1)
                         Toast.makeText(this, "User inserted", Toast.LENGTH_SHORT).show();
 
                     else
@@ -116,5 +122,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         return matcher.matches();
 
+    }
+
+    private byte[] imageToByteArray()
+    {
+        Bitmap bitmap = ((BitmapDrawable) avatarImage.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.WEBP, 100, baos);
+        byte[] imageInByte = baos.toByteArray();
+        return imageInByte;
     }
 }

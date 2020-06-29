@@ -25,6 +25,7 @@ public class DBInterface {
     public static final String KEY_USERNAME = "username";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PASSWORD = "password";
+    public static final String KEY_IMAGE = "avatar";
     public static final String KEY_GEO_ID = "geoid";
     public static final String KEY_ID = "id";
     public static final String KEY_DATE = "date";
@@ -85,7 +86,8 @@ public class DBInterface {
     public static final String CREATE_USER_INFO_TABLE = "create table " + USER_INFO_TABLE + "( " +
             KEY_USERNAME + " text not null, " +
             KEY_EMAIL + " text unique, " +
-            KEY_PASSWORD + " text not null);";
+            KEY_PASSWORD + " text not null, " +
+            KEY_IMAGE + " blob not null);";
 
     public DBInterface(Context con) {
         this.context = con;
@@ -177,12 +179,22 @@ public class DBInterface {
         return bd.insert(ONE_COUNTRY_STATS, null, initialValues);
     }
 
-    public long insertUserInfo(String username, String email, String password) {
+    public long insertUserInfo(String username, String email, String password, byte[] avatarImage) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_USERNAME, username);
         initialValues.put(KEY_EMAIL, email);
         initialValues.put(KEY_PASSWORD, password);
+        initialValues.put(KEY_IMAGE, avatarImage);
         return bd.insert(USER_INFO_TABLE, null, initialValues);
+    }
+
+    public long updateUserInfo(String username, String email, String password, byte[] avatarImage) {
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_USERNAME, username);
+        initialValues.put(KEY_EMAIL, email);
+        initialValues.put(KEY_PASSWORD, password);
+        initialValues.put(KEY_IMAGE, avatarImage);
+        return bd.update(USER_INFO_TABLE, initialValues, "email = ?", new String[]{email});
     }
 
     public Cursor obtainAllInformation() {
@@ -195,19 +207,15 @@ public class DBInterface {
                 KEY_COUNTRY_NAME + " = " + "'" + name + "'", null, null, null, null);
     }
 
-    public Cursor obtainUserInfo(String email, String password) {
-        bd.query(USER_INFO_TABLE, new String[]{KEY_USERNAME, KEY_EMAIL, KEY_PASSWORD},
-                KEY_EMAIL + " = " + "'" + email + "'" + " AND " + KEY_PASSWORD + " = " + "'" + password + "'",
-                null, null, null, null).toString();
-
-        return bd.query(USER_INFO_TABLE, new String[]{KEY_USERNAME, KEY_EMAIL, KEY_PASSWORD},
-                KEY_EMAIL + " = " + "'" + email + "'" + " AND " + KEY_PASSWORD + " = " + "'" + password + "'",
+    public Cursor obtainUserInfo(String email) {
+        return bd.query(USER_INFO_TABLE, new String[]{KEY_USERNAME, KEY_EMAIL, KEY_PASSWORD, KEY_IMAGE},
+                KEY_EMAIL + " = " + "'" + email + "'",
                 null, null, null, null);
     }
 
     //Just in case
     public Cursor obtainAllUserInfo() {
-        return bd.query(USER_INFO_TABLE, new String[]{KEY_USERNAME, KEY_EMAIL, KEY_PASSWORD},
+        return bd.query(USER_INFO_TABLE, new String[]{KEY_USERNAME, KEY_EMAIL, KEY_PASSWORD, KEY_IMAGE},
                 null, null, null, null, null);
     }
 

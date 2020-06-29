@@ -60,12 +60,6 @@ public class Stat {
 
     @Override
     public String toString() {
-        return "Stat{" +
-                "code='" + code + '\'' +
-                ", name='" + name + '\'' +
-                ", cases=" + cases +
-                ", deaths=" + deaths +
-                ", cured=" + cured +
-                '}';
+        return this.name;
     }
 }
