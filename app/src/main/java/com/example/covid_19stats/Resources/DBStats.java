@@ -8,9 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import static com.example.covid_19stats.Resources.DBInterface.BD_NAME;
 import static com.example.covid_19stats.Resources.DBInterface.CREATE_ACTUAL_DATE_TABLE;
 import static com.example.covid_19stats.Resources.DBInterface.CREATE_CCAA_STATS_TABLE;
-import static com.example.covid_19stats.Resources.DBInterface.CREATE_COUNTRY_TABLE;
-import static com.example.covid_19stats.Resources.DBInterface.CREATE_GLOBAL_TABLE;
-import static com.example.covid_19stats.Resources.DBInterface.CREATE_ONE_COUNTRY_STATS_TABLE;
+import static com.example.covid_19stats.Resources.DBInterface.CREATE_LAST_TABLE;
 import static com.example.covid_19stats.Resources.DBInterface.CREATE_USER_INFO_TABLE;
 import static com.example.covid_19stats.Resources.DBInterface.VERSION;
 
@@ -24,9 +22,7 @@ public class DBStats extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         try {
-            db.execSQL(CREATE_COUNTRY_TABLE);
-            db.execSQL(CREATE_GLOBAL_TABLE);
-            db.execSQL(CREATE_ONE_COUNTRY_STATS_TABLE);
+            db.execSQL(CREATE_LAST_TABLE);
             db.execSQL(CREATE_ACTUAL_DATE_TABLE);
             db.execSQL(CREATE_USER_INFO_TABLE);
             db.execSQL(CREATE_CCAA_STATS_TABLE);

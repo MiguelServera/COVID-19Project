@@ -13,8 +13,9 @@
         android:layout_height="100dp">
 
         <ScrollView
-            android:layout_width="480dp"
-            android:layout_height="721dp"
+            android:id="@+id/scrollView3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginTop="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +52,6 @@
                     android:layout_height="450dp"
                     app:layout_constraintBottom_toTopOf="@+id/compareDeaths"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -80,33 +80,43 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/editCountry1"
-            android:layout_width="200dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="31dp"
+            android:layout_marginEnd="3dp"
+            android:hint="Select country..."
+            app:layout_constraintBottom_toTopOf="@+id/scrollView3"
+            app:layout_constraintEnd_toStartOf="@+id/compareButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/editCountry2"
-            android:layout_width="200dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
             android:layout_marginTop="31dp"
+            android:hint="Select country..."
+            app:layout_constraintBottom_toTopOf="@+id/scrollView3"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/compareButton"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-        <TextView
-            android:id="@+id/textCompare"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
+        <Button
+            android:id="@+id/compareButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
-            android:layout_marginTop="45dp"
+            android:layout_marginTop="44dp"
             android:layout_marginEnd="2dp"
+            android:layout_marginBottom="14dp"
             android:gravity="center"
-            android:text="TextView"
+            android:text="compare to"
+            app:layout_constraintBottom_toTopOf="@+id/scrollView3"
             app:layout_constraintEnd_toStartOf="@+id/editCountry2"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/editCountry1"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             tools:text="compare to" />

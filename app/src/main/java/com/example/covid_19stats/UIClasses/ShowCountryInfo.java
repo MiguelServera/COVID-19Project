@@ -23,6 +23,7 @@ import com.example.covid_19stats.POJO.StatFromOneCountry;
 import com.example.covid_19stats.R;
 import com.example.covid_19stats.Resources.DBInterface;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -140,8 +141,6 @@ public class ShowCountryInfo extends AppCompatActivity implements NavigationView
         public void onPostExecute(String result) {
             try {
                 db.obre();
-                db.deleteOneCountryStat();
-                db.createTableOneCountry();
                 JSONArray dataList;
                 String object;
                 JSONObject dataObject = new JSONObject(result);
@@ -183,18 +182,9 @@ public class ShowCountryInfo extends AppCompatActivity implements NavigationView
                                 + ",\"deaths\":" + dataList.getJSONObject(a).getString("deaths")
                                 + ",\"cured\":" + dataList.getJSONObject(a).getString("cured") + "}";
                     }
-                    JSONObject insertJSONObject = new JSONObject(object);
-                    db.insertStatsFromOneCountry(insertJSONObject);
+                    Gson gson = new Gson();
+                    arrayStats.add(gson.fromJson(object, StatFromOneCountry.class));
                 }
-                Cursor c = db.obtainOneCountryStat(dataObject.getString("name"));
-                while (c.moveToNext()) {
-                    StatFromOneCountry indiStat = new StatFromOneCountry(c.getString(2),
-                            c.getInt(3),
-                            c.getInt(4),
-                            c.getInt(5));
-                    arrayStats.add(indiStat);
-                }
-                c.close();
                 inflate(arrayStats);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -216,7 +206,7 @@ public class ShowCountryInfo extends AppCompatActivity implements NavigationView
         public void totalCasesCountry() {
             Cursor c = db.obtainCountryInformation(nameCountry);
             c.moveToFirst();
-            totalCases.setText("Last month showing"+"\n"+"Global cases: " + c.getInt(2) + "\n" + "Total deaths: " + c.getInt(3) + "\n" + "Total cured: " + c.getInt(4));
+            totalCases.setText("Last month showing"+"\n"+"Global cases: " + c.getInt(1) + "\n" + "Total deaths: " + c.getInt(2) + "\n" + "Total cured: " + c.getInt(3));
         }
     }
 

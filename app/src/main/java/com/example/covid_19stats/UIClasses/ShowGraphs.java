@@ -71,7 +71,7 @@ public class ShowGraphs extends AppCompatActivity implements NavigationView.OnNa
 
     public void GlobalGraph() {
         db.obre();
-        Cursor c = db.obtainAllGlobalInformation();
+        Cursor c = db.obtainPopulationAndStats();
         c.moveToFirst();
         float cases, deaths, cured;
         float totalSum = 0, totalDeaths = 0, totalCured = 0;
@@ -116,14 +116,14 @@ public class ShowGraphs extends AppCompatActivity implements NavigationView.OnNa
 
     private void PercentGraph() {
         db.obre();
-        Cursor c = db.obtainAllGlobalInformation();
+        Cursor c = db.obtainPopulationAndStats();
         ArrayList<PieEntry> valuesCCAA = new ArrayList<>();
         ArrayList<StatPercent> topSevenPercent = new ArrayList<>();
         while (c.moveToNext()) {
             Cursor c2 = db.obtainPopulationFromOneCountry(c.getString(1));
             c2.moveToFirst();
-            float cases = Integer.parseInt(c.getString(2));
-            float population = Integer.parseInt(c2.getString(2));
+            float cases = Integer.parseInt(c.getString(3));
+            float population = Integer.parseInt(c.getString(2));
             float percentOfCases = cases * 100 / population;
             StatPercent newStat = new StatPercent(c.getString(1), percentOfCases);
             topSevenPercent.add(newStat);
@@ -168,8 +168,8 @@ public class ShowGraphs extends AppCompatActivity implements NavigationView.OnNa
         Cursor c = db.obtainTopSevenInformation();
         ArrayList<PieEntry> valuesCCAA = new ArrayList<>();
         while (c.moveToNext()) {
-            float cases = Float.parseFloat(c.getString(2));
-            valuesCCAA.add(new PieEntry(cases, c.getString(1)));
+            float cases = Float.parseFloat(c.getString(1));
+            valuesCCAA.add(new PieEntry(cases, c.getString(0)));
         }
         PieDataSet pieDataSet = new PieDataSet(valuesCCAA, "");
         pieDataSet.setValueTextColor(Color.DKGRAY);

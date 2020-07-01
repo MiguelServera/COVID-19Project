@@ -31,9 +31,7 @@ public class DBInterface {
     public static final String KEY_DATE = "date";
     public static final String KEY_POPULATION = "population";
     public static final String BD_NAME = "COVIDBD";
-    public static final String COUNTRYTABLE = "CountryStats";
-    public static final String GLOBAL_TABLE = "GlobalStats";
-    public static final String ONE_COUNTRY_STATS = "OneCountryStats";
+    public static final String LAST_TABLE = "LastStats";
     public static final String COUNTRY_POPULATION = "PopulationCountryStats";
     public static final String CCAA_STATS = "StatsPerCCAA";
     public static final String ACTUAL_DATE_TABLE = "ActualDate";
@@ -42,24 +40,11 @@ public class DBInterface {
     private final Context context;
     private DBStats ajuda;
     private SQLiteDatabase bd;
-    public static final String CREATE_COUNTRY_TABLE = "create table " + COUNTRYTABLE + "( " +
+    public static final String CREATE_LAST_TABLE = "create table " + LAST_TABLE + "( " +
+            KEY_ID + " integer primary key autoincrement, " +
             KEY_COUNTRY + " text not null, " +
             KEY_COUNTRY_NAME + " text not null, " +
-            KEY_CASES + " integer not null, " +
-            KEY_DEATHS + " integer not null, " +
-            KEY_RECU + " integer not null);";
-
-    public static final String CREATE_GLOBAL_TABLE = "create table " + GLOBAL_TABLE + "( " +
-            KEY_COUNTRY + " text not null, " +
-            KEY_COUNTRY_NAME + " text not null, " +
-            KEY_CASES + " integer not null, " +
-            KEY_DEATHS + " integer not null, " +
-            KEY_RECU + " integer not null);";
-
-    public static final String CREATE_ONE_COUNTRY_STATS_TABLE = "create table " + ONE_COUNTRY_STATS + "( " +
-            KEY_COUNTRY + " text not null, " +
-            KEY_COUNTRY_NAME + " text not null, " +
-            KEY_DATE + " text not null, " +
+            KEY_DATE + " date not null, " +
             KEY_CASES + " integer not null, " +
             KEY_DEATHS + " integer not null, " +
             KEY_RECU + " integer not null);";
@@ -75,9 +60,13 @@ public class DBInterface {
             KEY_DEATHS + " integer not null);";
 
     public static final String CREATE_COUNTRY_POPULATION = "create table " + COUNTRY_POPULATION + "( " +
+            KEY_ID + " integer primary key autoincrement, " +
             KEY_GEO_ID + " text not null, " +
             KEY_COUNTRY_NAME + " text not null, " +
-            KEY_POPULATION + " integer not null);";
+            KEY_POPULATION + " integer not null, " +
+            KEY_CASES + " integer not null, " +
+            KEY_DEATHS + " integer not null, " +
+            KEY_RECU + " integer not null);";
 
     public static final String CREATE_ACTUAL_DATE_TABLE = "create table " + ACTUAL_DATE_TABLE + "( " +
             KEY_ID + " integer primary key, " +
@@ -103,19 +92,6 @@ public class DBInterface {
         ajuda.close();
     }
 
-    public long insertInformation(JSONObject stats) {
-        ContentValues initialValues = new ContentValues();
-        try {
-            initialValues.put(KEY_COUNTRY, stats.getString("code"));
-            initialValues.put(KEY_COUNTRY_NAME, stats.getString("name"));
-            initialValues.put(KEY_CASES, Integer.parseInt(stats.getString("cases")));
-            initialValues.put(KEY_DEATHS, Integer.parseInt(stats.getString("deaths")));
-            initialValues.put(KEY_RECU, Integer.parseInt(stats.getString("cured")));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return bd.insert(COUNTRYTABLE, null, initialValues);
-    }
 
     public long insertCCAAInformation(CCAAStats stats) {
         ContentValues initialValues = new ContentValues();
@@ -130,27 +106,30 @@ public class DBInterface {
         return bd.insert(CCAA_STATS, null, initialValues);
     }
 
-    public long insertGlobalInformation(JSONObject stats) {
+    public long insertLastInformation(JSONObject stats) {
         ContentValues initialValues = new ContentValues();
         try {
             initialValues.put(KEY_COUNTRY, stats.getString("code"));
             initialValues.put(KEY_COUNTRY_NAME, stats.getString("name"));
+            initialValues.put(KEY_DATE, stats.getString("date"));
             initialValues.put(KEY_CASES, Integer.parseInt(stats.getString("cases")));
             initialValues.put(KEY_DEATHS, Integer.parseInt(stats.getString("deaths")));
             initialValues.put(KEY_RECU, Integer.parseInt(stats.getString("cured")));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return bd.insert(GLOBAL_TABLE, null, initialValues);
+        return bd.insert(LAST_TABLE, null, initialValues);
     }
 
-    public long insertCountryCodeAndPopulation(JSONObject stats) {
+    public long insertPopulationAndTotalValues(JSONObject stats) {
         ContentValues initialValues = new ContentValues();
         try {
-
             initialValues.put(KEY_GEO_ID, stats.getString("geoID"));
             initialValues.put(KEY_COUNTRY_NAME, stats.getString("name"));
             initialValues.put(KEY_POPULATION, stats.getString("population"));
+            initialValues.put(KEY_CASES, Integer.parseInt(stats.getString("cases")));
+            initialValues.put(KEY_DEATHS, Integer.parseInt(stats.getString("deaths")));
+            initialValues.put(KEY_RECU, Integer.parseInt(stats.getString("cured")));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -161,22 +140,6 @@ public class DBInterface {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_DATE, date);
         return bd.insert(ACTUAL_DATE_TABLE, null, initialValues);
-    }
-
-    public long insertStatsFromOneCountry(JSONObject stats) {
-        ContentValues initialValues = new ContentValues();
-        try {
-
-            initialValues.put(KEY_COUNTRY, stats.getString("code"));
-            initialValues.put(KEY_COUNTRY_NAME, stats.getString("name"));
-            initialValues.put(KEY_DATE, stats.getString("date"));
-            initialValues.put(KEY_CASES, Integer.parseInt(stats.getString("cases")));
-            initialValues.put(KEY_DEATHS, Integer.parseInt(stats.getString("deaths")));
-            initialValues.put(KEY_RECU, Integer.parseInt(stats.getString("cured")));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return bd.insert(ONE_COUNTRY_STATS, null, initialValues);
     }
 
     public long insertUserInfo(String username, String email, String password, byte[] avatarImage) {
@@ -197,15 +160,19 @@ public class DBInterface {
         return bd.update(USER_INFO_TABLE, initialValues, "email = ?", new String[]{email});
     }
 
+    public Cursor obtainLastInformation() {
+        return bd.query(LAST_TABLE, new String[]{"MAX("+ KEY_ID + ")", KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_DATE,  KEY_CASES, KEY_DEATHS, KEY_RECU},
+                null, null, KEY_COUNTRY_NAME, null, null);
+    }
+
     public Cursor obtainAllInformation() {
-        return bd.query(COUNTRYTABLE, new String[]{KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_CASES, KEY_DEATHS, KEY_RECU},
+        return bd.query(LAST_TABLE, new String[]{KEY_ID, KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_DATE,  KEY_CASES, KEY_DEATHS, KEY_RECU},
                 null, null, null, null, null);
     }
 
-    public Cursor obtainOneCountryStat(String name) {
-        return bd.query(ONE_COUNTRY_STATS, new String[]{KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_DATE, KEY_CASES, KEY_DEATHS, KEY_RECU},
-                KEY_COUNTRY_NAME + " = " + "'" + name + "'", null, null, null, null);
-    }
+    public Cursor obtainLastCountryInformation(String name) {
+        return bd.query(LAST_TABLE, new String[]{KEY_ID, KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_DATE,  KEY_CASES, KEY_DEATHS, KEY_RECU},
+                KEY_COUNTRY_NAME + " = " + "\"" + name + "\"", null, null, null, null);    }
 
     public Cursor obtainUserInfo(String email) {
         return bd.query(USER_INFO_TABLE, new String[]{KEY_USERNAME, KEY_EMAIL, KEY_PASSWORD, KEY_IMAGE},
@@ -213,14 +180,13 @@ public class DBInterface {
                 null, null, null, null);
     }
 
-    //Just in case
-    public Cursor obtainAllUserInfo() {
-        return bd.query(USER_INFO_TABLE, new String[]{KEY_USERNAME, KEY_EMAIL, KEY_PASSWORD, KEY_IMAGE},
+    public Cursor obtainDate() {
+        return bd.query(ACTUAL_DATE_TABLE, new String[]{KEY_ID, KEY_DATE},
                 null, null, null, null, null);
     }
 
-    public Cursor obtainDate() {
-        return bd.query(ACTUAL_DATE_TABLE, new String[]{KEY_ID, KEY_DATE},
+    public Cursor obtainPopulationAndStats() {
+        return bd.query(COUNTRY_POPULATION, new String[]{KEY_GEO_ID, KEY_COUNTRY_NAME, KEY_POPULATION, KEY_CASES, KEY_DEATHS, KEY_RECU},
                 null, null, null, null, null);
     }
 
@@ -229,24 +195,14 @@ public class DBInterface {
                 KEY_COUNTRY_NAME + " = " + "'" + name + "'", null, null, null, null);
     }
 
-    public Cursor obtainAllGlobalInformation() {
-        return bd.query(GLOBAL_TABLE, new String[]{KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_CASES, KEY_DEATHS, KEY_RECU},
-                null, null, null, null, null);
-    }
-
     public Cursor obtainTopSevenInformation() {
-        return bd.query(GLOBAL_TABLE, new String[]{KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_CASES, KEY_DEATHS, KEY_RECU},
+        return bd.query(COUNTRY_POPULATION, new String[]{KEY_COUNTRY_NAME, KEY_CASES, KEY_DEATHS, KEY_RECU},
                 null, null, KEY_COUNTRY_NAME, null, KEY_CASES + " DESC limit 7");
     }
 
     public Cursor obtainCountryInformation(String name) {
-        return bd.query(GLOBAL_TABLE, new String[]{KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_CASES, KEY_DEATHS, KEY_RECU},
+        return bd.query(COUNTRY_POPULATION, new String[]{KEY_COUNTRY_NAME, KEY_CASES, KEY_DEATHS, KEY_RECU},
                 KEY_COUNTRY_NAME + " = " + "\"" + name + "\"", null, null, null, null);
-    }
-
-    public Cursor obtainAllCCAAInformation() {
-        return bd.query(CCAA_STATS, new String[]{KEY_CCAACODE, KEY_DATE, KEY_CASES, KEY_PCR, KEY_TESTAC, KEY_HOSPITALIZED, KEY_UCI, KEY_DEATHS},
-                null, null, null, null, null);
     }
 
     public Cursor obtainCodeCCAAInformation(String code) {
@@ -255,8 +211,7 @@ public class DBInterface {
     }
 
     public void deleteDatabaseStats() {
-        bd.execSQL("DROP TABLE IF EXISTS " + COUNTRYTABLE);
-        bd.execSQL("DROP TABLE IF EXISTS " + GLOBAL_TABLE);
+        bd.execSQL("DROP TABLE IF EXISTS " + LAST_TABLE);
         bd.execSQL("DROP TABLE IF EXISTS " + COUNTRY_POPULATION);
         bd.execSQL("DROP TABLE IF EXISTS " + ACTUAL_DATE_TABLE);
     }
@@ -270,18 +225,8 @@ public class DBInterface {
     }
 
     public void createTables() {
-        bd.execSQL(CREATE_COUNTRY_TABLE);
-        bd.execSQL(CREATE_GLOBAL_TABLE);
+        bd.execSQL(CREATE_LAST_TABLE);
         bd.execSQL(CREATE_COUNTRY_POPULATION);
         bd.execSQL(CREATE_ACTUAL_DATE_TABLE);
     }
-
-    public void deleteOneCountryStat() {
-        bd.execSQL("DROP TABLE IF EXISTS " + ONE_COUNTRY_STATS);
-    }
-
-    public void createTableOneCountry() {
-        bd.execSQL(CREATE_ONE_COUNTRY_STATS_TABLE);
-    }
-
 }

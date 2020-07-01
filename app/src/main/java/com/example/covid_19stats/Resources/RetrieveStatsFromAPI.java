@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,8 +42,7 @@ Once downloaded it inserts all the necessary information on the database.
 public class RetrieveStatsFromAPI extends AppCompatActivity {
     DBInterface db;
     Context appContext;
-    LastResults ls;
-    InsertEachCountryData countryData;
+    GlobalResults gr;
     Intent i;
     SharedPreferences prefs;
 
@@ -54,6 +54,7 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
         db = new DBInterface(this);
         appContext = this;
         i = new Intent(getApplicationContext(), ShowGlobalStats.class);
+        System.out.println("sup");
         new SendRequest().execute();
     }
 
@@ -93,7 +94,7 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                 conn.setSSLSocketFactory(context.getSocketFactory());
                 conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
                 conn.setRequestProperty("Accept", "application/json");
-                conn.setConnectTimeout(100);
+                conn.setConnectTimeout(15 * 100);
                 conn.setRequestMethod("POST");
 
                 DataOutputStream os = new DataOutputStream(conn.getOutputStream());
@@ -134,7 +135,7 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
         //I call every thread here so it can all execute in one method.
         public void onPostExecute(String result) {
             try {
-                System.out.println(result);
+                Log.i("Result", result);
                 db.obre();
                 db.deleteDatabaseStats();
                 db.createTables();
@@ -143,34 +144,18 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                 JSONArray stats = new JSONArray(result);
                 for (int i = 0; i < stats.length(); i++) {
                     datalist = stats.getJSONObject(i);
-                    countryData = new InsertEachCountryData(datalist);
-                    countryData.start();
-                    ls = new LastResults(datalist);
-                    ls.start();
-                    globalResults(datalist);
+                    gr = new GlobalResults(datalist);
+                    gr.start();
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             } finally {
-
                 finish();
-            }
-        }
-    }
-
-    //Thread extended class which will insert the code and population of each country.
-    class InsertEachCountryData extends Thread {
-        JSONObject datalist;
-
-        public InsertEachCountryData(JSONObject datalist) {
-            this.datalist = datalist;
-        }
-
-        public void run() {
-            try {
-                db.insertCountryCodeAndPopulation(datalist);
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
     }
@@ -178,10 +163,10 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
     /*Thread extended class which will insert only the last information of each country.
     The API didn't returned correct values so I had to do several checks to ensure the insertion.
      */
-    class LastResults extends Thread {
+    class GlobalResults extends Thread {
         JSONObject datalist;
 
-        public LastResults(JSONObject datalist) {
+        public GlobalResults(JSONObject datalist) {
             this.datalist = datalist;
         }
 
@@ -191,111 +176,123 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                 String object;
                 JSONObject insertjsonObject;
                 JSONObject datalistObject;
-                datalistObject = datalist.getJSONArray("dataList").getJSONObject(datalist.getJSONArray("dataList").length() - 1);
+                int dataListLength = datalist.getJSONArray("dataList").length();
+                    for (int i = dataListLength-15; i <= dataListLength - 1;i++) {
+                        datalistObject = datalist.getJSONArray("dataList").getJSONObject(i);
+                        if (datalist.getString("name").equals("Bonaire, Saint Eustatius and Saba")
+                                && datalist.getString("code").equals("")) {
+                            object = "{\"code\":\"NoCode\"" + datalist.getString("code") +
+                                    ",\"name\":\"" + datalist.getString("name") +
+                                    ",\"date\":" + "\"" + datalistObject.getJSONObject("date").getString("date") + "\"" +
+                                    ",\"cases\":" + datalistObject.getString("cases") +
+                                    ",\"deaths\":" + datalistObject.getString("deaths") +
+                                    ",\"cured\":" + datalistObject.getString("cured") + "}";
 
-                if (datalist.getString("name").equals("Bonaire, Saint Eustatius and Saba")
-                        && datalist.getString("code").equals("")) {
+                        } else if (datalist.getString("code").equals("") ||
+                                datalist.getString("code").equals("N/A")) {
+                            object = "{\"code\":\"NoCode\"" +
+                                    ",\"name\":" + datalist.getString("name") +
+                                    ",\"date\":" + datalistObject.getJSONObject("date").getString("date") +
+                                    ",\"cases\":" + datalistObject.getString("cases") +
+                                    ",\"deaths\":" + datalistObject.getString("deaths") +
+                                    ",\"cured\":" + datalistObject.getString("cured") + "}";
 
-                    object = "{\"code\":\"NoCode\"" + datalist.getString("code")
-                            + ",\"name\":\"" + datalist.getString("name")
-                            + "\",\"cases\":" + datalistObject.getString("cases") +
-                            ",\"deaths\":" + datalistObject.getString("deaths") +
-                            ",\"cured\":" + datalistObject.getString("cured") + "}";
+                        } else if (datalist.getString("name").equals("Cases_on_an_international_conveyance_Japan")) {
+                            object = "{\"code\":\"NoCode\"" +
+                                    ",\"name\":\"" + datalist.getString("name") +
+                                    ",\"date\":" + "\"" + datalistObject.getJSONObject("date").getString("date") + "\"" +
+                                    ",\"cases\":" + datalistObject.getString("cases") +
+                                    ",\"deaths\":" + datalistObject.getString("deaths") +
+                                    ",\"cured\":" + datalistObject.getString("cured") + "}";
 
-                } else if (datalist.getString("code").equals("") ||
-                        datalist.getString("code").equals("N/A")) {
-                    object = "{\"code\":\"NoCode\"" + ",\"name\":" + datalist.getString("name")
-                            + ",\"cases\":" + datalistObject.getString("cases") +
-                            ",\"deaths\":" + datalistObject.getString("deaths") +
-                            ",\"cured\":" + datalistObject.getString("cured") + "}";
-
-                } else if (datalist.getString("name").equals("Cases_on_an_international_conveyance_Japan")) {
-                    object = "{\"code\":\"NoCode\"" +
-                            ",\"name\":\"" + datalist.getString("name")
-                            + "\",\"cases\":" + datalistObject.getString("cases") +
-                            ",\"deaths\":" + datalistObject.getString("deaths") +
-                            ",\"cured\":" + datalistObject.getString("cured") + "}";
-
-                } else {
-                    object = "{\"code\":" + datalist.getString("code")
-                            + ",\"name\":" + datalist.getString("name")
-                            + ",\"cases\":" + datalistObject.getString("cases") +
-                            ",\"deaths\":" + datalistObject.getString("deaths") +
-                            ",\"cured\":" + datalistObject.getString("cured") + "}";
-                }
-
-                insertjsonObject = new JSONObject(object);
-                if (db.insertInformation(insertjsonObject) != 1) ;
+                        } else {
+                            object = "{\"code\":" + datalist.getString("code") +
+                                    ",\"name\":" + datalist.getString("name") +
+                                    ",\"date\":" + "\"" + datalistObject.getJSONObject("date").getString("date") + "\"" +
+                                    ",\"cases\":" + datalistObject.getString("cases") +
+                                    ",\"deaths\":" + datalistObject.getString("deaths") +
+                                    ",\"cured\":" + datalistObject.getString("cured") + "}";
+                        }
+                        System.out.println(object);
+                        insertjsonObject = new JSONObject(object);
+                        if (db.insertLastInformation(insertjsonObject) != 1) ;
+                    }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            globalResults(datalist);
         }
-    }
 
-    /*Method which will insert the total of cases, cured and deaths.
-    The API didn't returned correct values so I had to do several checks to ensure the insertion.
-     */
-    private void globalResults(JSONObject datalist) {
-        try {
-            String object;
-            JSONObject insertjsonObject;
-            JSONObject datalistObject = null;
-            JSONArray datalistArray;
-            int totalSumCases = 0;
-            int totalDeathsCases = 0;
-            int totalCuredCases = 0;
-            int valueSumCases;
-            int valueDeathsCases;
-            int valueCuredCases;
-            datalistArray = datalist.getJSONArray("dataList");
-            for (int a = 0; a < datalistArray.length(); a++) {
-                datalistObject = datalistArray.getJSONObject(a);
-                valueSumCases = Integer.parseInt(datalistObject.getString("cases").trim());
-                totalSumCases = valueSumCases + totalSumCases;
+        /*Method which will insert the total of cases, cured and deaths.
+        The API didn't returned correct values so I had to do several checks to ensure the insertion.
+         */
+        private void globalResults(JSONObject datalist) {
+            try {
+                String object;
+                JSONObject insertjsonObject;
+                JSONObject datalistObject = null;
+                JSONArray datalistArray;
+                int totalSumCases = 0;
+                int totalDeathsCases = 0;
+                int totalCuredCases = 0;
+                int valueSumCases;
+                int valueDeathsCases;
+                int valueCuredCases;
+                datalistArray = datalist.getJSONArray("dataList");
+                for (int a = 0; a < datalistArray.length(); a++) {
+                    datalistObject = datalistArray.getJSONObject(a);
+                    valueSumCases = Integer.parseInt(datalistObject.getString("cases").trim());
+                    totalSumCases = valueSumCases + totalSumCases;
 
-                valueDeathsCases = Integer.parseInt(datalistObject.getString("deaths").trim());
+                    valueDeathsCases = Integer.parseInt(datalistObject.getString("deaths").trim());
 
-                totalDeathsCases = valueDeathsCases + totalDeathsCases;
+                    totalDeathsCases = valueDeathsCases + totalDeathsCases;
 
-                valueCuredCases = Integer.parseInt(datalistObject.getString("cured").trim());
+                    valueCuredCases = Integer.parseInt(datalistObject.getString("cured").trim());
 
-                totalCuredCases = valueCuredCases + totalCuredCases;
+                    totalCuredCases = valueCuredCases + totalCuredCases;
+                }
+
+                if (datalist.getString("name").equals("Bonaire, Saint Eustatius and Saba")
+                        && datalist.getString("code").equals("")) {
+                    object = "{\"geoID\":" + datalist.getString("geoID")
+                            + ",\"name\":\"" + datalist.getString("name") +
+                            ",\"population\":" + datalist.getString("population")
+                            + "\",\"cases\":" + totalSumCases +
+                            ",\"deaths\":" + totalDeathsCases +
+                            ",\"cured\":" + totalCuredCases + "}";
+
+                } else if (datalist.getString("name").equals("Cases_on_an_international_conveyance_Japan")) {
+                    object = "{\"geoID\":" + datalist.getString("geoID") +
+                            ",\"name\":\"" + datalist.getString("name") +
+                            ",\"population\":" + datalist.getString("population") +
+                            "\",\"cases\":" + totalSumCases +
+                            ",\"deaths\":" + totalDeathsCases +
+                            ",\"cured\":" + totalCuredCases + "}";
+
+                } else if (datalist.getString("code").equals("") ||
+                        datalist.getString("code").equals("N/A")) {
+                    object = "{\"geoID\":" + datalist.getString("geoID") +
+                            ",\"name\":" + datalist.getString("name") +
+                            ",\"population\":" + datalist.getString("population") +
+                            ",\"cases\":" + totalSumCases +
+                            ",\"deaths\":" + totalDeathsCases +
+                            ",\"cured\":" + totalCuredCases + "}";
+                } else {
+                    object = "{\"geoID\":" + datalist.getString("geoID") +
+                            ",\"name\":" + datalist.getString("name") +
+                            ",\"population\":" + datalist.getString("population") +
+                            ",\"cases\":" + totalSumCases +
+                            ",\"deaths\":" + totalDeathsCases +
+                            ",\"cured\":" + totalCuredCases + "}";
+                }
+                System.out.println(object);
+                insertjsonObject = new JSONObject(object);
+                if (db.insertPopulationAndTotalValues(insertjsonObject) != 1) ;
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-
-            if (datalist.getString("name").equals("Bonaire, Saint Eustatius and Saba")
-                    && datalist.getString("code").equals("")) {
-                object = "{\"code\":\"NoCode\"" + datalist.getString("code")
-                        + ",\"name\":\"" + datalist.getString("name")
-                        + "\",\"cases\":" + totalSumCases +
-                        ",\"deaths\":" + totalDeathsCases +
-                        ",\"cured\":" + totalCuredCases + "}";
-
-            } else if (datalist.getString("name").equals("Cases_on_an_international_conveyance_Japan")) {
-                object = "{\"code\":\"NoCode\"" +
-                        ",\"name\":\"" + datalist.getString("name") +
-                        "\",\"cases\":" + totalSumCases +
-                        ",\"deaths\":" + totalDeathsCases +
-                        ",\"cured\":" + totalCuredCases + "}";
-
-            } else if (datalist.getString("code").equals("") ||
-                    datalist.getString("code").equals("N/A")) {
-                object = "{\"code\":\"NoCode\"" +
-                        ",\"name\":" + datalist.getString("name") +
-                        ",\"cases\":" + totalSumCases +
-                        ",\"deaths\":" + totalDeathsCases +
-                        ",\"cured\":" + totalCuredCases + "}";
-            } else {
-                object = "{\"code\":" + datalist.getString("code") +
-                        ",\"name\":" + datalist.getString("name") +
-                        ",\"cases\":" + totalSumCases +
-                        ",\"deaths\":" + totalDeathsCases +
-                        ",\"cured\":" + totalCuredCases + "}";
-            }
-            insertjsonObject = new JSONObject(object);
-            if (db.insertGlobalInformation(insertjsonObject) != 1) ;
-
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 }

@@ -72,13 +72,14 @@ public class ShowGlobalStats extends AppCompatActivity implements NavigationView
         toggle.syncState();
         try {
             db.obre();
-            Cursor c = db.obtainAllInformation();
+            System.out.println("Hola!");
+            Cursor c = db.obtainLastInformation();
             while (c.moveToNext()) {
-                Stat indiStat = new Stat(c.getString(0),
-                        c.getString(1),
-                        c.getInt(2),
-                        c.getInt(3),
-                        c.getInt(4));
+                Stat indiStat = new Stat(c.getString(1),
+                        c.getString(2),
+                        c.getInt(4),
+                        c.getInt(5),
+                        c.getInt(6));
                 arrayStats.add(indiStat);
             }
             c.close();
@@ -86,7 +87,7 @@ public class ShowGlobalStats extends AppCompatActivity implements NavigationView
         } finally {
             retrieveGlobalInfo();
             db.tanca();
-        }
+            }
 
         countryFilter.addTextChangedListener(new TextWatcher() {
             @Override
@@ -248,7 +249,7 @@ public class ShowGlobalStats extends AppCompatActivity implements NavigationView
     }
 
     private void retrieveGlobalInfo() {
-        Cursor c = db.obtainAllGlobalInformation();
+        Cursor c = db.obtainPopulationAndStats();
         c.moveToFirst();
         int cases, deaths, cured;
         int totalSum = 0, totalDeaths = 0, totalCured = 0;

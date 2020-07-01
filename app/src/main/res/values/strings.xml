@@ -24,90 +24,246 @@
     <string name="help_symptoms">Help/Symptoms</string>
     <string name="cured">Cured</string>
 
+    <string-array name="countries">
+        <item>Afghanistan</item>
+        <item>Albania</item>
+        <item>Algeria</item>
+        <item>Andorra</item>
+        <item>Angola</item>
+        <item>Anguilla</item>
+        <item>Antigua_and_Barbuda</item>
+        <item>Argentina</item>
+        <item>Armenia</item>
+        <item>Aruba</item>
+        <item>Australia</item>
+        <item>Austria</item>
+        <item>Azerbaijan</item>
+        <item>Bahamas</item>
+        <item>Bahrain</item>
+        <item>Bangladesh</item>
+        <item>Barbados</item>
+        <item>Belarus</item>
+        <item>Belgium</item>
+        <item>Belize</item>
+        <item>Benin</item>
+        <item>Bermuda</item>
+        <item>Bhutan</item>
+        <item>Bolivia</item>
+        <item>Bosnia_and_Herzegovina</item>
+        <item>Botswana</item>
+        <item>Brazil</item>
+        <item>British_Virgin_Islands</item>
+        <item>Brunei_Darussalam</item>
+        <item>Bulgaria</item>
+        <item>Burkina_Faso</item>
+        <item>Burundi</item>
+        <item>Cambodia</item>
+        <item>Cameroon</item>
+        <item>Canada</item>
+        <item>Cape_Verde</item>
+        <item>Cayman_Islands</item>
+        <item>Central_African_Republic</item>
+        <item>Chad</item>
+        <item>Chile</item>
+        <item>China</item>
+        <item>Colombia</item>
+        <item>Comoros</item>
+        <item>Congo</item>
+        <item>Costa_Rica</item>
+        <item>Cote_dIvoire</item>
+        <item>Croatia</item>
+        <item>Cuba</item>
+        <item>Curaçao</item>
+        <item>Cyprus</item>
+        <item>Czechia</item>
+        <item>Democratic_Republic_of_the_Congo</item>
+        <item>Denmark</item>
+        <item>Djibouti</item>
+        <item>Dominica</item>
+        <item>Dominican_Republic</item>
+        <item>Ecuador</item>
+        <item>Egypt</item>
+        <item>El_Salvador</item>
+        <item>Equatorial_Guinea</item>
+        <item>Eritrea</item>
+        <item>Estonia</item>
+        <item>Eswatini</item>
+        <item>Ethiopia</item>
+        <item>Falkland_Islands_(Malvinas)</item>
+        <item>Faroe_Islands</item>
+        <item>Fiji</item>
+        <item>Finland</item>
+        <item>France</item>
+        <item>French_Polynesia</item>
+        <item>Gabon</item>
+        <item>Gambia</item>
+        <item>Georgia</item>
+        <item>Germany</item>
+        <item>Ghana</item>
+        <item>Gibraltar</item>
+        <item>Greece</item>
+        <item>Greenland</item>
+        <item>Grenada</item>
+        <item>Guam</item>
+        <item>Guatemala</item>
+        <item>Guernsey</item>
+        <item>Guinea</item>
+        <item>Guinea_Bissau</item>
+        <item>Guyana</item>
+        <item>Haiti</item>
+        <item>Holy_See</item>
+        <item>Honduras</item>
+        <item>Hungary</item>
+        <item>Iceland</item>
+        <item>India</item>
+        <item>Indonesia</item>
+        <item>Iran</item>
+        <item>Iraq</item>
+        <item>Ireland</item>
+        <item>Isle_of_Man</item>
+        <item>Israel</item>
+        <item>Italy</item>
+        <item>Jamaica</item>
+        <item>Japan</item>
+        <item>Jersey</item>
+        <item>Jordan</item>
+        <item>Kazakhstan</item>
+        <item>Kenya</item>
+        <item>Kosovo</item>
+        <item>Kuwait</item>
+        <item>Kyrgyzstan</item>
+        <item>Laos</item>
+        <item>Latvia</item>
+        <item>Lebanon</item>
+        <item>Lesotho</item>
+        <item>Liberia</item>
+        <item>Libya</item>
+        <item>Liechtenstein</item>
+        <item>Lithuania</item>
+        <item>Luxembourg</item>
+        <item>Madagascar</item>
+        <item>Malawi</item>
+        <item>Malaysia</item>
+        <item>Maldives</item>
+        <item>Mali</item>
+        <item>Malta</item>
+        <item>Mauritania</item>
+        <item>Mauritius</item>
+        <item>Mexico</item>
+        <item>Moldova</item>
+        <item>Monaco</item>
+        <item>Mongolia</item>
+        <item>Montenegro</item>
+        <item>Montserrat</item>
+        <item>Morocco</item>
+        <item>Mozambique</item>
+        <item>Myanmar</item>
+        <item>Namibia</item>
+        <item>Nepal</item>
+        <item>Netherlands</item>
+        <item>New_Caledonia</item>
+        <item>New_Zealand</item>
+        <item>Nicaragua</item>
+        <item>Niger</item>
+        <item>Nigeria</item>
+        <item>North_Macedonia</item>
+        <item>Northern_Mariana_Islands</item>
+        <item>Norway</item>
+        <item>Oman</item>
+        <item>Pakistan</item>
+        <item>Palestine</item>
+        <item>Panama</item>
+        <item>Papua_New_Guinea</item>
+        <item>Paraguay</item>
+        <item>Peru</item>
+        <item>Philippines</item>
+        <item>Poland</item>
+        <item>Portugal</item>
+        <item>Puerto_Rico</item>
+        <item>Qatar</item>
+        <item>Romania</item>
+        <item>Russia</item>
+        <item>Rwanda</item>
+        <item>Saint_Kitts_and_Nevis</item>
+        <item>Saint_Lucia</item>
+        <item>Saint_Vincent_and_the_Grenadines</item>
+        <item>San_Marino</item>
+        <item>Sao_Tome_and_Principe</item>
+        <item>Saudi_Arabia</item>
+        <item>Senegal</item>
+        <item>Serbia</item>
+        <item>Seychelles</item>
+        <item>Sierra_Leone</item>
+        <item>Singapore</item>
+        <item>Sint_Maarten</item>
+        <item>Slovakia</item>
+        <item>Slovenia</item>
+        <item>Somalia</item>
+        <item>South_Africa</item>
+        <item>South_Korea</item>
+        <item>South_Sudan</item>
+        <item>Spain</item>
+        <item>Sri_Lanka</item>
+        <item>Sudan</item>
+        <item>Suriname</item>
+        <item>Sweden</item>
+        <item>Switzerland</item>
+        <item>Syria</item>
+        <item>Taiwan</item>
+        <item>Tajikistan</item>
+        <item>Thailand</item>
+        <item>Timor_Leste</item>
+        <item>Togo</item>
+        <item>Trinidad_and_Tobago</item>
+        <item>Tunisia</item>
+        <item>Turkey</item>
+        <item>Turks_and_Caicos_islands</item>
+        <item>Uganda</item>
+        <item>Ukraine</item>
+        <item>United_Arab_Emirates</item>
+        <item>United_Kingdom</item>
+        <item>United_Republic_of_Tanzania</item>
+        <item>United_States_Virgin_Islands</item>
+        <item>United_States_of_America</item>
+        <item>Uruguay</item>
+        <item>Uzbekistan</item>
+        <item>Venezuela</item>
+        <item>Vietnam</item>
+        <item>Western_Sahara</item>
+        <item>Yemen</item>
+        <item>Zambia</item>
+        <item>Zimbabwe</item>
+    </string-array>
     <string-array name="filter">
-        <item>
-        Name asc.
-    </item>
-        <item>
-        Name desc.
-    </item>
-        <item>
-        Cases asc.
-    </item>
-        <item>
-        Cases desc.
-    </item>
-        <item>
-        Deaths asc.
-    </item>
-        <item>
-        Deaths desc.
-    </item>
-        <item>
-        Cured asc.
-    </item>
-        <item>
-        Cured desc.
-    </item>
+        <item>Name asc.</item>
+        <item>Name desc.</item>
+        <item>Cases asc.</item>
+        <item>Cases desc.</item>
+        <item>Deaths asc.</item>
+        <item>Deaths desc.</item>
+        <item>Cured asc.</item>
+        <item>Cured desc.</item>
     </string-array>
     <string-array name="ccaaNames">
-        <item>
-            Andalucía/AN
-        </item>
-        <item>
-            Aragón/AR
-        </item>
-        <item>
-            Principado de Asturias/AS
-        </item>
-        <item>
-            Islas Baleares/IB
-        </item>
-        <item>
-            Canarias/CN
-        </item>
-        <item>
-            Cantabria/CB
-        </item>
-        <item>
-            Castilla y León/CL
-        </item>
-        <item>
-            Castilla-La Mancha/CM
-        </item>
-        <item>
-            Cataluña/CT
-        </item>
-        <item>
-            Comunitat Valenciana/VC
-        </item>
-        <item>
-            Extremadura/EX
-        </item>
-        <item>
-            Galicia/GA
-        </item>
-        <item>
-            Comunidad de Madrid/MD
-        </item>
-        <item>
-            Región de Murcia/MC
-        </item>
-        <item>
-            Comunidad Foral de Navarra/NC
-        </item>
-        <item>
-            País Vasco/PV
-        </item>
-        <item>
-            La Rioja/RI
-        </item>
-        <item>
-            Ciudad Autónoma de Ceuta/CE
-        </item>
-        <item>
-            Ciudad Autónoma de Melilla/ML
-        </item>
+        <item>Andalucía/AN</item>
+        <item>Aragón/AR</item>
+        <item>Principado de Asturias/AS</item>
+        <item>Islas Baleares/IB</item>
+        <item>Canarias/CN</item>
+        <item>Cantabria/CB</item>
+        <item>Castilla y León/CL</item>
+        <item>Castilla-La Mancha/CM</item>
+        <item>Cataluña/CT</item>
+        <item>Comunitat Valenciana/VC</item>
+        <item>Extremadura/EX</item>
+        <item>Galicia/GA</item>
+        <item>Comunidad de Madrid/MD</item>
+        <item>Región de Murcia/MC</item>
+        <item>Comunidad Foral de Navarra/NC</item>
+        <item>País Vasco/PV</item>
+        <item>La Rioja/RI</item>
+        <item>Ciudad Autónoma de Ceuta/CE</item>
+        <item>Ciudad Autónoma de Melilla/ML</item>
 
     </string-array>
 </resources>
