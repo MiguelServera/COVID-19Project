@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.covid_19stats.POJO.CCAAStats;
 import com.example.covid_19stats.R;
 
@@ -15,34 +18,60 @@ import java.util.ArrayList;
 import java.util.List;
 
 //Class to inflate the ListView, which is on the ShowCCAAInfo.inflateCCAA
-public class StatsFromCCAAAdapter extends ArrayAdapter {
+public class StatsFromCCAAAdapter extends RecyclerView.Adapter<StatsFromCCAAAdapter.ViewHolder> implements View.OnClickListener {
+    public List<CCAAStats> ccaaStatsList;
+    private View.OnClickListener listener;
 
-    private Context context;
-    private List<CCAAStats> statsList;
+    public StatsFromCCAAAdapter(ArrayList<CCAAStats> objects) {this.ccaaStatsList = objects;}
 
-    public StatsFromCCAAAdapter(Context context, int resource, ArrayList<CCAAStats> objects) {
-        super(context, resource, objects);
-        this.context = context;
-        this.statsList = objects;
+    @NonNull
+    @Override
+    public StatsFromCCAAAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.inflate_all_ccaa, null, false);
+        view.setOnClickListener(this);
+        return new ViewHolder(view);
     }
 
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        final View view = inflater.inflate(R.layout.inflate_all_ccaa, null);
-        CCAAStats stat = statsList.get(position);
-        TextView date = (TextView) view.findViewById(R.id.dateCCAA);
-        TextView pcr = (TextView) view.findViewById(R.id.pcrCCAA);
-        TextView testAC = (TextView) view.findViewById(R.id.testAC);
-        TextView hospitalized = (TextView) view.findViewById(R.id.hospitalizedCCAA);
-        TextView uci = (TextView) view.findViewById(R.id.uci);
-        TextView deaths = (TextView) view.findViewById(R.id.deathsCCAA);
+    @Override
+    public void onBindViewHolder(@NonNull StatsFromCCAAAdapter.ViewHolder holder, int position) {
+        CCAAStats listCCAA = ccaaStatsList.get(position);
+        holder.date.setText(String.valueOf(listCCAA.getDate()));
+        holder.pcr.setText(String.valueOf(listCCAA.getPcr()));
+        holder.testAC.setText(String.valueOf(listCCAA.getTestAC()));
+        holder.hospitalized.setText(String.valueOf(listCCAA.getHospitalized()));
+        holder.uci.setText(String.valueOf(listCCAA.getUci()));
+        holder.deaths.setText(String.valueOf(listCCAA.getDeaths()));
+    }
 
-        date.setText(String.valueOf(stat.getDate()));
-        pcr.setText(String.valueOf(stat.getPcr()));
-        testAC.setText(String.valueOf(stat.getTestAC()));
-        hospitalized.setText(String.valueOf(stat.getHospitalized()));
-        uci.setText(String.valueOf(stat.getUci()));
-        deaths.setText(String.valueOf(stat.getDeaths()));
-        return view;
+    @Override
+    public int getItemCount() {
+        return ccaaStatsList.size();
+    }
+
+    public void setOnClickListener(View.OnClickListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (listener!= null)
+        {
+            listener.onClick(v);
+        }
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder{
+        TextView date, pcr, testAC, hospitalized, uci, deaths;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            date = (TextView) itemView.findViewById(R.id.dateCCAA);
+            pcr = (TextView) itemView.findViewById(R.id.pcrCCAA);
+            testAC = (TextView) itemView.findViewById(R.id.testAC);
+            hospitalized = (TextView) itemView.findViewById(R.id.hospitalizedCCAA);
+            uci = (TextView) itemView.findViewById(R.id.uci);
+            deaths = (TextView) itemView.findViewById(R.id.deathsCCAA);
+        }
     }
 }

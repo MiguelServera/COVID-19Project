@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -19,20 +20,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.covid_19stats.Adapters.StatsAdapter;
 import com.example.covid_19stats.Adapters.StatsFromCCAAAdapter;
 import com.example.covid_19stats.POJO.CCAAStats;
+import com.example.covid_19stats.POJO.Stat;
 import com.example.covid_19stats.R;
 import com.example.covid_19stats.Resources.DBInterface;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 //Class that will show the CCAA stats of each CCAA, we can select an item from the spinner and it will show the relative CCAA.
 public class ShowCCAAInfo extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
     DBInterface db;
     ArrayList<CCAAStats> arrayCCAA = new ArrayList<>();
-    ListView lv;
+    RecyclerView rv;
     String ccaaText;
     StatsFromCCAAAdapter adapterCCAA;
     ImageView flagCCAA;
@@ -42,19 +49,27 @@ public class ShowCCAAInfo extends AppCompatActivity implements AdapterView.OnIte
     boolean firstInfo = true;
     NavigationView navigationView;
     private DrawerLayout drawer;
+    Spinner filter, spinner;
+    String filterText = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_ccaa_info);
         giveValues();
-        Spinner spinner = findViewById(R.id.spinnerCCAA);
+        spinner = findViewById(R.id.spinnerCCAA);
+        filter = findViewById(R.id.spinnerFilter);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.ccaaNames,
                 android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.filterCcaa,
+                android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filter.setAdapter(adapter2);
         prefs = getSharedPreferences("prefs", MODE_PRIVATE);
         spinner.setOnItemSelectedListener(this);
+        filter.setOnItemSelectedListener(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
@@ -89,31 +104,131 @@ public class ShowCCAAInfo extends AppCompatActivity implements AdapterView.OnIte
     //Start to retrieve the information and show it on item selected.
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        ccaaText = parent.getItemAtPosition(position).toString();
-        arrayCCAA.clear();
-        RetrieveStatsAC();
-        SelectFlag();
+        if (parent == spinner) {
+            ccaaText = parent.getItemAtPosition(position).toString();
+            arrayCCAA.clear();
+            RetrieveStatsAC();
+            SelectFlag();
+        } else if (parent == filter)
+        {
+            filterText = parent.getItemAtPosition(position).toString();
+            System.out.println(filterText);
+            rv.setAdapter(null);
+            adapterCCAA.notifyDataSetChanged();
+            inflateCCAA(filterText);
+        }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
     }
 
-    private void inflateCCAA() {
+    private void inflateCCAA(String selectedText) {
         if (firstInfo) {
-            adapterCCAA = new StatsFromCCAAAdapter(getApplicationContext(), R.layout.inflate_all_ccaa, arrayCCAA);
-            lv = (ListView) findViewById(R.id.listViewShowCCAA);
-            lv.setDivider(null);
-            lv.setDividerHeight(0);
-            lv.setAdapter(adapterCCAA);
+            adapterCCAA = new StatsFromCCAAAdapter(arrayCCAA);
+            rv = (RecyclerView) findViewById(R.id.recyclerViewShowCCAA);
+            rv.setLayoutManager(new GridLayoutManager(this, 1));
+            rv.setAdapter(adapterCCAA);
         } else {
-            adapterCCAA.clear();
+            rv.setAdapter(null);
             adapterCCAA.notifyDataSetChanged();
-            adapterCCAA = new StatsFromCCAAAdapter(getApplicationContext(), R.layout.inflate_all_ccaa, arrayCCAA);
-            lv = (ListView) findViewById(R.id.listViewShowCCAA);
-            lv.setDivider(null);
-            lv.setDividerHeight(0);
-            lv.setAdapter(adapterCCAA);
+            adapterCCAA = new StatsFromCCAAAdapter(arrayCCAA);
+            rv = (RecyclerView) findViewById(R.id.recyclerViewShowCCAA);
+            rv.setLayoutManager(new GridLayoutManager(this, 1));
+            rv.setAdapter(adapterCCAA);
+        }
+        if (selectedText.equals("PCR asc."))
+        {
+            Collections.sort(arrayCCAA, new Comparator<CCAAStats>() {
+                @Override
+                public int compare(CCAAStats stat, CCAAStats stat1) {
+                    return Integer.compare(stat.getPcr(), stat1.getPcr());
+                }
+            });
+        }
+        else if (selectedText.equals("PCR desc."))
+        {
+            Collections.sort(arrayCCAA, new Comparator<CCAAStats>() {
+                @Override
+                public int compare(CCAAStats stat, CCAAStats stat1) {
+                    return Integer.compare(stat1.getPcr(), stat.getPcr());
+                }
+            });
+        }
+
+        else if(selectedText.equals("TestAC asc."))
+        {
+            Collections.sort(arrayCCAA, new Comparator<CCAAStats>() {
+                @Override
+                public int compare(CCAAStats stat, CCAAStats stat1) {
+                    return Integer.compare(stat.getTestAC(), stat1.getTestAC());
+                }
+            });
+        }
+        else if(selectedText.equals("TestAC desc."))
+        {
+            Collections.sort(arrayCCAA, new Comparator<CCAAStats>() {
+                @Override
+                public int compare(CCAAStats stat, CCAAStats stat1) {
+                    return Integer.compare(stat1.getTestAC(), stat.getTestAC());
+                }
+            });
+        }
+        else if(selectedText.equals("Deaths asc."))
+        {
+            Collections.sort(arrayCCAA, new Comparator<CCAAStats>() {
+                @Override
+                public int compare(CCAAStats stat, CCAAStats stat1) {
+                    return Integer.compare(stat.getDeaths(), stat1.getDeaths());
+                }
+            });
+        }
+        else if(selectedText.equals("Deaths desc."))
+        {
+            Collections.sort(arrayCCAA, new Comparator<CCAAStats>() {
+                @Override
+                public int compare(CCAAStats stat, CCAAStats stat1) {
+                    return Integer.compare(stat1.getDeaths(), stat.getDeaths());
+                }
+            });
+        }
+        else if(selectedText.equals("Hosp asc."))
+        {
+            Collections.sort(arrayCCAA, new Comparator<CCAAStats>() {
+                @Override
+                public int compare(CCAAStats stat, CCAAStats stat1) {
+                    return Integer.compare(stat.getHospitalized(), stat1.getHospitalized());
+                }
+            });
+        }
+
+        else if(selectedText.equals("Hosp desc."))
+        {
+            Collections.sort(arrayCCAA, new Comparator<CCAAStats>() {
+                @Override
+                public int compare(CCAAStats stat, CCAAStats stat1) {
+                    return Integer.compare(stat1.getHospitalized(), stat.getHospitalized());
+                }
+            });
+        }
+        else if(selectedText.equals("UCI asc."))
+        {
+            Collections.sort(arrayCCAA, new Comparator<CCAAStats>() {
+                @Override
+                public int compare(CCAAStats stat, CCAAStats stat1) {
+                    return Integer.compare(stat1.getUci(), stat.getUci());
+                }
+            });
+        }
+
+        else if(selectedText.equals("UCI desc."))
+        {
+            Collections.sort(arrayCCAA, new Comparator<CCAAStats>() {
+                @Override
+                public int compare(CCAAStats stat, CCAAStats stat1) {
+                    return Integer.compare(stat1.getUci(), stat.getUci());
+                }
+            });
         }
     }
 
@@ -121,6 +236,7 @@ public class ShowCCAAInfo extends AppCompatActivity implements AdapterView.OnIte
     private void RetrieveStatsAC() {
         db.obre();
         Cursor c = db.obtainCodeCCAAInformation(ccaaText.substring(ccaaText.length() - 2, ccaaText.length()));
+
         if (!c.moveToPrevious())
         {
             c.moveToLast();
@@ -148,7 +264,7 @@ public class ShowCCAAInfo extends AppCompatActivity implements AdapterView.OnIte
             ccaaStats.setDeaths(c.getInt(7));
             arrayCCAA.add(ccaaStats);
         }
-        inflateCCAA();
+        inflateCCAA(filterText);
         db.tanca();
     }
 

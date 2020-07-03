@@ -76,11 +76,11 @@ public class ShowGraphs extends AppCompatActivity implements NavigationView.OnNa
         float cases, deaths, cured;
         float totalSum = 0, totalDeaths = 0, totalCured = 0;
         while (c.moveToNext()) {
-            cases = Float.parseFloat(c.getString(c.getColumnIndex("cases")));
+            cases = c.getInt(c.getColumnIndex("cases"));
             totalSum = cases + totalSum;
-            deaths = Float.parseFloat(c.getString(c.getColumnIndex("deaths")));
+            deaths = c.getInt(c.getColumnIndex("deaths"));
             totalDeaths = deaths + totalDeaths;
-            cured = Float.parseFloat(c.getString(c.getColumnIndex("cured")));
+            cured = c.getInt(c.getColumnIndex("cured"));
             totalCured = cured + totalCured;
         }
         c.close();
@@ -122,8 +122,8 @@ public class ShowGraphs extends AppCompatActivity implements NavigationView.OnNa
         while (c.moveToNext()) {
             Cursor c2 = db.obtainPopulationFromOneCountry(c.getString(1));
             c2.moveToFirst();
-            float cases = Integer.parseInt(c.getString(3));
-            float population = Integer.parseInt(c.getString(2));
+            float cases = c.getInt(3);
+            float population = c.getInt(2);
             float percentOfCases = cases * 100 / population;
             StatPercent newStat = new StatPercent(c.getString(1), percentOfCases);
             topSevenPercent.add(newStat);
@@ -168,7 +168,7 @@ public class ShowGraphs extends AppCompatActivity implements NavigationView.OnNa
         Cursor c = db.obtainTopSevenInformation();
         ArrayList<PieEntry> valuesCCAA = new ArrayList<>();
         while (c.moveToNext()) {
-            float cases = Float.parseFloat(c.getString(1));
+            float cases = c.getInt(1);
             valuesCCAA.add(new PieEntry(cases, c.getString(0)));
         }
         PieDataSet pieDataSet = new PieDataSet(valuesCCAA, "");

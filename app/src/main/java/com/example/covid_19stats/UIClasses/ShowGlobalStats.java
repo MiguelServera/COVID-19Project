@@ -126,6 +126,15 @@ public class ShowGlobalStats extends AppCompatActivity implements NavigationView
         inflate.filterList(filteredList);
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        filterText = parent.getItemAtPosition(position).toString();
+        System.out.println(filterText);
+        rv.setAdapter(null);
+        inflate.notifyDataSetChanged();
+        inflateArray(arrayStats, filterText);
+    }
+
     private void inflateArray(ArrayList<Stat> arrayStat, String selectedText) {
         inflate = new StatsAdapter(arrayStats);
         rv = (RecyclerView) findViewById(R.id.recyclerview);
@@ -235,14 +244,7 @@ public class ShowGlobalStats extends AppCompatActivity implements NavigationView
         });
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        filterText = parent.getItemAtPosition(position).toString();
-        System.out.println(filterText);
-        rv.setAdapter(null);
-        inflate.notifyDataSetChanged();
-        inflateArray(arrayStats, filterText);
-    }
+
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {

@@ -50,6 +50,7 @@ public class DBInterface {
             KEY_RECU + " integer not null);";
 
     public static final String CREATE_CCAA_STATS_TABLE = "create table " + CCAA_STATS + "( " +
+            KEY_ID + " integer primary key autoincrement, " +
             KEY_CCAACODE + " text not null, " +
             KEY_DATE + " text not null, " +
             KEY_CASES + " integer not null, " +
@@ -73,6 +74,7 @@ public class DBInterface {
             KEY_DATE + " text not null);";
 
     public static final String CREATE_USER_INFO_TABLE = "create table " + USER_INFO_TABLE + "( " +
+            KEY_ID + " integer primary key autoincrement, " +
             KEY_USERNAME + " text not null, " +
             KEY_EMAIL + " text unique, " +
             KEY_PASSWORD + " text not null, " +
@@ -163,11 +165,6 @@ public class DBInterface {
     public Cursor obtainLastInformation() {
         return bd.query(LAST_TABLE, new String[]{"MAX("+ KEY_ID + ")", KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_DATE,  KEY_CASES, KEY_DEATHS, KEY_RECU},
                 null, null, KEY_COUNTRY_NAME, null, null);
-    }
-
-    public Cursor obtainAllInformation() {
-        return bd.query(LAST_TABLE, new String[]{KEY_ID, KEY_COUNTRY, KEY_COUNTRY_NAME, KEY_DATE,  KEY_CASES, KEY_DEATHS, KEY_RECU},
-                null, null, null, null, null);
     }
 
     public Cursor obtainLastCountryInformation(String name) {

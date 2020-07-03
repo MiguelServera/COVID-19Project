@@ -34,7 +34,7 @@ import static com.example.covid_19stats.Resources.CheckConnection.isNetworkWifi;
 //Class where we will choose what information to see. I implemented a few necessary checks.
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
-    public static Button ccaa_table, global_table, global_graph, topTen_graph, compare_country, test;
+    public static Button ccaa_table, global_table, global_graph, topTen_graph, compare_country;
     private DrawerLayout drawer;
     DBInterface db;
     Intent launchApiActivity, launchBdActivity, launchDownloadACActivity, launchGraphsActivity, launchACActivity, launchCompareActivity;
@@ -62,8 +62,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         global_graph = findViewById(R.id.global_button);
         topTen_graph = findViewById(R.id.country_button);
         compare_country = findViewById(R.id.comparatorButton);
-        test = findViewById(R.id.button);
-        test.setOnClickListener(this);
         ccaa_table.setOnClickListener(this);
         global_table.setOnClickListener(this);
         global_graph.setOnClickListener(this);
@@ -103,6 +101,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                         global_table.setEnabled(false);
                         global_graph.setEnabled(false);
                         topTen_graph.setEnabled(false);
+                        compare_country.setEnabled(false);
                         Toast.makeText(this, "If this is your first time opening the app, please make sure you have WIFI connection to download countries data", Toast.LENGTH_LONG).show();
                     }
 
@@ -144,9 +143,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(launchGraphsActivity);
         } else if (view == compare_country) {
             startActivity(launchCompareActivity);
-        } else if (view == test)
-        {
-            startActivity(launchApiActivity);
         }
     }
 

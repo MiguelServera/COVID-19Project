@@ -70,7 +70,6 @@ public class DownloadFileCCAA extends AppCompatActivity {
                 //Step over the headers
                 Download.sleep(180);
                 while ((line = br.readLine()) != null) {
-                    //Log.i("Una linea", br.readLine());
                     String[] tokens = line.split(",", -1);
                     if (tokens[0].length() > 2) {
                     } else {

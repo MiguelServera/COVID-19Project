@@ -38,7 +38,6 @@
         <activity android:name=".UIClasses.SymptomsHelp"/>
         <activity android:name=".UIClasses.UserProfile"
             android:windowSoftInputMode="stateVisible|adjustPan" />
-        <activity android:name=".UIClasses.Test"/>
         <activity android:name=".UIClasses.CountryComparator"
             android:windowSoftInputMode="stateVisible|adjustPan" />
     </application>

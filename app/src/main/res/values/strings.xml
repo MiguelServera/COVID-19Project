@@ -235,14 +235,27 @@
         <item>Zimbabwe</item>
     </string-array>
     <string-array name="filter">
-        <item>Name asc.</item>
-        <item>Name desc.</item>
-        <item>Cases asc.</item>
-        <item>Cases desc.</item>
+    <item>Name asc.</item>
+    <item>Name desc.</item>
+    <item>Cases asc.</item>
+    <item>Cases desc.</item>
+    <item>Deaths asc.</item>
+    <item>Deaths desc.</item>
+    <item>Cured asc.</item>
+    <item>Cured desc.</item>
+</string-array>
+    <string-array name="filterCcaa">
+        <item>Filter...</item>
+        <item>PCR asc.</item>
+        <item>PCR desc.</item>
+        <item>TestAC asc.</item>
+        <item>TestAC desc.</item>
+        <item>Hosp asc.</item>
+        <item>Hosp desc.</item>
+        <item>UCI asc.</item>
+        <item>UCI desc.</item>
         <item>Deaths asc.</item>
         <item>Deaths desc.</item>
-        <item>Cured asc.</item>
-        <item>Cured desc.</item>
     </string-array>
     <string-array name="ccaaNames">
         <item>Andalucía/AN</item>

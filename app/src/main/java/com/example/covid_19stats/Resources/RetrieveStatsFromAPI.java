@@ -54,7 +54,6 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
         db = new DBInterface(this);
         appContext = this;
         i = new Intent(getApplicationContext(), ShowGlobalStats.class);
-        System.out.println("sup");
         new SendRequest().execute();
     }
 
@@ -135,7 +134,6 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
         //I call every thread here so it can all execute in one method.
         public void onPostExecute(String result) {
             try {
-                Log.i("Result", result);
                 db.obre();
                 db.deleteDatabaseStats();
                 db.createTables();
@@ -146,15 +144,15 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                     datalist = stats.getJSONObject(i);
                     gr = new GlobalResults(datalist);
                     gr.start();
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             } finally {
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 finish();
             }
         }
@@ -177,13 +175,12 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                 JSONObject insertjsonObject;
                 JSONObject datalistObject;
                 int dataListLength = datalist.getJSONArray("dataList").length();
-                    for (int i = dataListLength-15; i <= dataListLength - 1;i++) {
+                    for (int i = dataListLength-8; i <= dataListLength - 1;i++) {
                         datalistObject = datalist.getJSONArray("dataList").getJSONObject(i);
-                        if (datalist.getString("name").equals("Bonaire, Saint Eustatius and Saba")
-                                && datalist.getString("code").equals("")) {
-                            object = "{\"code\":\"NoCode\"" + datalist.getString("code") +
+                        if (datalist.getString("name").equals("Bonaire, Saint Eustatius and Saba")) {
+                            object = "{\"code\":" + datalist.getString("code") +
                                     ",\"name\":\"" + datalist.getString("name") +
-                                    ",\"date\":" + "\"" + datalistObject.getJSONObject("date").getString("date") + "\"" +
+                                    "\",\"date\":" + "\"" + datalistObject.getJSONObject("date").getString("date") + "\"" +
                                     ",\"cases\":" + datalistObject.getString("cases") +
                                     ",\"deaths\":" + datalistObject.getString("deaths") +
                                     ",\"cured\":" + datalistObject.getString("cured") + "}";
@@ -213,7 +210,6 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                                     ",\"deaths\":" + datalistObject.getString("deaths") +
                                     ",\"cured\":" + datalistObject.getString("cured") + "}";
                         }
-                        System.out.println(object);
                         insertjsonObject = new JSONObject(object);
                         if (db.insertLastInformation(insertjsonObject) != 1) ;
                     }
@@ -253,11 +249,10 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                     totalCuredCases = valueCuredCases + totalCuredCases;
                 }
 
-                if (datalist.getString("name").equals("Bonaire, Saint Eustatius and Saba")
-                        && datalist.getString("code").equals("")) {
+                if (datalist.getString("name").equals("Bonaire, Saint Eustatius and Saba")) {
                     object = "{\"geoID\":" + datalist.getString("geoID")
                             + ",\"name\":\"" + datalist.getString("name") +
-                            ",\"population\":" + datalist.getString("population")
+                            "\",\"population\":" + datalist.getString("population")
                             + "\",\"cases\":" + totalSumCases +
                             ",\"deaths\":" + totalDeathsCases +
                             ",\"cured\":" + totalCuredCases + "}";
@@ -286,7 +281,6 @@ public class RetrieveStatsFromAPI extends AppCompatActivity {
                             ",\"deaths\":" + totalDeathsCases +
                             ",\"cured\":" + totalCuredCases + "}";
                 }
-                System.out.println(object);
                 insertjsonObject = new JSONObject(object);
                 if (db.insertPopulationAndTotalValues(insertjsonObject) != 1) ;
 
