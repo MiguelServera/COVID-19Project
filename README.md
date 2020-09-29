@@ -1,4 +1,4 @@
-# COVID-19Project
+# Android APP COVID-19Stats
 
 Para testear se necesita:
 - API en local de mi compañero Álvaro Maleno.
